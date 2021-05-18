@@ -15,7 +15,7 @@ pygame.init()
 
 def main():
     #Get board in original state
-    board.original_setup(w_pieces,b_pieces)
+    board.setup(w_pieces,b_pieces) #add board parameter based on board selection
     board.draw_board()
     pygame.display.update()
     game()

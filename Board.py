@@ -81,24 +81,13 @@ class Board(object):
                         pygame.draw.line(SURFACE,black_piece_color,(0,i*square_size),(800,i*square_size))
                         pygame.draw.line(SURFACE,black_piece_color,(i*square_size,0),(i*square_size,800))
     
-    def original_setup(self,w_pieces,b_pieces):
-        w_p=w_pieces[0] #White pawns
-        w_n=w_pieces[1] #White knights
-        w_b=w_pieces[2] #White bishops
-        w_r=w_pieces[3] #White rooks
-        w_q=w_pieces[4] #White queen
-        w_k=w_pieces[5] #White king
-        b_p=b_pieces[0] #Black pawns
-        b_n=b_pieces[1] #Black knights
-        b_b=b_pieces[2] #Black bishops
-        b_r=b_pieces[3] #Black rooks
-        b_q=b_pieces[4] #Black queen
-        b_k=b_pieces[5] #Black king
-        for i in range(0,self.boardWidth):
-            #White pawns
-            self.board[i][self.boardLength-1].set_piece(w_p[i])
-            #Black pawns
-            self.board[i][1].set_piece(b_p[i])
+    def setup(self,w_pieces,b_pieces):
+        #Put white pieces in place
+        for piece in w_pieces:
+            self.board[piece.x][piece.y].set_piece(piece)
+        #Put black pieces in place
+        for piece in b_pieces:
+            self.board[piece.x][piece.y].set_piece(piece)
         
 BLACK=pygame.Color(211,139,67)
 WHITE=pygame.Color(250,203,156)

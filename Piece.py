@@ -113,27 +113,27 @@ class Piece(ABC):
 
 class Pawn(Piece):
     def __init__(self,color,square,image):
-        super(Pawn,self).__init__(color,square,'pawn',image)
+        super().__init__(color,square,'pawn',image)
         
 class Knight(Piece):
     def __init__(self,color,square,image):
-        super(Knight,self).__init__(color,square,'knight',image)
+        super().__init__(color,square,'knight',image)
         
 class Bishop(Piece):
     def __init__(self,color,square,image):
-        super(Bishop,self).__init__(color,square,'bishop',image)
+        super().__init__(color,square,'bishop',image)
         
 class Rook(Piece):
     def __init__(self,color,square,image):
-        super(Rook,self).__init__(color,square,'rook',image)
+        super().__init__(color,square,'rook',image)
         
 class Queen(Piece):
     def __init__(self,color,square,image):
-        super(Queen,self).__init__(color,square,'queen',image)
+        super().__init__(color,square,'queen',image)
         
 class King(Piece):
     def __init__(self,color,square,image):
-        super(King,self).__init__(color,square,'king',image)
+        super().__init__(color,square,'king',image)
 
     
         
