@@ -15,9 +15,9 @@ class Square(object):
         self.powerup=powerup
         self.highlighted=highlighted
         
-        self.x,self.y=image.x,image.y
-        self.x=int(self.x/self.size)
-        self.y=int(self.y/self.size)
+        self.xpos,self.ypos=image.x,image.y #coordinates
+        self.x=int(self.xpos/self.size)
+        self.y=int(self.ypos/self.size)
         
         self.selected=False
     
@@ -68,26 +68,24 @@ class Board(object):
                 self.board[i][j]=Square(None,clr,image,None)
     
     def draw_board(self):
-        pygame.draw.line(SURFACE, black_piece_color,(0,800),(0,800))
-        pygame.draw.line(SURFACE, black_piece_color, (800,0),(800,0))
-        for i in range(self.boardWidth):
-            for j in range(self.boardLength):
+        for j in range(self.boardLength):
+            for i in range(self.boardWidth):
                 space=self.board[i][j]
-                pygame.draw.rect(SURFACE, space.get_color(),space.get_image())
-                #if has piece, blit it on
-                if space.get_piece_image():
-                    SURFACE.blit(space.get_piece_image(), (space.x, space.y))
-                    for i in range(self.boardWidth): #edit this to accomodate diff sized boards
-                        pygame.draw.line(SURFACE,black_piece_color,(0,i*square_size),(800,i*square_size))
-                        pygame.draw.line(SURFACE,black_piece_color,(i*square_size,0),(i*square_size,800))
-    
+                pygame.draw.rect(SURFACE, space.get_color(), space.get_image())
+                pygame.draw.line(SURFACE,black_piece_color,(0,i*square_size),(square_size*self.boardLength,i*square_size))#These are the black lines separating squares
+                pygame.draw.line(SURFACE,black_piece_color,(i*square_size,0),(i*square_size,square_size*self.boardWidth))
+                if space.get_piece():
+                    SURFACE.blit(space.get_piece_image(), (space.xpos, space.ypos))
+
     def setup(self,w_pieces,b_pieces):
         #Put white pieces in place
-        for piece in w_pieces:
-            self.board[piece.x][piece.y].set_piece(piece)
+        for piece_type in w_pieces: #iterate thru every pieces type (pawn, knight, bishop, etc)
+            for piece in piece_type: #get every piece of each piece type (every pawn, every knight, etc)
+                self.board[piece.x][piece.y].set_piece(piece)
         #Put black pieces in place
-        for piece in b_pieces:
-            self.board[piece.x][piece.y].set_piece(piece)
+        for piece_type in b_pieces:
+            for piece in piece_type:
+                self.board[piece.x][piece.y].set_piece(piece)
         
 BLACK=pygame.Color(211,139,67)
 WHITE=pygame.Color(250,203,156)
