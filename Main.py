@@ -15,7 +15,9 @@ pygame.init()
 
 def main():
     #Get board in original state
-    board.setup(w_pieces,b_pieces) #add board parameter based on board selection
+    game_type('traditional') #for now, all games will be traditional
+    print(all_pieces)
+    board.setup(all_pieces) #add board parameter based on board selection
     board.draw_board()
     pygame.display.update()
     game()
@@ -72,8 +74,50 @@ def move_piece(sq,moves,pos):
         except:
             return False
     return True
+
+def get_all_moves(): #calculates every possible move 
+    pass      
+
+def game_type(t): #traditional, atomic, etc (what type of chess)
+    if t=='traditional':
+        #Set globality
+        global w_p
+        global w_n
+        global w_b
+        global w_r
+        global w_q
+        global w_k
+        global w_pieces
+        global b_p
+        global b_n
+        global b_b
+        global b_r
+        global b_q
+        global b_k
+        global b_pieces
+        global all_pieces
+        #Pieces
+        ##WHITE
+        w_p=[Pawn(WHITE,board.board[0][6],wpi),Pawn(WHITE,board.board[1][6],wpi),Pawn(WHITE,board.board[2][6],wpi),Pawn(WHITE,board.board[3][6],wpi),
+             Pawn(WHITE,board.board[4][6],wpi),Pawn(WHITE,board.board[5][6],wpi),Pawn(WHITE,board.board[6][6],wpi),Pawn(WHITE,board.board[7][6],wpi)]
+        w_n=[Knight(WHITE,board.board[1][7],wni),Knight(WHITE,board.board[6][7],wni)]
+        w_b=[Bishop(WHITE,board.board[2][7],wbi),Bishop(WHITE,board.board[5][7],wbi)]
+        w_r=[Rook(WHITE,board.board[0][7],wri),Rook(WHITE,board.board[7][7],wri)]
+        w_q=[Queen(WHITE,board.board[3][7],wqi)]
+        w_k=[King(WHITE,board.board[4][7],wki)]
+        w_pieces=w_p+w_n+w_b+w_r+w_q+w_k
+        ##BLACK
+        b_p=[Pawn(BLACK,board.board[0][1],bpi),Pawn(BLACK,board.board[1][1],bpi),Pawn(BLACK,board.board[2][1],bpi),Pawn(BLACK,board.board[3][1],bpi),
+             Pawn(BLACK,board.board[4][1],bpi),Pawn(BLACK,board.board[5][1],bpi),Pawn(BLACK,board.board[6][1],bpi),Pawn(BLACK,board.board[7][1],bpi)]
+        b_n=[Knight(BLACK,board.board[1][0],bni),Knight(BLACK,board.board[6][0],bni)]
+        b_b=[Bishop(BLACK,board.board[2][0],bbi),Bishop(BLACK,board.board[5][0],bbi)]
+        b_r=[Rook(BLACK,board.board[0][0],bri),Rook(BLACK,board.board[7][0],bri)]
+        b_q=[Queen(BLACK,board.board[3][0],bqi)]
+        b_k=[King(BLACK,board.board[4][0],bki)]
+        b_pieces=b_p+b_n+b_b+b_r+b_q+b_k
         
-             
+        all_pieces=w_pieces+b_pieces #all pieces
+
 def game():
     turn=WHITE
     while True:
@@ -87,14 +131,13 @@ def game():
                 for event in pygame.event.get():
                     if event.type==MOUSEBUTTONDOWN:
                         pos=pygame.mouse.get_pos()
-                        #print(pos)
                         sq=select_square(turn,pos)
                         if sq: #if valid square
                             valid_square_selection=True
                             break
-            moves=sq.get_moves(board)
+            moves=sq.piece.get_moves(board) #get moves of piece at selected square
             sq.set_selected()
-            if moves:
+            if moves: #highlight
                 for move in moves:
                     move.set_highlighted() #make sure to unhighlight
             board.draw_board()
@@ -109,7 +152,7 @@ def game():
                             move_completed=True
                         loop_completed=True
                         break
-            if moves:
+            if moves: #unhighlight
                 for move in moves:
                     move.set_highlighted()
             sq.set_selected()
@@ -126,7 +169,6 @@ def game():
         #get where click
         #if white piece there, highlight possible moves
             
-
 
 
 #Colors
@@ -162,25 +204,7 @@ bri=pygame.transform.scale(bri,(square_size,square_size))
 bqi=pygame.transform.scale(bqi,(square_size,square_size))
 bki=pygame.transform.scale(bki,(square_size,square_size))
 
-#Pieces
-##WHITE
-w_p=[Pawn(WHITE,board.board[0][6],wpi),Pawn(WHITE,board.board[1][6],wpi),Pawn(WHITE,board.board[2][6],wpi),Pawn(WHITE,board.board[3][6],wpi),
-     Pawn(WHITE,board.board[4][6],wpi),Pawn(WHITE,board.board[5][6],wpi),Pawn(WHITE,board.board[6][6],wpi),Pawn(WHITE,board.board[7][6],wpi)]
-w_n=[Knight(WHITE,board.board[1][7],wni),Knight(WHITE,board.board[6][7],wni)]
-w_b=[Bishop(WHITE,board.board[2][7],wbi),Bishop(WHITE,board.board[5][7],wbi)]
-w_r=[Rook(WHITE,board.board[0][7],wri),Rook(WHITE,board.board[7][7],wri)]
-w_q=[Queen(WHITE,board.board[3][7],wqi)]
-w_k=[King(WHITE,board.board[4][7],wki)]
-w_pieces=[w_p,w_n,w_b,w_r,w_q,w_k]
-##BLACK
-b_p=[Pawn(BLACK,board.board[0][1],bpi),Pawn(BLACK,board.board[1][1],bpi),Pawn(BLACK,board.board[2][1],bpi),Pawn(BLACK,board.board[3][1],bpi),
-     Pawn(BLACK,board.board[4][1],bpi),Pawn(BLACK,board.board[5][1],bpi),Pawn(BLACK,board.board[6][1],bpi),Pawn(BLACK,board.board[7][1],bpi)]
-b_n=[Knight(BLACK,board.board[1][0],bni),Knight(BLACK,board.board[6][0],bni)]
-b_b=[Bishop(BLACK,board.board[2][0],bbi),Bishop(BLACK,board.board[5][0],bbi)]
-b_r=[Rook(BLACK,board.board[0][0],bri),Rook(BLACK,board.board[7][0],bri)]
-b_q=[Queen(BLACK,board.board[3][0],bqi)]
-b_k=[King(BLACK,board.board[4][0],bki)]
-b_pieces=[b_p,b_n,b_b,b_r,b_q,b_k]
+
 
 if __name__=='__main__':
     main()

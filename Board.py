@@ -15,23 +15,31 @@ class Square(object):
         self.powerup=powerup
         self.highlighted=highlighted
         
+        self.selected=False #if user selecting piece on this square
+        
         self.xpos,self.ypos=image.x,image.y #coordinates
         self.x=int(self.xpos/self.size)
         self.y=int(self.ypos/self.size)
-        
-        self.selected=False
-    
+            
     def get_piece_image(self):
         if self.piece: #check if square has a piece before trying to return image of piece
             return self.piece.image
         else:
             return None
-    def get_color(self):
+    def get_color(self): #either highlighted, selected, or normal
+        if self.highlighted:
+            return RED
+        elif self.selected:
+            return GREEN
         return self.color
     def get_image(self):
         return self.image
     def get_piece(self):
         return self.piece
+    def get_piece_color(self):
+        if(self.piece): #check if square has a piece first
+            return self.piece.color
+        return None #if square has no piece on it
     def set_piece(self,piece):
         self.piece=piece
     def get_isAttacked(self):
@@ -40,7 +48,12 @@ class Square(object):
         self.isAttacked=boolean
     def get_highlited(self):
         return self.highlighted
-    def set_hightlighted(self):
+    def set_selected(self): #if selected->not selected, elif not selected->selected
+        if self.selected:
+            self.selected=False
+        else:
+            self.selected=True
+    def set_highlighted(self):
         self.highlighted=not self.highlighted
     
     
@@ -77,15 +90,9 @@ class Board(object):
                 if space.get_piece():
                     SURFACE.blit(space.get_piece_image(), (space.xpos, space.ypos))
 
-    def setup(self,w_pieces,b_pieces):
-        #Put white pieces in place
-        for piece_type in w_pieces: #iterate thru every pieces type (pawn, knight, bishop, etc)
-            for piece in piece_type: #get every piece of each piece type (every pawn, every knight, etc)
-                self.board[piece.x][piece.y].set_piece(piece)
-        #Put black pieces in place
-        for piece_type in b_pieces:
-            for piece in piece_type:
-                self.board[piece.x][piece.y].set_piece(piece)
+    def setup(self,pieces):
+        for piece in pieces:
+            self.board[piece.x][piece.y].set_piece(piece)
         
 BLACK=pygame.Color(211,139,67)
 WHITE=pygame.Color(250,203,156)
