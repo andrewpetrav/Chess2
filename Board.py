@@ -6,7 +6,8 @@ from Surface import square_size,SURFACE
 class Square(object):
     def __init__(self,piece,color,image,powerup,highlighted=False):
         self.size=square_size
-        isAttacked=False
+        isAttackedWhite=False #attacked by white
+        isAttackedBlack=False #attacked by black
         #isAttacking=[]
         
         self.piece=piece

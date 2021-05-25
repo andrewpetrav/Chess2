@@ -16,7 +16,6 @@ pygame.init()
 def main():
     #Get board in original state
     game_type('traditional') #for now, all games will be traditional
-    print(all_pieces)
     board.setup(all_pieces) #add board parameter based on board selection
     board.draw_board()
     pygame.display.update()
@@ -41,32 +40,33 @@ def move_piece(sq,moves,pos):
     while not moved:
         x=int(pos[0]/square_size)
         y=int(pos[1]/square_size)
+
         try:
-            if board.board[x][y].get_highlighted()==True:
+            if board.board[x][y] in moves:
                 #Special moves such as promotion, castling, en passant
                 
                 #CASTLING
-                if sq.get_piece().type=='king' and abs(x-sq.row)>1:
-                    sq.get_piece().set_moved() #set king moved
+                if sq.piece.type=='king' and abs(x-sq.row)>1:
+                    sq.piece.set_moved() #set king moved
                     #Short castle
                     if sq.row-x<1:
-                        board.board[7][y].get_piece().set_moved() #set rook moved
-                        board.board[5][y].set_piece(board.board[7][y].get_piece())
+                        board.board[7][y].piece.set_moved() #set rook moved
+                        board.board[5][y].set_piece(board.board[7][y].piece)
                         board.board[7][y].set_piece(None)
-                        board.board[6][y].set_piece(sq.get_piece())
+                        board.board[6][y].set_piece(sq.piece)
                         sq.set_piece(None)
                     #Long castle
                     else:
-                        board.board[0][y].get_piece().set_moved() #set rook moved
-                        board.board[3][y].set_piece(board.board[0][y].get_piece())
+                        board.board[0][y].piece.set_moved() #set rook moved
+                        board.board[3][y].set_piece(board.board[0][y].piece)
                         board.board[0][y].set_piece(None)
-                        board.board[2][y].set_piece(sq.get_piece())
+                        board.board[2][y].set_piece(sq.piece)
                         sq.set_piece(None)
                 else:
                     #updated Moved attribute on piece
-                    sq.get_piece().set_moved()
-                    sq.get_piece().set_pos(x,y) #update what position it'll be on
-                    board.board[x][y].set_piece(sq.get_piece())
+                    sq.piece.set_moved()
+                    sq.piece.set_pos(x,y) #update what position it'll be on
+                    board.board[x][y].set_piece(sq.piece)
                     sq.set_piece(None)
                 return True
             else:
@@ -76,7 +76,11 @@ def move_piece(sq,moves,pos):
     return True
 
 def get_all_moves(): #calculates every possible move 
-    pass      
+    all_moves={} #piece: all the moves it can make
+    #should each square hold the data about who is attacking it? or just
+    #what color
+    for piece in all_pieces:
+        all_moves[piece]=piece.get_moves(board)
 
 def game_type(t): #traditional, atomic, etc (what type of chess)
     if t=='traditional':
