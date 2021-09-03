@@ -149,80 +149,114 @@ class Piece(ABC):
             if h and (not hc or hc!=self.color):
                 open_squares.append(h)
             return open_squares
-        elif self.t=='bishop':
-            pass
-        elif self.t=='rook':
-            for i in range(self.x,board.boardLength): #how many squares up
-                if(board.board[self.x][self.y-i].get_piece()): #this square holds a piece
-                    if board.board[self.x][self.y-i].get_piece_color()!=self.color: #if it's the other player's piece
-                        open_squares.append(board.board[self.x][self.y-i])
+        
+        elif self.t=='bishop' or self.t=='queen':
+            counter=1 #how many times thru loop (start at 1)
+            #up right
+            while True:
+                try:
+                    if(self.x+counter>-1 and self.x+counter<8 and self.y-counter>-1 and self.y-counter<8): #ensure no out of bounds
+                        if(board.board[self.x+counter][self.y-counter].get_piece()==None):
+                            if(board.board[self.x+counter][self.y-counter].get_piece_color()!=self.color):
+                                open_squares.append(board.board[self.x+counter][self.y-counter])
+                                break
+                            else: #square has piece of same color, so break
+                                break
+                        counter+=1
+                    else: 
+                        break
+                except:
+                    counter=1
                     break
-                else:
-                    #empty square
-                    open_squares.append(board.board[self.x][self.y-i])
-            for i in range(self.x,0,-1): #how many squares down
-                if(board.board[self.x][self.y-i].get_piece()): #this square holds a piece
-                    if board.board[self.x][self.y-i].get_piece_color()!=self.color: #if it's the other player's piece
-                        open_squares.append(board.board[self.x][self.y-i])
+
+            #up left
+            while True:
+                try:
+                    if(self.x-counter>-1 and self.x-counter<8 and self.y-counter>-1 and self.y-counter<8): #ensure no out of bounds
+                        if(board.board[self.x-counter][self.y-counter].get_piece()==None):
+                            if(board.board[self.x-counter][self.y-counter].get_piece_color()!=self.color):
+                                open_squares.append(board.board[self.x-counter][self.y-counter])
+                                break
+                            else: #square has piece of same color, so break
+                                break
+                        counter+=1
+                    else:
+                        break
+                except:
+                    counter=1
                     break
-                else:
-                    #empty square
-                    open_squares.append(board.board[self.x][self.y-i])
-            for i in range(self.y,board.boardWidth): #how many squares right
-                if(board.board[self.x-i][self.y].get_piece()): #this square holds a piece
-                    if board.board[self.x-i][self.y=].get_piece_color()!=self.color: #if it's the other player's piece
-                        open_squares.append(board.board[self.x-i][self.y=])
+
+            #down right
+            while True:
+                try:
+                    if(self.x+counter>-1 and self.x+counter<8 and self.y+counter>-1 and self.y+counter<8): #ensure no out of bounds
+                        if(board.board[self.x+counter][self.y+counter].get_piece()==None):
+                            if(board.board[self.x+counter][self.y+counter].get_piece_color()!=self.color):
+                                open_squares.append(board.board[self.x+counter][self.y+counter])
+                                break
+                            else: #square has piece of same color, so break
+                                break
+                        counter+=1
+                    else:
+                        break
+                except:
+                    counter=1
                     break
-                else:
-                    #empty square
-                    open_squares.append(board.board[self.x-i][self.y])
-            for i in range(self.y,0,-1): #how many squares left
-                if(board.board[self.x-i][self.y].get_piece()): #this square holds a piece
-                    if board.board[self.x-i][self.y=].get_piece_color()!=self.color: #if it's the other player's piece
-                        open_squares.append(board.board[self.x-i][self.y=])
+            #down left
+            while True:
+                try:
+                    if(self.x-counter>-1 and self.x-counter<8 and self.y+counter>-1 and self.y+counter<8): #ensure no out of bounds
+                        if(board.board[self.x-counter][self.y+counter].get_piece()==None):
+                            if(board.board[self.x-counter][self.y+counter].get_piece_color()!=self.color):
+                                open_squares.append(board.board[self.x-counter][self.y+counter])
+                                break
+                            else: #square has piece of same color, so break
+                                break
+                        counter+=1
+                    else:
+                        break
+                except:
+                    counter=1
                     break
-                else:
-                    #empty square
-                    open_squares.append(board.board[self.x-i][self.y])
-            return open_squares
-        elif self.t=='queen':
-            #up down left right
-            for i in range(self.x,board.boardLength): #how many squares up
-                if(board.board[self.x][self.y-i].get_piece()): #this square holds a piece
-                    if board.board[self.x][self.y-i].get_piece_color()!=self.color: #if it's the other player's piece
-                        open_squares.append(board.board[self.x][self.y-i])
-                    break
-                else:
-                    #empty square
-                    open_squares.append(board.board[self.x][self.y-i])
-            for i in range(self.x,0,-1): #how many squares down
-                if(board.board[self.x][self.y-i].get_piece()): #this square holds a piece
-                    if board.board[self.x][self.y-i].get_piece_color()!=self.color: #if it's the other player's piece
-                        open_squares.append(board.board[self.x][self.y-i])
-                    break
-                else:
-                    #empty square
-                    open_squares.append(board.board[self.x][self.y-i])
-            for i in range(self.y,board.boardWidth): #how many squares right
-                if(board.board[self.x-i][self.y].get_piece()): #this square holds a piece
-                    if board.board[self.x-i][self.y=].get_piece_color()!=self.color: #if it's the other player's piece
-                        open_squares.append(board.board[self.x-i][self.y=])
-                    break
-                else:
-                    #empty square
-                    open_squares.append(board.board[self.x-i][self.y])
-            for i in range(self.y,0,-1): #how many squares left
-                if(board.board[self.x-i][self.y].get_piece()): #this square holds a piece
-                    if board.board[self.x-i][self.y=].get_piece_color()!=self.color: #if it's the other player's piece
-                        open_squares.append(board.board[self.x-i][self.y=])
-                    break
-                else:
-                    #empty square
-                    open_squares.append(board.board[self.x-i][self.y])
-            # diagonals
+
+            if self.t=='bishop': # this is here because the queen needs both bishop and rook movess
+                return open_squares
             
-            
+        elif self.t=='rook' or self.t=='queen':
+            for i in range(self.y-1,-1,-1): #how many squares up
+                if(board.board[self.x][i].get_piece()!=None): #this square holds a piece
+                    if board.board[self.x][i].get_piece_color()!=self.color: #if it's the other player's piece
+                        open_squares.append(board.board[self.x][i])
+                    break #piece can't move thru pieces, so break loop if encounters another piece. add the square to open_squares if opponent's piece
+                else:
+                    #empty square
+                    open_squares.append(board.board[self.x][i])
+            for i in range(self.y,board.boardLength-1): #how many squares down
+                if(board.board[self.x][i].get_piece()!=None): #this square holds a piece
+                    if board.board[self.x][i].get_piece_color()!=self.color: #if it's the other player's piece
+                        open_squares.append(board.board[self.x][i])
+                    break
+                else:
+                    #empty square
+                    open_squares.append(board.board[self.x][i])
+            for i in range(self.x,board.boardWidth-1): #how many squares right
+                if(board.board[self.x-i][self.y].get_piece()!=None): #this square holds a piece
+                    if board.board[self.x-i][self.y].get_piece_color()!=self.color: #if it's the other player's piece
+                        open_squares.append(board.board[self.x-i][self.y])
+                    break
+                else:
+                    #empty square
+                    open_squares.append(board.board[self.x-i][self.y])
+            for i in range(self.x-1,-1,-1): #how many squares left
+                if(board.board[i][self.y].get_piece()!=None): #this square holds a piece
+                    if board.board[i][self.y].get_piece_color()!=self.color: #if it's the other player's piece
+                        open_squares.append(board.board[i][self.y])
+                    break
+                else:
+                    #empty square
+                    open_squares.append(board.board[i][self.y])
             return open_squares
+        
         elif self.t=='king':
             pass
 
