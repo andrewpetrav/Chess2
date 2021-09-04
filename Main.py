@@ -16,6 +16,7 @@ pygame.init()
 def main():
     #Get board in original state
     game_type('traditional') #for now, all games will be traditional
+    #board.test(Rook(WHITE,board.board[4][4],wri))
     board.setup(all_pieces) #add board parameter based on board selection
     board.draw_board()
     pygame.display.update()
@@ -82,6 +83,7 @@ def get_all_moves(): #calculates every possible move
     for piece in all_pieces:
         all_moves[piece]=piece.get_moves(board)
 
+
 def game_type(t): #traditional, atomic, etc (what type of chess)
     if t=='traditional':
         #Set globality
@@ -121,7 +123,13 @@ def game_type(t): #traditional, atomic, etc (what type of chess)
         b_pieces=b_p+b_n+b_b+b_r+b_q+b_k
         
         all_pieces=w_pieces+b_pieces #all pieces
-
+        
+def kingInCheck(color): #checks to see if move puts/stops if OWN king is in check
+    if color==WHITE:
+        return w_k.inCheck
+    elif color==BLACK:
+        return b_k.inCheck
+    
 def game():
     turn=WHITE
     while True:
