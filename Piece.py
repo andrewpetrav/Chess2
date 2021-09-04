@@ -150,20 +150,24 @@ class Piece(ABC):
                 open_squares.append(h)
             return open_squares
         
-        elif self.t=='bishop' or self.t=='queen':
+        if self.t=='bishop' or self.t=='queen':
             counter=1 #how many times thru loop (start at 1)
             #up right
             while True:
                 try:
                     if(self.x+counter>-1 and self.x+counter<8 and self.y-counter>-1 and self.y-counter<8): #ensure no out of bounds
-                        if(board.board[self.x+counter][self.y-counter].get_piece()==None):
+                        if(board.board[self.x+counter][self.y-counter].get_piece()!=None):
                             if(board.board[self.x+counter][self.y-counter].get_piece_color()!=self.color):
                                 open_squares.append(board.board[self.x+counter][self.y-counter])
+                                counter=1
                                 break
                             else: #square has piece of same color, so break
+                                counter=1
                                 break
+                        open_squares.append(board.board[self.x+counter][self.y-counter])
                         counter+=1
                     else: 
+                        counter=1
                         break
                 except:
                     counter=1
@@ -173,14 +177,18 @@ class Piece(ABC):
             while True:
                 try:
                     if(self.x-counter>-1 and self.x-counter<8 and self.y-counter>-1 and self.y-counter<8): #ensure no out of bounds
-                        if(board.board[self.x-counter][self.y-counter].get_piece()==None):
+                        if(board.board[self.x-counter][self.y-counter].get_piece()!=None):
                             if(board.board[self.x-counter][self.y-counter].get_piece_color()!=self.color):
                                 open_squares.append(board.board[self.x-counter][self.y-counter])
+                                counter=1
                                 break
                             else: #square has piece of same color, so break
+                                counter=1
                                 break
+                        open_squares.append(board.board[self.x-counter][self.y-counter])
                         counter+=1
                     else:
+                        counter=1
                         break
                 except:
                     counter=1
@@ -190,14 +198,18 @@ class Piece(ABC):
             while True:
                 try:
                     if(self.x+counter>-1 and self.x+counter<8 and self.y+counter>-1 and self.y+counter<8): #ensure no out of bounds
-                        if(board.board[self.x+counter][self.y+counter].get_piece()==None):
+                        if(board.board[self.x+counter][self.y+counter].get_piece()!=None):
                             if(board.board[self.x+counter][self.y+counter].get_piece_color()!=self.color):
                                 open_squares.append(board.board[self.x+counter][self.y+counter])
+                                counter=1
                                 break
                             else: #square has piece of same color, so break
+                                counter=1
                                 break
+                        open_squares.append(board.board[self.x+counter][self.y+counter])
                         counter+=1
                     else:
+                        counter=1
                         break
                 except:
                     counter=1
@@ -206,14 +218,18 @@ class Piece(ABC):
             while True:
                 try:
                     if(self.x-counter>-1 and self.x-counter<8 and self.y+counter>-1 and self.y+counter<8): #ensure no out of bounds
-                        if(board.board[self.x-counter][self.y+counter].get_piece()==None):
+                        if(board.board[self.x-counter][self.y+counter].get_piece()!=None):
                             if(board.board[self.x-counter][self.y+counter].get_piece_color()!=self.color):
                                 open_squares.append(board.board[self.x-counter][self.y+counter])
+                                counter=1
                                 break
                             else: #square has piece of same color, so break
+                                counter=1
                                 break
+                        open_squares.append(board.board[self.x-counter][self.y+counter])
                         counter+=1
                     else:
+                        counter=1
                         break
                 except:
                     counter=1
@@ -222,7 +238,7 @@ class Piece(ABC):
             if self.t=='bishop': # this is here because the queen needs both bishop and rook movess
                 return open_squares
             
-        elif self.t=='rook' or self.t=='queen':
+        if self.t=='rook' or self.t=='queen':
             for i in range(self.y-1,-1,-1): #how many squares up
                 if(board.board[self.x][i].get_piece()!=None): #this square holds a piece
                     if board.board[self.x][i].get_piece_color()!=self.color: #if it's the other player's piece
@@ -231,7 +247,7 @@ class Piece(ABC):
                 else:
                     #empty square
                     open_squares.append(board.board[self.x][i])
-            for i in range(self.y,board.boardLength-1): #how many squares down
+            for i in range(self.y+1,board.boardLength): #how many squares down
                 if(board.board[self.x][i].get_piece()!=None): #this square holds a piece
                     if board.board[self.x][i].get_piece_color()!=self.color: #if it's the other player's piece
                         open_squares.append(board.board[self.x][i])
@@ -239,14 +255,14 @@ class Piece(ABC):
                 else:
                     #empty square
                     open_squares.append(board.board[self.x][i])
-            for i in range(self.x,board.boardWidth-1): #how many squares right
-                if(board.board[self.x-i][self.y].get_piece()!=None): #this square holds a piece
-                    if board.board[self.x-i][self.y].get_piece_color()!=self.color: #if it's the other player's piece
-                        open_squares.append(board.board[self.x-i][self.y])
+            for i in range(self.x+1,board.boardWidth): #how many squares right
+                if(board.board[i][self.y].get_piece()!=None): #this square holds a piece
+                    if board.board[i][self.y].get_piece_color()!=self.color: #if it's the other player's piece
+                        open_squares.append(board.board[i][self.y])
                     break
                 else:
                     #empty square
-                    open_squares.append(board.board[self.x-i][self.y])
+                    open_squares.append(board.board[i][self.y])
             for i in range(self.x-1,-1,-1): #how many squares left
                 if(board.board[i][self.y].get_piece()!=None): #this square holds a piece
                     if board.board[i][self.y].get_piece_color()!=self.color: #if it's the other player's piece
@@ -255,7 +271,13 @@ class Piece(ABC):
                 else:
                     #empty square
                     open_squares.append(board.board[i][self.y])
-            return open_squares
+            if self.color==WHITE and w_k.inCheck: #if white and white (own king) in check
+                pass #doesThisStopCheck(color,open_squares)
+            elif self.color==BLACK and b_k.inCheck:
+                pass #doesThisStopCheck(color, open_squares)
+            #doesThisMovePutOwnKingInCheck(open_squares)
+            
+            return open_squares #if queen, already also got bishop moves, so can return
         
         elif self.t=='king':
             pass
@@ -289,6 +311,7 @@ class Queen(Piece):
 class King(Piece):
     def __init__(self,color,square,image):
         self.type='king'
+        self.inCheck=False
         super().__init__(color,square,self.type,image)
 
     
@@ -297,3 +320,12 @@ class King(Piece):
 WHITE=pygame.Color(255,255,255)
 BLACK=pygame.Color(0,0,0)
 
+r'''
+dont update/check open_squares every move
+instead at beginning of game, calculate the open_squares (attacking squares)
+for all pieces. e.g. b1 knight squares = a3,c3
+update b1 knight's open_squares if own piece moves into one of those squares
+or when b1 knight moves
+
+different approach for pawns
+'''
