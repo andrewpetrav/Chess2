@@ -148,6 +148,7 @@ class Piece(ABC):
                 open_squares.append(g)
             if h and (not hc or hc!=self.color):
                 open_squares.append(h)
+              
             return open_squares
         
         if self.t=='bishop' or self.t=='queen':
