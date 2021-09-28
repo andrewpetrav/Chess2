@@ -309,9 +309,9 @@ class Queen(Piece):
         super().__init__(color,square,self.type,image)
         
 class King(Piece):
-    def __init__(self,color,square,image):
+    def __init__(self,color,square,image, inCheck=False):
         self.type='king'
-        self.inCheck=False
+        self.inCheck=inCheck
         super().__init__(color,square,self.type,image)
 
     
