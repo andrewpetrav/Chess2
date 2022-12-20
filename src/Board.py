@@ -1,10 +1,12 @@
 import pygame
-from Surface import square_size,SURFACE
+from Surface import *
 #import Piece
 #from Piece import w_pieces,b_pieces
+square_size=WINDOWHEIGHT/8
+
 
 class Square(object):
-    def __init__(self,piece,color,image,powerup,highlighted=False):
+    def __init__(self,piece,color,image,powerup,row,col,highlighted=False):
         self.size=square_size
         isAttackedWhite=False #attacked by white
         isAttackedBlack=False #attacked by black
@@ -16,11 +18,14 @@ class Square(object):
         self.powerup=powerup
         self.highlighted=highlighted
         
+        self.row=row
+        self.col=col
+        
         self.selected=False #if user selecting piece on this square
         
         self.xpos,self.ypos=image.x,image.y #coordinates
-        self.x=int(self.xpos/self.size)
-        self.y=int(self.ypos/self.size)
+        #self.x=int(self.xpos/self.size)
+        #self.y=int(self.ypos/self.size)
             
     def get_piece_image(self):
         if self.piece: #check if square has a piece before trying to return image of piece
@@ -79,11 +84,12 @@ class Board(object):
                     clr=BLACK
                 else:
                     clr=WHITE
-                self.board[i][j]=Square(None,clr,image,None)
+                self.board[i][j]=Square(None,clr,image,None,j,i)
     
     def draw_board(self):
         for j in range(self.boardLength):
             for i in range(self.boardWidth):
+                #square_size=WINDOWHEIGHT/8
                 space=self.board[i][j]
                 pygame.draw.rect(SURFACE, space.get_color(), space.get_image())
                 pygame.draw.line(SURFACE,black_piece_color,(0,i*square_size),(square_size*self.boardLength,i*square_size))#These are the black lines separating squares
@@ -102,17 +108,3 @@ GREEN=pygame.Color(0,255,0)
 
 white_piece_color=pygame.Color(255,255,255)
 black_piece_color=pygame.Color(0,0,0)       
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
