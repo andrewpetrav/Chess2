@@ -163,7 +163,7 @@ class Piece(ABC):
                 hc=h.get_piece_color()
             except:
                 pass
-    
+
             if a:
                 if attack:
                     open_squares.append(a)
@@ -172,43 +172,43 @@ class Piece(ABC):
             if b:
                 if attack:
                     open_squares.append(b)
-                elif not ac or ac!=self.color:
+                elif not bc or bc!=self.color:
                     open_squares.append(b)  
                 
             if c:
                 if attack:
                     open_squares.append(c)
-                elif not ac or ac!=self.color:
+                elif not cc or cc!=self.color:
                     open_squares.append(c)
                     
             if d:
                 if attack:
                     open_squares.append(d)
-                elif not ac or ac!=self.color:
+                elif not dc or dc!=self.color:
                     open_squares.append(d)
                     
             if e:
                 if attack:
                     open_squares.append(e)
-                elif not ac or ac!=self.color:
+                elif not ec or ec!=self.color:
                     open_squares.append(e)
                     
             if f:
                 if attack:
                     open_squares.append(f)
-                elif not ac or ac!=self.color:
+                elif not fc or fc!=self.color:
                     open_squares.append(f)
                      
             if g:
                 if attack:
                     open_squares.append(g)
-                elif not ac or ac!=self.color:
+                elif not gc or gc!=self.color:
                     open_squares.append(g)
                     
             if h:
                 if attack:
                     open_squares.append(h)
-                elif not ac or ac!=self.color:
+                elif not hc or hc!=self.color:
                     open_squares.append(h)
             
               
@@ -416,7 +416,18 @@ class Piece(ABC):
                 if board.board[self.x][self.y-1].get_piece()==None or board.board[self.x][self.y-1].get_piece_color()!=self.color:
                     open_squares.append(board.board[self.x][self.y-1])
         
-
+            #CASTLING 
+            #TODO might need to add try except clause for potential out of bounds
+            if not attack and self.moved==False:
+                #King Side
+                if board.board[self.x+1][self.y].get_piece()==None and board.board[self.x+2][self.y].get_piece()==None: #if empty spaces
+                    if board.board[self.x+3][self.y].get_piece().t=='rook' and board.board[self.x+3][self.y].get_piece().color==self.color and board.board[self.x+3][self.y].get_piece().moved==False: #rook of same color that has not moved
+                        open_squares.append(board.board[self.x+2][self.y])
+                #Queen Side
+                if board.board[self.x-1][self.y].get_piece()==None and board.board[self.x-2][self.y].get_piece()==None and board.board[self.x-3][self.y].get_piece()==None: #if empty spaces
+                    if board.board[self.x-4][self.y].get_piece().t=='rook' and board.board[self.x-4][self.y].get_piece().color==self.color and board.board[self.x-4][self.y].get_piece().moved==False: #rook of same color that has not moved
+                        open_squares.append(board.board[self.x-2][self.y])
+            
         if self.color==WHITE and w_k.inCheck: #if white and white (own king) in check
             pass #doesThisStopCheck(color,open_squares)
         elif self.color==BLACK and b_k.inCheck:
@@ -442,6 +453,7 @@ class Bishop(Piece):
 class Rook(Piece):
     def __init__(self,color,square,image):
         self.type='rook'
+        self.moved=False
         super().__init__(color,square,self.type,image)
         
 class Queen(Piece):
@@ -453,6 +465,7 @@ class King(Piece):
     def __init__(self,color,square,image, inCheck=False):
         self.type='king'
         self.inCheck=inCheck
+        self.moved=False
         super().__init__(color,square,self.type,image)
 
     

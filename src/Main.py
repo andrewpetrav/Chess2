@@ -48,25 +48,31 @@ def move_piece(sq,moves,pos):
                 if sq.piece.type=='king' and abs(col-sq.col)>1:
                     sq.piece.set_moved() #set king moved
                     #Short castle
-                    if sq.row-x<1:
-                        board.board[7][y].piece.set_moved() #set rook moved
-                        board.board[5][y].set_piece(board.board[7][y].piece)
-                        board.board[7][y].set_piece(None)
-                        board.board[6][y].set_piece(sq.piece)
+                    if col-sq.col>0:
+                        sq.piece.set_pos(6,row) #update what position king will be on
+                        board.board[7][row].piece.set_pos(5,row) #update what position rook will be on
+                        board.board[7][row].piece.set_moved() #set rook moved
+                        board.board[5][row].set_piece(board.board[7][row].piece)
+                        board.board[7][row].set_piece(None)
+                        board.board[6][row].set_piece(sq.piece)
                         sq.set_piece(None)
                     #Long castle
                     else:
-                        board.board[0][y].piece.set_moved() #set rook moved
-                        board.board[3][y].set_piece(board.board[0][y].piece)
-                        board.board[0][y].set_piece(None)
-                        board.board[2][y].set_piece(sq.piece)
+                        sq.piece.set_pos(2,row) #update what position king will be on
+                        board.board[0][row].piece.set_pos(3,row) #update what position rook will be on
+                        board.board[0][row].piece.set_moved() #set rook moved
+                        board.board[3][row].set_piece(board.board[0][row].piece)
+                        board.board[0][row].set_piece(None)
+                        board.board[2][row].set_piece(sq.piece)
                         sq.set_piece(None)
+                #Not special moves
                 else:
                     #updated Moved attribute on piece
                     sq.piece.set_moved()
                     sq.piece.set_pos(col,row) #update what position it'll be on
                     board.board[col][row].set_piece(sq.piece)
                     sq.set_piece(None)
+
                 return True
             else:
                 return False
