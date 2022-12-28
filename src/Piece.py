@@ -12,42 +12,18 @@ class Piece(ABC):
         self.t=t #type
         self.image=image
         self.moved=moved
-        self.isAttacking=[] #same as open_squares+friendly pieces
-        self.isAttackedBy=[] #what pieces are attacking this piece
+        
+        self.squaresAttacking=[] #what squares is this piece attacking
+        self.piecesAttacking=[] #what pieces is this piece attacking (friendly included)
+        self.piecesAttackedBy=[] #what pieces this piece is being attacked by (friendly included)
     def set_moved(self):
         self.moved=True
     def set_pos(self,col,row):
         self.x=col
         self.y=row
-    def get_attacking(self,board):
-        r'''
-        attacking=[]
-        if self.t=='pawn':
-            if self.color==WHITE:
-                opp_color=BLACK
-                #up left
-                if self.x-1>-1 and self.y-1>-1 and board.board[self.x-1][self.y-1].get_piece_color()==opp_color:
-                    attacking.append(board.board[self.x-1][self.y-1])
-                #up right
-                if self.x+1<8 and self.y-1>-1 and board.board[self.x+1][self.y-1].get_piece_color()==opp_color:
-                    attacking.append(board.board[self.x+1][self.y-1])
-                #TODO en passant
-        
-            else:
-                opp_color=WHITE
-                #down left
-                if self.x-1>-1 and self.y+1<8 and board.board[self.x-1][self.y+1].get_piece_color()==opp_color:
-                    attacking.append(board.board[self.x-1][self.y+1])
-                #down right
-                if self.x+1<8 and self.y+1<8 and board.board[self.x+1][self.y+1].get_piece_color()==opp_color:
-                    attacking.append(board.board[self.x+1][self.y+1])
-                #TODO en passant
-        
-            
-        else:
-            attacking= get_moves(self,board,True)
-        '''
-        return get_moves(self,board,True)
+    def get_attacked_by_pieces(self,piece):
+        #passes piece that is moving 
+        pass
     def get_moves(self,board,attack=False):
         #if attack =TRUE then return every square that the piece controls, regardless of if it can actually move there or not
         open_squares=[]
@@ -434,7 +410,43 @@ class Piece(ABC):
             pass #doesThisStopCheck(color, open_squares)
         #doesThisMovePutOwnKingInCheck(open_squares)
         return open_squares
-
+    def get_attacking_squares(self,board):
+        r'''
+         attacking=[]
+         if self.t=='pawn':
+             if self.color==WHITE:
+                 opp_color=BLACK
+                 #up left
+                 if self.x-1>-1 and self.y-1>-1 and board.board[self.x-1][self.y-1].get_piece_color()==opp_color:
+                     attacking.append(board.board[self.x-1][self.y-1])
+                 #up right
+                 if self.x+1<8 and self.y-1>-1 and board.board[self.x+1][self.y-1].get_piece_color()==opp_color:
+                     attacking.append(board.board[self.x+1][self.y-1])
+                 #TODO en passant
+         
+             else:
+                 opp_color=WHITE
+                 #down left
+                 if self.x-1>-1 and self.y+1<8 and board.board[self.x-1][self.y+1].get_piece_color()==opp_color:
+                     attacking.append(board.board[self.x-1][self.y+1])
+                 #down right
+                 if self.x+1<8 and self.y+1<8 and board.board[self.x+1][self.y+1].get_piece_color()==opp_color:
+                     attacking.append(board.board[self.x+1][self.y+1])
+                 #TODO en passant
+         
+             
+         else:
+             attacking= get_moves(self,board,True)
+         '''
+        self.squaresAttacking=self.get_moves(board,True)
+        return self.squaresAttacking
+    def get_attacking_pieces(self,board): #get pieces 
+        temp=[]
+        for square in self.squaresAttacking:
+            if square.piece is not None:
+                temp.append(square.piece)
+        self.piecesAttacking=temp
+        
 class Pawn(Piece):
     def __init__(self,color,square,image):
         self.type='pawn'

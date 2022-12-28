@@ -45,9 +45,11 @@ def move_piece(sq,moves,pos):
         try:
             if board.board[col][row] in moves:
                 #Special moves such as promotion, castling, en passant, that involve changing more than one piece (not counting captures) or image of piece (promotion)
+                
+                #CASTLING
                 if sq.piece.type=='king' and abs(col-sq.col)>1:
                     sq.piece.set_moved() #set king moved
-                    #Short castle
+                    #SHORT
                     if col-sq.col>0:
                         sq.piece.set_pos(6,row) #update what position king will be on
                         board.board[7][row].piece.set_pos(5,row) #update what position rook will be on
@@ -56,7 +58,7 @@ def move_piece(sq,moves,pos):
                         board.board[7][row].set_piece(None)
                         board.board[6][row].set_piece(sq.piece)
                         sq.set_piece(None)
-                    #Long castle
+                    #LONG
                     else:
                         sq.piece.set_pos(2,row) #update what position king will be on
                         board.board[0][row].piece.set_pos(3,row) #update what position rook will be on
@@ -65,7 +67,13 @@ def move_piece(sq,moves,pos):
                         board.board[0][row].set_piece(None)
                         board.board[2][row].set_piece(sq.piece)
                         sq.set_piece(None)
-                #Not special moves
+                
+                #EN PASSANT
+                
+                #PROMOTION
+                
+                
+                #NOT SPECIAL
                 else:
                     #updated Moved attribute on piece
                     sq.piece.set_moved()
@@ -88,8 +96,6 @@ def get_all_moves(): #calculates every possible move
     for piece in all_pieces:
         all_moves[piece]=piece.get_moves(board)
 
-
-    
 def kingInCheck(color): #checks to see if move puts/stops if OWN king is in check
     if color==WHITE:
         return w_k.inCheck
@@ -105,6 +111,7 @@ def game():
             valid_square_selection=False 
             valid_move_selection=False
             
+            #Step 1: Loop until valid square selected to move
             while not valid_square_selection:
                 for event in pygame.event.get():
                     if event.type==MOUSEBUTTONDOWN:
@@ -113,6 +120,7 @@ def game():
                         if sq: #if valid square
                             valid_square_selection=True
                             break
+            #Step 2: Get moves of piece and highlight
             moves=sq.piece.get_moves(board) #get moves of piece at selected square
             sq.set_selected()
             if moves: #highlight
@@ -121,6 +129,11 @@ def game():
             board.draw_board()
             pygame.display.update()
             loop_completed=False
+            
+            sq.piece.get_attacking_squares(board)
+            sq.piece.get_attacking_pieces(board)
+            
+            #Step 3: Loop until valid square selected to move to - if invalid square selected, back to Step 1
             while not valid_move_selection and not loop_completed:
                 for event in pygame.event.get():
                     if event.type==MOUSEBUTTONUP:
@@ -147,9 +160,6 @@ def game():
         #get where click
         #if white piece there, highlight possible moves
             
-
-
-
 
 
 if __name__=='__main__':
