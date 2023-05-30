@@ -47,11 +47,13 @@ class Piece(ABC):
                 except:
                     pass
                 if self.moved==False and not attack: #if first move for pawn
-                    try:
-                        if board.board[self.x][self.y-2].get_piece()==None: #nobody two squares in front
-                            open_squares.append(board.board[self.x][self.y-2])
-                    except:
-                        pass
+                    #check if on correct square
+                    if self.color==WHITE and self.y==6 or self.color==BLACK and self.y==1:
+                        try:
+                            if board.board[self.x][self.y-2].get_piece()==None: #nobody two squares in front
+                                open_squares.append(board.board[self.x][self.y-2])
+                        except:
+                            pass
             if self.color==BLACK and self.y+1<8:
                 if not attack:
                     oneInFront=board.board[self.x][self.y+1]
@@ -403,13 +405,20 @@ class Piece(ABC):
                 if board.board[self.x-1][self.y].get_piece()==None and board.board[self.x-2][self.y].get_piece()==None and board.board[self.x-3][self.y].get_piece()==None: #if empty spaces
                     if board.board[self.x-4][self.y].get_piece().t=='rook' and board.board[self.x-4][self.y].get_piece().color==self.color and board.board[self.x-4][self.y].get_piece().moved==False: #rook of same color that has not moved
                         open_squares.append(board.board[self.x-2][self.y])
-            
+        r'''
         if self.color==WHITE and w_k.inCheck: #if white and white (own king) in check
             pass #doesThisStopCheck(color,open_squares)
         elif self.color==BLACK and b_k.inCheck:
             pass #doesThisStopCheck(color, open_squares)
         #doesThisMovePutOwnKingInCheck(open_squares)
-        return open_squares
+        '''
+        #open_squares=checkCheckSquares(open_squares,self.color,board)
+        if attack==False:
+            self.squaresAttacking=open_squares
+        else:
+            return open_squares
+
+    
     def get_attacking_squares(self,board):
         r'''
          attacking=[]
@@ -440,13 +449,14 @@ class Piece(ABC):
          '''
         self.squaresAttacking=self.get_moves(board,True)
         return self.squaresAttacking
+    r'''
     def get_attacking_pieces(self,board): #get pieces 
         temp=[]
         for square in self.squaresAttacking:
             if square.piece is not None:
                 temp.append(square.piece)
         self.piecesAttacking=temp
-        
+    '''
 class Pawn(Piece):
     def __init__(self,color,square,image):
         self.type='pawn'
@@ -490,6 +500,9 @@ BLACK=pygame.Color(0,0,0)
 #get game type somehow 
 #for now just traditional set up
 
+
+
+
 #Pieces
 ##WHITE
 w_p=[Pawn(WHITE,board.board[0][6],wpi),Pawn(WHITE,board.board[1][6],wpi),Pawn(WHITE,board.board[2][6],wpi),Pawn(WHITE,board.board[3][6],wpi),
@@ -512,8 +525,11 @@ b_k=King(BLACK,board.board[4][0],bki)
 b_k_l=[b_k]
 b_pieces=b_p+b_n+b_b+b_r+b_q+b_k_l
 
+
 all_pieces=w_pieces+b_pieces #all pieces
+#all_pieces=[Pawn(WHITE,board.board[3][1],wpi),Pawn(BLACK,board.board[3][6],bpi),Pawn(WHITE,board.board[4][1],wpi)]
     
+
 
 r'''
 dont update/check open_squares every move
