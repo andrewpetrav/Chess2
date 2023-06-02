@@ -3,6 +3,7 @@
 import pygame, sys
 import pygame_menu
 import copy
+import time
 from pygame.locals import *
 import Board
 from Board import *
@@ -51,7 +52,7 @@ def move_piece(sq,moves,pos,b,returnBoard=False):
                 
                 
                 #CASTLING
-                if sq.piece.type=='king' and abs(col-sq.col)>1:
+                if sq.piece.type =='king' and abs(col-sq.col)>1:
                     sq.piece.set_moved() #set king moved
                     #SHORT
                     if col-sq.col>0:
@@ -71,7 +72,7 @@ def move_piece(sq,moves,pos,b,returnBoard=False):
                         b.board[0][row].set_piece(None)
                         b.board[2][row].set_piece(sq.piece)
                         sq.set_piece(None)
-                
+                    return True
                 #EN PASSANT
                 
                 #PROMOTION
@@ -83,6 +84,7 @@ def move_piece(sq,moves,pos,b,returnBoard=False):
                         else:
                             b.board[col][row].set_piece(returnVal)
                             sq.set_piece(None)
+                        return True
                     
                 #NOT SPECIAL
                 else:
@@ -170,8 +172,11 @@ def kingInCheck(b,color): #checks to see if move puts/stops if OWN king is in ch
         king=b_k
         for piece in w_pieces:
             moves=piece.get_moves(b)
-            for m in moves:
-                squaresBeingAttacked.append(m)
+            try:
+                for m in moves:
+                    squaresBeingAttacked.append(m)
+            except TypeError:
+                pass
     if king.square in squaresBeingAttacked:
         return True #this piece cannot move without putting the king in check because it is pinned
     else:
@@ -201,11 +206,31 @@ def checkForCheck(sq,moves,color,pos):
         moves=moves2
     else:
         #if move happens will board state result in your color king check
-        board2=copy.copy(board) #make a copy of the board
-        board2.board=move_piece(sq,moves,pos,board2,True)
+        r'''
+        board2=Board()
+        for i in range(board.boardWidth):
+            for j in range(board.boardLength):
+                board2.board[i][j]=board.board[i][j].deepcopy()
+        doesThisMovePutKingInCheck=kingInCheck(board2,color)
+        if doesThisMovePutKingInCheck:
+            print("COME SEE ME QUEEN JANE")
+        '''
+        
+        r'''
+        
+        p
+        for p in pieces:
+            
+        for i in range(board2.boardWidth):
+            for j in range(board2.boardLength):
+                board2.board[i][j]=copy(board.board[i][j])
+        #board2.board=move_piece(sq,moves,pos,board2,True)
         doesThisMovePutKingInCheck=kingInCheck(board2,color)
         if doesThisMovePutKingInCheck:
             return None
+        '''
+        
+        
         r'''
         for p in pieces:
             if p.squaresAttacking !=[]:
@@ -227,7 +252,6 @@ def game():
             #Step 0: Get move of every piece on board
             for piece in all_pieces:
                 piece.get_moves(board)
-                
             #Step 1: Loop until valid square selected to move
             while not valid_square_selection:
                 for event in pygame.event.get():
@@ -239,7 +263,7 @@ def game():
                             break
             #Step 2: Get moves of piece and highlight
             moves=sq.piece.squaresAttacking#get_moves(board) #get moves of piece at selected square
-            moves=checkForCheck(sq,moves,turn,pos)
+            #moves=checkForCheck(sq,moves,turn,pos)
             sq.set_selected()
         
             if moves: #highlight

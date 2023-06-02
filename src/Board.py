@@ -26,7 +26,8 @@ class Square(object):
         self.xpos,self.ypos=image.x,image.y #coordinates
         #self.x=int(self.xpos/self.size)
         #self.y=int(self.ypos/self.size)
-            
+    def deepcopy(self):
+        return(Square(self.piece.deepcopy(),self.color,self.image,self.powerup,self.row,self.col))       
     def get_piece_image(self):
         if self.piece: #check if square has a piece before trying to return image of piece
             return self.piece.image

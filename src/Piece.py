@@ -16,6 +16,8 @@ class Piece(ABC):
         self.squaresAttacking=[] #what squares is this piece attacking
         self.piecesAttacking=[] #what pieces is this piece attacking (friendly included)
         self.piecesAttackedBy=[] #what pieces this piece is being attacked by (friendly included)
+    def deepcopy(self):
+        pass
     def set_moved(self):
         self.moved=True
     def set_pos(self,col,row):
