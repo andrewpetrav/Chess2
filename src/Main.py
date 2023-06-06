@@ -11,6 +11,7 @@ import Piece
 from Piece import *
 from Surface import SURFACE
 from Setup import *
+import pickle
 
 
 pygame.init()
@@ -182,10 +183,10 @@ def kingInCheck(b,color): #checks to see if move puts/stops if OWN king is in ch
                     squaresBeingAttacked.append(m)
             except TypeError:
                 pass
-    if king.square in squaresBeingAttacked:
-        return True #this piece cannot move without putting the king in check because it is pinned
-    else:
-        return False
+    for sq in squaresBeingAttacked:
+        if sq.x==king.x and sq.y==king.y:
+            return True
+    return False
     
 def checkForCheck(sq,moves,color,pos):
     piece=sq.piece
@@ -195,7 +196,7 @@ def checkForCheck(sq,moves,color,pos):
     elif color==BLACK:
         pieces=w_pieces
         king=b_k
-    #make sure not moving king into chec
+    #make sure not moving king into check
     if piece.t=='king':
         moves2=[]
         illegalSquares=[] #holds squares being attacked by other side
@@ -212,10 +213,8 @@ def checkForCheck(sq,moves,color,pos):
     else:
         #if move happens will board state result in your color king check
 
-        board2=Board()
-        for i in range(board.boardWidth):
-            for j in range(board.boardLength):
-                board2.board[i][j]=board.board[i][j].deepcopy()
+        with open('boardState.pkl','wb') as boardOnFile:
+            pickle.dump(board.board,boardOnFile,pickle.HIGHEST_PROTOCOL)
         doesThisMovePutKingInCheck=kingInCheck(board2,color)
         if doesThisMovePutKingInCheck:
             print("COME SEE ME QUEEN JANE")
