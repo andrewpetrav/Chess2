@@ -213,8 +213,8 @@ def checkForCheck(sq,moves,color,pos):
     else:
         #if move happens will board state result in your color king check
 
-        with open('boardState.pkl','wb') as boardOnFile:
-            pickle.dump(board.board,boardOnFile,pickle.HIGHEST_PROTOCOL)
+        with open('boardState.pkl','wb') as boardState:
+            pickle.dump(square,boardState,pickle.HIGHEST_PROTOCOL)
         doesThisMovePutKingInCheck=kingInCheck(board2,color)
         if doesThisMovePutKingInCheck:
             print("COME SEE ME QUEEN JANE")

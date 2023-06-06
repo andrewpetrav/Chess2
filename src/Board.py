@@ -22,8 +22,8 @@ class Square(object):
         self.col=col
         
         self.selected=False #if user selecting piece on this square
-        
         self.xpos,self.ypos=image.x,image.y #coordinates
+
         #self.x=int(self.xpos/self.size)
         #self.y=int(self.ypos/self.size)
     def deepcopy(self):
