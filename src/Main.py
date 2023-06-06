@@ -74,6 +74,11 @@ def move_piece(sq,moves,pos,b,returnBoard=False):
                         sq.set_piece(None)
                     return True
                 #EN PASSANT
+                r'''
+                if ((col-1>=0 and b.board[col-1][row].piece.type=='pawn' and b.board[col-1][row].piece.lastMovedPiece==True) or 
+                (col+1<=7 and b.board[col+1][row].piece.type=='pawn' and b.board[col+1][row].piece.lastMovedPiece==True)):
+                    pass
+                '''
                 
                 #PROMOTION
                 if sq.piece.type=='pawn' and (row==0 or row==7):
@@ -206,7 +211,7 @@ def checkForCheck(sq,moves,color,pos):
         moves=moves2
     else:
         #if move happens will board state result in your color king check
-        r'''
+
         board2=Board()
         for i in range(board.boardWidth):
             for j in range(board.boardLength):
@@ -214,7 +219,6 @@ def checkForCheck(sq,moves,color,pos):
         doesThisMovePutKingInCheck=kingInCheck(board2,color)
         if doesThisMovePutKingInCheck:
             print("COME SEE ME QUEEN JANE")
-        '''
         
         r'''
         
@@ -263,7 +267,7 @@ def game():
                             break
             #Step 2: Get moves of piece and highlight
             moves=sq.piece.squaresAttacking#get_moves(board) #get moves of piece at selected square
-            #moves=checkForCheck(sq,moves,turn,pos)
+            moves=checkForCheck(sq,moves,turn,pos)
             sq.set_selected()
         
             if moves: #highlight
