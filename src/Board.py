@@ -4,7 +4,6 @@ from Surface import *
 #from Piece import w_pieces,b_pieces
 square_size=WINDOWHEIGHT/8
 
-
 class Square(object):
     def __init__(self,piece,color,image,powerup,row,col,highlighted=False):
         self.size=square_size

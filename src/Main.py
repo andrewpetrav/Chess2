@@ -88,6 +88,11 @@ def move_piece(sq,moves,pos,b,returnBoard=False):
                         if returnVal==None:
                             return False
                         else:
+                            all_pieces.remove(b.board[col][row].piece)
+                            if sq.piece.color==WHITE:
+                                b_pieces.remove(b.board[col][row].piece)
+                            elif sq.piece.color==BLACK:
+                                w_pieces.remove(b.board[col][row].piece)
                             b.board[col][row].set_piece(returnVal)
                             sq.set_piece(None)
                         return True
@@ -212,9 +217,8 @@ def checkForCheck(sq,moves,color,pos):
         moves=moves2
     else:
         #if move happens will board state result in your color king check
-
-        with open('boardState.pkl','wb') as boardState:
-            pickle.dump(square,boardState,pickle.HIGHEST_PROTOCOL)
+        with open('boardState.pkl','wb') as boardOnFile:
+            pickle.dump(sq,boardOnFile,pickle.HIGHEST_PROTOCOL)
         doesThisMovePutKingInCheck=kingInCheck(board2,color)
         if doesThisMovePutKingInCheck:
             print("COME SEE ME QUEEN JANE")
