@@ -16,11 +16,32 @@ import pickle
 
 pygame.init()
 
+
+#GLOBAL VARIABLES HERE
+boardString=[
+        ['*','*','*','*','*','*','*','*'],
+        ['*','*','*','*','*','*','*','*'],
+        ['*','*','*','*','*','*','*','*'],
+        ['*','*','*','*','*','*','*','*'],
+        ['*','*','*','*','*','*','*','*'],
+        ['*','*','*','*','*','*','*','*'],
+        ['*','*','*','*','*','*','*','*'],
+        ['*','*','*','*','*','*','*','*']
+    ]
+
+
+
 def main():
     #Get board in original state
     ##game_type('traditional') #for now, all games will be traditional
     #board.test(Rook(WHITE,board.board[4][4],wri))
     board.setup(all_pieces) #add board parameter based on board selection
+    for row in board.board:
+        for square in row:
+            if square.piece: #if there's a piece there update it from a '*' to name of color+Piece, otherwise ignore it (ie keep as '*')
+                if square.piece.color==WHITE: color='W'
+                elif square.piece.color==BLACK: color='B'
+                boardString[square.row][square.col]=color+square.piece.type
     board.draw_board()
     pygame.display.update()
     game()
@@ -64,6 +85,7 @@ def move_piece(sq,moves,pos,b,returnBoard=False):
                         b.board[7][row].set_piece(None)
                         b.board[6][row].set_piece(sq.piece)
                         sq.set_piece(None)
+
                     #LONG
                     else:
                         sq.piece.set_pos(2,row) #update what position king will be on
@@ -101,6 +123,11 @@ def move_piece(sq,moves,pos,b,returnBoard=False):
                 else:
                     #CAPTURING
                     #updated Moved attribute on piece
+                    foo=boardString[sq.piece.y][sq.piece.x]
+                    boardString[row][col]=boardString[sq.piece.y][sq.piece.x]
+                    boardString[sq.piece.y][sq.piece.x]=foo
+
+                    
                     sq.piece.set_moved()
                     sq.piece.set_pos(col,row) #update what position it'll be on
                     board.board[col][row].set_piece(sq.piece)
@@ -170,6 +197,14 @@ def get_all_moves(): #calculates every possible move
     for piece in all_pieces:
         all_moves[piece]=piece.get_moves(board)
 
+def kingInCheck(color):
+
+    if color==WHITE:
+        pieces=b_pieces
+    elif color==BLACK:
+        pieces=w_pieces
+    #print(pieces)
+r'''
 def kingInCheck(b,color): #checks to see if move puts/stops if OWN king is in check
     squaresBeingAttacked=[]
     if color==WHITE:
@@ -192,9 +227,8 @@ def kingInCheck(b,color): #checks to see if move puts/stops if OWN king is in ch
         if sq.x==king.x and sq.y==king.y:
             return True
     return False
-    
-def checkForCheck(sq,moves,color,pos):
-    piece=sq.piece
+ '''   
+def checkForCheck(piece,moves,color,pos):
     if color==WHITE:
         pieces=b_pieces
         king=w_k
@@ -217,9 +251,11 @@ def checkForCheck(sq,moves,color,pos):
         moves=moves2
     else:
         #if move happens will board state result in your color king check
+        r'''
         with open('boardState.pkl','wb') as boardOnFile:
-            pickle.dump(sq,boardOnFile,pickle.HIGHEST_PROTOCOL)
-        doesThisMovePutKingInCheck=kingInCheck(board2,color)
+            pickle.dump(piece,boardOnFile,pickle.HIGHEST_PROTOCOL)
+        '''
+        doesThisMovePutKingInCheck=kingInCheck(color)
         if doesThisMovePutKingInCheck:
             print("COME SEE ME QUEEN JANE")
         
@@ -270,13 +306,14 @@ def game():
                             break
             #Step 2: Get moves of piece and highlight
             moves=sq.piece.squaresAttacking#get_moves(board) #get moves of piece at selected square
-            moves=checkForCheck(sq,moves,turn,pos)
+            moves=checkForCheck(sq.piece,moves,turn,pos)
             sq.set_selected()
         
             if moves: #highlight
                 for move in moves:
                     move.set_highlighted() #make sure to unhighlight
             board.draw_board()
+            #print(boardString)
             pygame.display.update()
             loop_completed=False
             
@@ -300,13 +337,18 @@ def game():
             board.draw_board()
             pygame.display.update()
             #move_piece(sq,moves)
-        #move completed
-        
+            #move completed
+            
+        #Step 4: Switch turns
         #switch turns
         if turn==WHITE:
             turn=BLACK
         else:
             turn=WHITE
+            
+        for row in boardString:
+            print(row)
+        print()
         #get where click
         #if white piece there, highlight possible moves
             
@@ -315,6 +357,10 @@ def game():
 if __name__=='__main__':
     main()
     
+    
+
+
+
 #White square
 
 #Black square
