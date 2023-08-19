@@ -78,6 +78,12 @@ def move_piece(sq,moves,pos,b,returnBoard=False):
                     sq.piece.set_moved() #set king moved
                     #SHORT
                     if col-sq.col>0:
+                        
+                        boardString[row][5]=boardString[row][7]
+                        boardString[row][6]=boardString[row][4]
+                        boardString[row][7]='*'
+                        boardString[row][4]='*'
+                        
                         sq.piece.set_pos(6,row) #update what position king will be on
                         b.board[7][row].piece.set_pos(5,row) #update what position rook will be on
                         b.board[7][row].piece.set_moved() #set rook moved
@@ -88,6 +94,12 @@ def move_piece(sq,moves,pos,b,returnBoard=False):
 
                     #LONG
                     else:
+                        
+                        boardString[row][3]=boardString[row][0]
+                        boardString[row][2]=boardString[row][4]
+                        boardString[row][0]='*'
+                        boardString[row][4]='*'
+                        
                         sq.piece.set_pos(2,row) #update what position king will be on
                         b.board[0][row].piece.set_pos(3,row) #update what position rook will be on
                         b.board[0][row].piece.set_moved() #set rook moved
