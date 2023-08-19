@@ -39,9 +39,9 @@ def main():
     for row in board.board:
         for square in row:
             if square.piece: #if there's a piece there update it from a '*' to name of color+Piece, otherwise ignore it (ie keep as '*')
-                if square.piece.color==WHITE: color='W'
-                elif square.piece.color==BLACK: color='B'
-                boardString[square.row][square.col]=color+square.piece.type
+                #if square.piece.color==WHITE: color='W'
+                #elif square.piece.color==BLACK: color='B'
+                boardString[square.row][square.col]=square.piece.string
     board.draw_board()
     pygame.display.update()
     game()
@@ -110,6 +110,9 @@ def move_piece(sq,moves,pos,b,returnBoard=False):
                         if returnVal==None:
                             return False
                         else:
+                            boardString[row][col]=returnVal.string
+                            boardString[sq.piece.y][sq.piece.x]='*'
+
                             all_pieces.remove(b.board[col][row].piece)
                             if sq.piece.color==WHITE:
                                 b_pieces.remove(b.board[col][row].piece)
@@ -123,9 +126,8 @@ def move_piece(sq,moves,pos,b,returnBoard=False):
                 else:
                     #CAPTURING
                     #updated Moved attribute on piece
-                    foo=boardString[sq.piece.y][sq.piece.x]
                     boardString[row][col]=boardString[sq.piece.y][sq.piece.x]
-                    boardString[sq.piece.y][sq.piece.x]=foo
+                    boardString[sq.piece.y][sq.piece.x]='*'
 
                     
                     sq.piece.set_moved()

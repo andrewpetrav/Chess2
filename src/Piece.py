@@ -462,32 +462,56 @@ class Piece(ABC):
 class Pawn(Piece):
     def __init__(self,color,square,image):
         self.type='pawn'
+        if color==WHITE:
+            self.string='Wpawn'
+        else:
+            self.string='Bpawn'
         super().__init__(color,square,self.type,image)
         
 class Knight(Piece):
     def __init__(self,color,square,image):
         self.type='knight'
+        if color==WHITE:
+            self.string='Wknight'
+        else:
+            self.string='Bknight'
         super().__init__(color,square,self.type,image)
         
 class Bishop(Piece):
     def __init__(self,color,square,image):
         self.type='bishop'
+        if color==WHITE:
+            self.string='Wbishop'
+        else:
+            self.string='Bbishop'
         super().__init__(color,square,self.type,image)
         
 class Rook(Piece):
     def __init__(self,color,square,image):
         self.type='rook'
+        if color==WHITE:
+            self.string='Wrook'
+        else:
+            self.string='Brook'
         self.moved=False
         super().__init__(color,square,self.type,image)
         
 class Queen(Piece):
     def __init__(self,color,square,image):
         self.type='queen'
+        if color==WHITE:
+            self.string='Wqueen'
+        else:
+            self.string='Bqueen'
         super().__init__(color,square,self.type,image)
         
 class King(Piece):
     def __init__(self,color,square,image, inCheck=False):
         self.type='king'
+        if color==WHITE:
+            self.string='Wking'
+        else:
+            self.string='Bking'
         self.inCheck=inCheck
         self.moved=False
         super().__init__(color,square,self.type,image)
