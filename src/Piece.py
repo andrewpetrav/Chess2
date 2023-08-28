@@ -33,50 +33,64 @@ class Piece(ABC):
         
         #for every move, make sure it doesn't put own king in check
         if self.t=='pawn':
+
             if self.color==WHITE and self.y-1>-1:
                 if not attack:
                     oneInFront=board.board[self.x][self.y-1]
                     if oneInFront.get_piece()==None: #if nobody on square ahead of it
                         open_squares.append(oneInFront) 
-                try:
-                    if board.board[self.x-1][self.y-1].get_piece() != None and board.board[self.x-1][self.y-1].get_piece_color()!=self.color: #can take to left?
-                        open_squares.append(board.board[self.x-1][self.y-1])
-                except:
-                    pass
-                try:
-                    if board.board[self.x+1][self.y-1].get_piece() != None and board.board[self.x+1][self.y-1].get_piece_color()!=self.color: #can take to right?
-                        open_squares.append(board.board[self.x+1][self.y-1])
-                except:
-                    pass
-                if self.moved==False and not attack: #if first move for pawn
-                    #check if on correct square
-                    if self.color==WHITE and self.y==6 or self.color==BLACK and self.y==1:
-                        try:
-                            if board.board[self.x][self.y-2].get_piece()==None: #nobody two squares in front
-                                open_squares.append(board.board[self.x][self.y-2])
-                        except:
-                            pass
+                    try:
+                        if board.board[self.x-1][self.y-1].get_piece() != None and board.board[self.x-1][self.y-1].get_piece_color()!=self.color: #can take to left?
+                            open_squares.append(board.board[self.x-1][self.y-1])
+                    except:
+                        pass
+                    try:
+                        if board.board[self.x+1][self.y-1].get_piece() != None and board.board[self.x+1][self.y-1].get_piece_color()!=self.color: #can take to right?
+                            open_squares.append(board.board[self.x+1][self.y-1])
+                    except:
+                        pass
+                    if self.moved==False: #if first move for pawn
+                        #check if on correct square
+                        if self.color==WHITE and self.y==6 or self.color==BLACK and self.y==1:
+                            try:
+                                if board.board[self.x][self.y-2].get_piece()==None: #nobody two squares in front
+                                    open_squares.append(board.board[self.x][self.y-2])
+                            except:
+                                pass
+                elif attack: #getting what moves it is attacking
+                    try:
+                        #attacking left?
+                        if board.board[self.x-1][self.y-1].size: #does it exist
+                            open_squares.append(board.board[self.x-1][self.y-1])
+                    except:
+                        pass
+                    try:
+                        #attacking right?
+                        if board.board[self.x+1][self.y-1].size: #does it exist
+                            open_squares.append(board.board[self.x+1][self.y-1])
+                    except:
+                        pass
             if self.color==BLACK and self.y+1<8:
                 if not attack:
                     oneInFront=board.board[self.x][self.y+1]
                     if oneInFront.get_piece()==None: #if nobody on square ahead of it
                         open_squares.append(oneInFront) 
-                try:
-                    if board.board[self.x-1][self.y+1].get_piece() != None and board.board[self.x-1][self.y+1].get_piece_color()!=self.color: #can take to left?
-                        open_squares.append(board.board[self.x-1][self.y+1])
-                except:
-                    pass
-                try:
-                    if board.board[self.x+1][self.y+1].get_piece() != None and board.board[self.x+1][self.y+1].get_piece_color()!=self.color: #can take to right?
-                        open_squares.append(board.board[self.x+1][self.y+1])
-                except:
-                    pass
-                if self.moved==False and not attack: #if first move for pawn
                     try:
-                        if board.board[self.x][self.y+2].get_piece()==None: #nobody two squares in front
-                            open_squares.append(board.board[self.x][self.y+2])
+                        if board.board[self.x-1][self.y+1].get_piece() != None and board.board[self.x-1][self.y+1].get_piece_color()!=self.color: #can take to left?
+                            open_squares.append(board.board[self.x-1][self.y+1])
                     except:
                         pass
+                    try:
+                        if board.board[self.x+1][self.y+1].get_piece() != None and board.board[self.x+1][self.y+1].get_piece_color()!=self.color: #can take to right?
+                            open_squares.append(board.board[self.x+1][self.y+1])
+                    except:
+                        pass
+                    if self.moved==False: #if first move for pawn
+                        try:
+                            if board.board[self.x][self.y+2].get_piece()==None: #nobody two squares in front
+                                open_squares.append(board.board[self.x][self.y+2])
+                        except:
+                            pass
             #return open_squares
      
         elif self.t=='knight':

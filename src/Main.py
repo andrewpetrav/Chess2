@@ -69,7 +69,7 @@ def move_piece(sq,moves,pos,b,checkCheck=False):
         row=int(pos[1]/square_size)
         #=int(pos[0]/square_size)
         try:
-            if b.board[col][row] in moves or returnBoard:
+            if b.board[col][row] in moves or checkCheck:
                 #Special moves such as promotion, castling, en passant, that involve changing more than one piece (not counting captures) or image of piece (promotion)
                 
                 
@@ -156,7 +156,7 @@ def move_piece(sq,moves,pos,b,checkCheck=False):
         except Exception as e:   
             print(e)
             return False
-    if returnBoard:
+    if checkCheck:
         return b.board
     return True
 
@@ -256,6 +256,7 @@ def checkForCheck(piece,moves,color,pos):
         moves2=[]
         illegalSquares=[] #holds squares being attacked by other side
         for p in pieces:
+
             if p.squaresAttacking !=[]:
                 for sA in p.squaresAttacking:
                     if sA not in illegalSquares:
@@ -264,6 +265,8 @@ def checkForCheck(piece,moves,color,pos):
         for move in moves:
             if move not in illegalSquares:
                 moves2.append(move)
+            else:
+                print(move)
         moves=moves2
     else:
         #if move happens will board state result in your color king check
@@ -361,10 +364,11 @@ def game():
             turn=BLACK
         else:
             turn=WHITE
-            
+        r'''   visualize boardString
         for row in boardString:
             print(row)
         print()
+        '''
         #get where click
         #if white piece there, highlight possible moves
             
