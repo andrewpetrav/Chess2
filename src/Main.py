@@ -326,7 +326,7 @@ def game():
                             valid_square_selection=True
                             break
             #Step 2: Get moves of piece and highlight
-            moves=sq.piece.squaresAttacking#get_moves(board) #get moves of piece at selected square
+            moves=sq.piece.squaresCanMoveTo#get_moves(board) #get moves of piece at selected square
             moves=checkForCheck(sq.piece,moves,turn,pos)
             sq.set_selected()
         
