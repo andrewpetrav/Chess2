@@ -13,6 +13,7 @@ class Piece(ABC):
         self.image=image
         self.moved=moved
         
+        self.squaresCanMoveTo=[] #what squares this piece can move to
         self.squaresAttacking=[] #what squares is this piece attacking
         self.piecesAttacking=[] #what pieces is this piece attacking (friendly included)
         self.piecesAttackedBy=[] #what pieces this piece is being attacked by (friendly included)
@@ -33,7 +34,6 @@ class Piece(ABC):
         
         #for every move, make sure it doesn't put own king in check
         if self.t=='pawn':
-
             if self.color==WHITE and self.y-1>-1:
                 if not attack:
                     oneInFront=board.board[self.x][self.y-1]
@@ -57,6 +57,7 @@ class Piece(ABC):
                                     open_squares.append(board.board[self.x][self.y-2])
                             except:
                                 pass
+                    print(open_squares)
                 elif attack: #getting what moves it is attacking
                     try:
                         #attacking left?
@@ -70,6 +71,7 @@ class Piece(ABC):
                             open_squares.append(board.board[self.x+1][self.y-1])
                     except:
                         pass
+                    self.squaresAttacking=open_squares
             if self.color==BLACK and self.y+1<8:
                 if not attack:
                     oneInFront=board.board[self.x][self.y+1]
@@ -91,6 +93,19 @@ class Piece(ABC):
                                 open_squares.append(board.board[self.x][self.y+2])
                         except:
                             pass
+                elif attack: #getting what moves it is attacking
+                    try:
+                        #attacking left?
+                        if board.board[self.x-1][self.y+1].size: #does it exist
+                            open_squares.append(board.board[self.x-1][self.y+1])
+                    except:
+                        pass
+                    try:
+                        #attacking right?
+                        if board.board[self.x+1][self.y-1].size: #does it exist
+                            open_squares.append(board.board[self.x+1][self.y+1])
+                    except:
+                        pass
             #return open_squares
      
         elif self.t=='knight':
@@ -430,10 +445,10 @@ class Piece(ABC):
         '''
         #open_squares=checkCheckSquares(open_squares,self.color,board)
         if attack==False:
+            self.squaresCanMoveTo=open_squares
+        elif attack==True:
             self.squaresAttacking=open_squares
-        else:
-            return open_squares
-
+            return open_squares #not 100% sure why this is here
     
     def get_attacking_squares(self,board):
         r'''

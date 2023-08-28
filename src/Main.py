@@ -253,12 +253,14 @@ def checkForCheck(piece,moves,color,pos):
         king=b_k
     #make sure not moving king into check
     if piece.t=='king':
+        print()
         moves2=[]
         illegalSquares=[] #holds squares being attacked by other side
         for p in pieces:
-
+            print(p)
             if p.squaresAttacking !=[]:
                 for sA in p.squaresAttacking:
+                    print(sA.col,sA.row)
                     if sA not in illegalSquares:
                         illegalSquares.append(sA)
         
@@ -266,7 +268,7 @@ def checkForCheck(piece,moves,color,pos):
             if move not in illegalSquares:
                 moves2.append(move)
             else:
-                print(move)
+                print(move.row,move.col)
         moves=moves2
     else:
         #if move happens will board state result in your color king check
