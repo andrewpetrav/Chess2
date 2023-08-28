@@ -316,6 +316,7 @@ def game():
             #Step 0: Get move of every piece on board
             for piece in all_pieces:
                 piece.get_moves(board)
+                piece.get_moves(board,attack=True)
             #Step 1: Loop until valid square selected to move
             while not valid_square_selection:
                 for event in pygame.event.get():

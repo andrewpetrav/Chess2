@@ -57,7 +57,6 @@ class Piece(ABC):
                                     open_squares.append(board.board[self.x][self.y-2])
                             except:
                                 pass
-                    print(open_squares)
                 elif attack: #getting what moves it is attacking
                     try:
                         #attacking left?
@@ -243,6 +242,7 @@ class Piece(ABC):
                                 else: #square has piece of same color, so break
                                     counter=1
                                     break
+                            
                         open_squares.append(board.board[self.x+counter][self.y-counter])
                         counter+=1
                     else: 
@@ -387,42 +387,58 @@ class Piece(ABC):
                 pass
             else:
                 #directly left
-                if board.board[self.x-1][self.y].get_piece()==None or board.board[self.x-1][self.y].get_piece_color()!=self.color:
+                if not attack and board.board[self.x-1][self.y].get_piece()==None or board.board[self.x-1][self.y].get_piece_color()!=self.color:
+                    open_squares.append(board.board[self.x-1][self.y])
+                elif attack:
                     open_squares.append(board.board[self.x-1][self.y])
                 #up left
                 if self.y-1>-1:
-                    if board.board[self.x-1][self.y-1].get_piece()==None or board.board[self.x-1][self.y-1].get_piece_color()!=self.color:
+                    if not attack and board.board[self.x-1][self.y-1].get_piece()==None or board.board[self.x-1][self.y-1].get_piece_color()!=self.color:
+                        open_squares.append(board.board[self.x-1][self.y-1])
+                    elif attack:
                         open_squares.append(board.board[self.x-1][self.y-1])
                 #down left
                 if self.y+1<8:
-                    if board.board[self.x-1][self.y+1].get_piece()==None or board.board[self.x-1][self.y+1].get_piece_color()!=self.color:
+                    if not attack and board.board[self.x-1][self.y+1].get_piece()==None or board.board[self.x-1][self.y+1].get_piece_color()!=self.color:
+                        open_squares.append(board.board[self.x-1][self.y+1])
+                    elif attack:
                         open_squares.append(board.board[self.x-1][self.y+1])
             #RIGHT
             if self.x+1>7: 
                 pass
             else:
                 #directly right
-                if board.board[self.x+1][self.y].get_piece()==None or board.board[self.x+1][self.y].get_piece_color()!=self.color:
+                if not attack and board.board[self.x+1][self.y].get_piece()==None or board.board[self.x+1][self.y].get_piece_color()!=self.color:
+                    open_squares.append(board.board[self.x+1][self.y])
+                elif attack:
                     open_squares.append(board.board[self.x+1][self.y])
                 #up right
                 if self.y-1>-1:
-                    if board.board[self.x+1][self.y-1].get_piece()==None or board.board[self.x+1][self.y-1].get_piece_color()!=self.color:
+                    if not attack and board.board[self.x+1][self.y-1].get_piece()==None or board.board[self.x+1][self.y-1].get_piece_color()!=self.color:
+                        open_squares.append(board.board[self.x+1][self.y-1])
+                    elif attack:
                         open_squares.append(board.board[self.x+1][self.y-1])
                 #down right
                 if self.y+1<8:
-                    if board.board[self.x+1][self.y+1].get_piece()==None or board.board[self.x+1][self.y+1].get_piece_color()!=self.color:
+                    if not attack and board.board[self.x+1][self.y+1].get_piece()==None or board.board[self.x+1][self.y+1].get_piece_color()!=self.color:
+                        open_squares.append(board.board[self.x+1][self.y+1])
+                    elif attack:
                         open_squares.append(board.board[self.x+1][self.y+1])
             #DOWN
             if self.y+1>7:
                 pass
             else:
-                if board.board[self.x][self.y+1].get_piece()==None or board.board[self.x][self.y+1].get_piece_color()!=self.color:
+                if not attack and board.board[self.x][self.y+1].get_piece()==None or board.board[self.x][self.y+1].get_piece_color()!=self.color:
+                    open_squares.append(board.board[self.x][self.y+1])
+                elif attack:
                     open_squares.append(board.board[self.x][self.y+1])
             #UP
             if self.y-1<0:
                 pass
             else:
-                if board.board[self.x][self.y-1].get_piece()==None or board.board[self.x][self.y-1].get_piece_color()!=self.color:
+                if not attack and board.board[self.x][self.y-1].get_piece()==None or board.board[self.x][self.y-1].get_piece_color()!=self.color:
+                    open_squares.append(board.board[self.x][self.y-1])
+                elif attack:
                     open_squares.append(board.board[self.x][self.y-1])
         
             #CASTLING 
