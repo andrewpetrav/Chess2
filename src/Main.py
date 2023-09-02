@@ -213,12 +213,18 @@ def get_all_moves(): #calculates every possible move
     for piece in all_pieces:
         all_moves[piece]=piece.get_moves(board)
 
-def kingInCheck(color):
+
+def kingInCheck(color,piece,moves):
+    boardStringCopy=boardString
 
     if color==WHITE:
         pieces=b_pieces
     elif color==BLACK:
         pieces=w_pieces
+    for move in moves: #iterate through each move that selected piece can make
+        pass
+        
+        
     #print(pieces)
 r'''
 def kingInCheck(b,color): #checks to see if move puts/stops if OWN king is in check
@@ -273,7 +279,7 @@ def checkForCheck(piece,moves,color,pos):
         with open('boardState.pkl','wb') as boardOnFile:
             pickle.dump(piece,boardOnFile,pickle.HIGHEST_PROTOCOL)
         '''
-        doesThisMovePutKingInCheck=kingInCheck(color)
+        doesThisMovePutKingInCheck=kingInCheck(color,piece,moves)
         if doesThisMovePutKingInCheck:
             print("COME SEE ME QUEEN JANE")
         
