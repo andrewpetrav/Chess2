@@ -91,6 +91,7 @@ def move_piece(sq,moves,pos,b,checkCheck=False):
                             b.board[7][row].set_piece(None)
                             b.board[6][row].set_piece(sq.piece)
                             sq.set_piece(None)
+                        elif checkCheck: #if just checking if position results in check
 
                     #LONG
                     else:
@@ -213,6 +214,9 @@ def get_all_moves(): #calculates every possible move
     for piece in all_pieces:
         all_moves[piece]=piece.get_moves(board)
 
+def checkIfCanMovePiece(): #see if piece can be moved without resulting in check, returns squares it can move to
+    pass
+
 
 def kingInCheck(color,piece,moves):
     if color==WHITE:
@@ -225,6 +229,7 @@ def kingInCheck(color,piece,moves):
         attackingMoves=[]
         for piece in pieces:
             m=piece.get_moves(board,True)
+            squaresPieceCanMoveTo=checkIfCanMovePiece()
             for n in m:
                 print(n.row,n.col)
             print()
