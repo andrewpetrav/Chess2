@@ -215,14 +215,22 @@ def get_all_moves(): #calculates every possible move
 
 
 def kingInCheck(color,piece,moves):
-    boardStringCopy=boardString
-
     if color==WHITE:
         pieces=b_pieces
     elif color==BLACK:
         pieces=w_pieces
     for move in moves: #iterate through each move that selected piece can make
-        pass
+        boardStringCopy=boardString
+        boardStringCopy[move.row][move.col]=piece
+        attackingMoves=[]
+        for piece in pieces:
+            m=piece.get_moves(board,True)
+            for n in m:
+                print(n.row,n.col)
+            print()
+            #attackingMoves.append(piece.get_moves(board))
+        print(attackingMoves)
+            
         
         
     #print(pieces)
