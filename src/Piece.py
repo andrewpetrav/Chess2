@@ -27,7 +27,7 @@ class Piece(ABC):
     def get_attacked_by_pieces(self,piece):
         #passes piece that is moving 
         pass
-    def get_moves(self,board,attack=False):
+    def get_moves(self,board,attack=False,boardStringCopy=None):
         #if attack =TRUE then return every square that the piece controls, regardless of if it can actually move there or not
         open_squares=[]
         #add a check to see if king is in check first before anything else

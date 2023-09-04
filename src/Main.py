@@ -215,6 +215,7 @@ def get_all_moves(): #calculates every possible move
     for piece in all_pieces:
         all_moves[piece]=piece.get_moves(board)
 
+r'''
 def checkWhereCanMovePiece(piece,boardString,moves,color): #see if piece can be moved without resulting in check, returns squares it can move to
     print(piece.t)
     print('Row: ',piece.y,' Col: ', piece.x)
@@ -222,27 +223,8 @@ def checkWhereCanMovePiece(piece,boardString,moves,color): #see if piece can be 
         print(m.row,m.col)
 
     print()
+'''
 
-def doesThisMovePutTheKingInCheck(color,piece,moves):
-    if color==WHITE:
-        pieces=b_pieces
-    elif color==BLACK:
-        pieces=w_pieces
-    for move in moves: #iterate through each move that selected piece can make
-        boardStringCopy=boardString
-        boardStringCopy[move.row][move.col]=piece
-        attackingMoves=[]
-        for piece in pieces:
-            m=piece.squaresCanMoveTo
-            squaresPieceCanMoveTo=checkWhereCanMovePiece(piece,boardStringCopy,m,color)
-
-            print()
-            #attackingMoves.append(piece.get_moves(board))
-        print(attackingMoves)
-            
-        
-        
-    #print(pieces)
 r'''
 def kingInCheck(b,color): #checks to see if move puts/stops if OWN king is in check
     squaresBeingAttacked=[]
@@ -267,6 +249,37 @@ def kingInCheck(b,color): #checks to see if move puts/stops if OWN king is in ch
             return True
     return False
  '''   
+ 
+
+def kingInCheck(color,boardStringCopy):
+    if color==WHITE: king,pieces=w_k,b_pieces
+    elif color==BLACK: king,pieces=b_k,w_pieces
+    for piece in pieces:
+        squaresThatAreBeingAttacked=piece.get_moves(board,True,boardStringCopy)
+    
+
+def doesThisMovePutTheKingInCheck(color,piece,moves):
+    if color==WHITE:
+        pieces=b_pieces
+    elif color==BLACK:
+        pieces=w_pieces
+    for move in moves: #iterate through each move that selected piece can make
+        boardStringCopy=boardString
+        boardStringCopy[move.row][move.col]=piece
+        attackingMoves=[]
+        for piece in pieces:
+            doesThisMoveResultInCheck=kingInCheck()
+            m=piece.squaresCanMoveTo
+            squaresPieceCanMoveTo=checkWhereCanMovePiece(piece,boardStringCopy,m,color)
+
+            print()
+            #attackingMoves.append(piece.get_moves(board))
+        print(attackingMoves)
+            
+        
+        
+    #print(pieces)
+
 def checkForCheck(piece,moves,color,pos):
     if color==WHITE:
         pieces=b_pieces
