@@ -220,6 +220,7 @@ def checkWhereCanMovePiece(piece,boardString,moves,color): #see if piece can be 
     print('Row: ',piece.y,' Col: ', piece.x)
     for m in moves:
         print(m.row,m.col)
+
     print()
 
 def doesThisMovePutTheKingInCheck(color,piece,moves):
@@ -232,7 +233,7 @@ def doesThisMovePutTheKingInCheck(color,piece,moves):
         boardStringCopy[move.row][move.col]=piece
         attackingMoves=[]
         for piece in pieces:
-            m=piece.get_moves(board)
+            m=piece.squaresCanMoveTo
             squaresPieceCanMoveTo=checkWhereCanMovePiece(piece,boardStringCopy,m,color)
 
             print()
@@ -335,7 +336,7 @@ def game():
             #Step 0: Get move of every piece on board
             for piece in all_pieces:
                 piece.get_moves(board)
-                piece.get_moves(board,attack=True)
+                #piece.get_moves(board,attack=True)
             #Step 1: Loop until valid square selected to move
             while not valid_square_selection:
                 for event in pygame.event.get():
