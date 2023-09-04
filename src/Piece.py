@@ -34,7 +34,7 @@ class Piece(ABC):
         
         #for every move, make sure it doesn't put own king in check
         if self.t=='pawn':
-            if self.color==WHITE and self.y-1>-1:
+            if self.color==WHITE and self.y-1>-1: #TODO this check does not work for attack=True?
                 if not attack:
                     oneInFront=board.board[self.x][self.y-1]
                     if oneInFront.get_piece()==None: #if nobody on square ahead of it

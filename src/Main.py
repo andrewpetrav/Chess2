@@ -92,6 +92,7 @@ def move_piece(sq,moves,pos,b,checkCheck=False):
                             b.board[6][row].set_piece(sq.piece)
                             sq.set_piece(None)
                         elif checkCheck: #if just checking if position results in check
+                            pass
 
                     #LONG
                     else:
@@ -214,11 +215,14 @@ def get_all_moves(): #calculates every possible move
     for piece in all_pieces:
         all_moves[piece]=piece.get_moves(board)
 
-def checkIfCanMovePiece(): #see if piece can be moved without resulting in check, returns squares it can move to
-    pass
+def checkWhereCanMovePiece(piece,boardString,moves,color): #see if piece can be moved without resulting in check, returns squares it can move to
+    print(piece.t)
+    print('Row: ',piece.y,' Col: ', piece.x)
+    for m in moves:
+        print(m.row,m.col)
+    print()
 
-
-def kingInCheck(color,piece,moves):
+def doesThisMovePutTheKingInCheck(color,piece,moves):
     if color==WHITE:
         pieces=b_pieces
     elif color==BLACK:
@@ -228,10 +232,9 @@ def kingInCheck(color,piece,moves):
         boardStringCopy[move.row][move.col]=piece
         attackingMoves=[]
         for piece in pieces:
-            m=piece.get_moves(board,True)
-            squaresPieceCanMoveTo=checkIfCanMovePiece()
-            for n in m:
-                print(n.row,n.col)
+            m=piece.get_moves(board)
+            squaresPieceCanMoveTo=checkWhereCanMovePiece(piece,boardStringCopy,m,color)
+
             print()
             #attackingMoves.append(piece.get_moves(board))
         print(attackingMoves)
@@ -292,7 +295,7 @@ def checkForCheck(piece,moves,color,pos):
         with open('boardState.pkl','wb') as boardOnFile:
             pickle.dump(piece,boardOnFile,pickle.HIGHEST_PROTOCOL)
         '''
-        doesThisMovePutKingInCheck=kingInCheck(color,piece,moves)
+        doesThisMovePutKingInCheck=doesThisMovePutTheKingInCheck(color,piece,moves)
         if doesThisMovePutKingInCheck:
             print("COME SEE ME QUEEN JANE")
         
