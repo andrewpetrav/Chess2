@@ -256,6 +256,9 @@ def kingInCheck(color,boardStringCopy):
     elif color==BLACK: king,pieces=b_k,w_pieces
     for piece in pieces:
         squaresThatAreBeingAttacked=piece.get_moves(board,True,boardStringCopy)
+        for sq in squaresThatAreBeingAttacked:
+            if (sq.row,sq.col)==(king.x,king.y):
+                print((piece.row,piece.col),' is attacking the king')
     
 
 def doesThisMovePutTheKingInCheck(color,piece,moves):
@@ -268,13 +271,14 @@ def doesThisMovePutTheKingInCheck(color,piece,moves):
         boardStringCopy[move.row][move.col]=piece
         attackingMoves=[]
         for piece in pieces:
-            doesThisMoveResultInCheck=kingInCheck()
+            doesThisMoveResultInCheck=kingInCheck(color,boardStringCopy)
             m=piece.squaresCanMoveTo
-            squaresPieceCanMoveTo=checkWhereCanMovePiece(piece,boardStringCopy,m,color)
 
-            print()
+            #squaresPieceCanMoveTo=checkWhereCanMovePiece(piece,boardStringCopy,m,color)
+
+            #print()
             #attackingMoves.append(piece.get_moves(board))
-        print(attackingMoves)
+        #print(attackingMoves)
             
         
         
