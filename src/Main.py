@@ -249,17 +249,21 @@ def kingInCheck(b,color): #checks to see if move puts/stops if OWN king is in ch
             return True
     return False
  '''   
- 
 
 def kingInCheck(color,boardStringCopy):
     if color==WHITE: king,pieces=w_k,b_pieces
     elif color==BLACK: king,pieces=b_k,w_pieces
     for piece in pieces:
         squaresThatAreBeingAttacked=piece.get_moves(board,True,boardStringCopy)
+        #print(piece.color, piece.type, piece.x, piece.y)
+        #print(squaresThatAreBeingAttacked)
+        #print()
+    #print('DONE')
+    r'''
         for sq in squaresThatAreBeingAttacked:
             if (sq.row,sq.col)==(king.x,king.y):
-                print((piece.row,piece.col),' is attacking the king')
-    
+                print((piece.t, piece.y,piece.x, sq.row, sq.col),' is attacking the king')
+        '''
 
 def doesThisMovePutTheKingInCheck(color,piece,moves):
     if color==WHITE:
@@ -300,7 +304,6 @@ def checkForCheck(piece,moves,color,pos):
                 for sA in p.squaresAttacking:
                     if sA not in illegalSquares:
                         illegalSquares.append(sA)
-        
         for move in moves:
             if move not in illegalSquares:
                 moves2.append(move)
@@ -353,7 +356,7 @@ def game():
             #Step 0: Get move of every piece on board
             for piece in all_pieces:
                 piece.get_moves(board)
-                #piece.get_moves(board,attack=True)
+                piece.get_moves(board,attack=True)
             #Step 1: Loop until valid square selected to move
             while not valid_square_selection:
                 for event in pygame.event.get():
