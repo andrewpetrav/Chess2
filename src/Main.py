@@ -250,14 +250,19 @@ def kingInCheck(b,color): #checks to see if move puts/stops if OWN king is in ch
     return False
  '''   
 
-def kingInCheck(color,boardStringCopy):
-    if color==WHITE: king,pieces=w_k,b_pieces
-    elif color==BLACK: king,pieces=b_k,w_pieces
+def kingInCheck(color,boardStringCopy,king,pieces):
+    
     for piece in pieces:
+        print(piece.t, piece.color)
         squaresThatAreBeingAttacked=piece.get_moves(board,True,boardStringCopy)
+        #print()
+        #print(piece.t,piece.color)
+        for sq in squaresThatAreBeingAttacked:
+            pass
+            #print(sq.row,sq.col)
         for sq in squaresThatAreBeingAttacked:
             if (sq.row,sq.col)==(king.x,king.y):
-                print(piece.t, piece.color, sq.row,sq.col, king.x,king.y)
+                #print(piece.t, piece.color, sq.row,sq.col, king.x,king.y)
                 return True
     return False
         #print(piece.color, piece.type, piece.x, piece.y)
@@ -271,15 +276,13 @@ def kingInCheck(color,boardStringCopy):
         '''
 
 def doesThisMovePutTheKingInCheck(color,piece,moves):
+    if color==WHITE: king,pieces=w_k,b_pieces
+    elif color==BLACK: king,pieces=b_k,w_pieces
     movesLegal=[]
-    if color==WHITE:
-        pieces=b_pieces
-    elif color==BLACK:
-        pieces=w_pieces
     for move in moves: #iterate through each move that selected piece can make
-        boardStringCopy=boardString
-        boardStringCopy[move.row][move.col]=piece
-        doesThisMoveResultInCheck=kingInCheck(color, boardStringCopy)
+        boardStringCopy=copy.deepcopy(boardString)
+        boardStringCopy[move.row][move.col]=piece.string
+        doesThisMoveResultInCheck=kingInCheck(color, boardStringCopy,king,pieces)
         if doesThisMoveResultInCheck: #if moving this piece to LOCATION results in self-check
             pass #don't add it to legal moves
         else: #otherwise
@@ -331,10 +334,8 @@ def checkForCheck(piece,moves,color,pos):
         with open('boardState.pkl','wb') as boardOnFile:
             pickle.dump(piece,boardOnFile,pickle.HIGHEST_PROTOCOL)
         '''
-        doesThisMovePutKingInCheck=doesThisMovePutTheKingInCheck(color,piece,moves)
-        if doesThisMovePutKingInCheck:
-            print("COME SEE ME QUEEN JANE")
-        
+        moves=doesThisMovePutTheKingInCheck(color,piece,moves)
+
         r'''
         
         p
