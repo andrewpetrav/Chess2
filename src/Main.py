@@ -251,42 +251,33 @@ def kingInCheck(b,color): #checks to see if move puts/stops if OWN king is in ch
  '''   
 
 def kingInCheck(color,boardStringCopy,king,pieces):
-    
-    for piece in pieces:
-        print(piece.t, piece.color)
-        squaresThatAreBeingAttacked=piece.get_moves(board,True,boardStringCopy)
-        #print()
-        #print(piece.t,piece.color)
+
+    for p in pieces:
+        squaresThatAreBeingAttacked=p.get_moves(board,True,boardStringCopy)
+        
         for sq in squaresThatAreBeingAttacked:
-            pass
-            #print(sq.row,sq.col)
-        for sq in squaresThatAreBeingAttacked:
-            if (sq.row,sq.col)==(king.x,king.y):
-                #print(piece.t, piece.color, sq.row,sq.col, king.x,king.y)
+            if (sq.col,sq.row)==(king.x,king.y):
                 return True
     return False
-        #print(piece.color, piece.type, piece.x, piece.y)
-        #print(squaresThatAreBeingAttacked)
-        #print()
-    #print('DONE')
+
     r'''
         for sq in squaresThatAreBeingAttacked:
             if (sq.row,sq.col)==(king.x,king.y):
                 print((piece.t, piece.y,piece.x, sq.row, sq.col),' is attacking the king')
         '''
 
-def doesThisMovePutTheKingInCheck(color,piece,moves):
-    if color==WHITE: king,pieces=w_k,b_pieces
-    elif color==BLACK: king,pieces=b_k,w_pieces
+def doesThisMovePutTheKingInCheck(color,piece,moves,pieces,king):
     movesLegal=[]
     for move in moves: #iterate through each move that selected piece can make
         boardStringCopy=copy.deepcopy(boardString)
-        boardStringCopy[move.row][move.col]=piece.string
+        boardStringCopy[piece.y][piece.x]='*' #set old square as empty
+        boardStringCopy[move.row][move.col]=piece.string #move piece to new square
         doesThisMoveResultInCheck=kingInCheck(color, boardStringCopy,king,pieces)
         if doesThisMoveResultInCheck: #if moving this piece to LOCATION results in self-check
             pass #don't add it to legal moves
         else: #otherwise
             movesLegal.append(move)  #add to legal moves
+    
         r'''
         attackingMoves=[]
         for piece in pieces:
@@ -295,7 +286,7 @@ def doesThisMovePutTheKingInCheck(color,piece,moves):
             #print(doesThisMoveResultInCheck)
             m=piece.squaresCanMoveTo
         '''
-
+    return movesLegal
             #squaresPieceCanMoveTo=checkWhereCanMovePiece(piece,boardStringCopy,m,color)
 
             #print()
@@ -307,13 +298,15 @@ def doesThisMovePutTheKingInCheck(color,piece,moves):
     #print(pieces)
 
 def checkForCheck(piece,moves,color,pos):
+    #returns moves the would not result in self-check
     if color==WHITE:
         pieces=b_pieces
         king=w_k
     elif color==BLACK:
         pieces=w_pieces
         king=b_k
-    #make sure not moving king into check
+    
+    #TODO: add checks for castling (both ways)
     if piece.t=='king':
         moves2=[]
         illegalSquares=[] #holds squares being attacked by other side
@@ -328,36 +321,11 @@ def checkForCheck(piece,moves,color,pos):
             else:
                 pass
         moves=moves2
+    #if piece not a king
     else:
         #if move happens will board state result in your color king check
-        r'''
-        with open('boardState.pkl','wb') as boardOnFile:
-            pickle.dump(piece,boardOnFile,pickle.HIGHEST_PROTOCOL)
-        '''
-        moves=doesThisMovePutTheKingInCheck(color,piece,moves)
+        moves=doesThisMovePutTheKingInCheck(color,piece,moves, pieces, king)
 
-        r'''
-        
-        p
-        for p in pieces:
-            
-        for i in range(board2.boardWidth):
-            for j in range(board2.boardLength):
-                board2.board[i][j]=copy(board.board[i][j])
-        #board2.board=move_piece(sq,moves,pos,board2,True)
-        doesThisMovePutKingInCheck=kingInCheck(board2,color)
-        if doesThisMovePutKingInCheck:
-            return None
-        '''
-        
-        
-        r'''
-        for p in pieces:
-            if p.squaresAttacking !=[]:
-                for sA in p.squaresAttacking:
-                    if king.square==sA: #moving this piece will result in check (NOTE: DOES NOT CHECK FOR SPECIFIC MOVE, JUST MOVING IN GENERAL)
-                        return None
-        '''
     return moves
 
 def game():
@@ -414,6 +382,8 @@ def game():
             sq.set_selected()
             board.draw_board()
             pygame.display.update()
+            
+            
             #move_piece(sq,moves)
             #move completed
             
