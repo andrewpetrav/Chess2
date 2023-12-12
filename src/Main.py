@@ -254,10 +254,14 @@ def kingInCheck(color,boardStringCopy,king,pieces):
 
     for p in pieces:
         squaresThatAreBeingAttacked=p.get_moves(board,True,boardStringCopy)
-        
-        for sq in squaresThatAreBeingAttacked:
+        for (sq.col,sq.row) in squaresThatAreBeingAttacked: #TODO make get_moves compatible with returning this for boardStringCopy
             if (sq.col,sq.row)==(king.x,king.y):
+                for r in boardStringCopy:
+                    print(r)
+                print(p.t)
+                print()
                 return True
+
     return False
 
     r'''
