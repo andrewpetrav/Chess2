@@ -38,7 +38,6 @@ class Piece(ABC):
             c='B'
             
         #add a check to see if king is in check first before anything else
-        print(theBoard[0][0][0])
         #for every move, make sure it doesn't put own king in check
         if self.t=='pawn':
             if self.color==WHITE and self.y-1>-1: #TODO this check does not work for attack=True?
@@ -185,21 +184,16 @@ class Piece(ABC):
             while True:
                 try:
                     if(self.x+counter>-1 and self.x+counter<8 and self.y-counter>-1 and self.y-counter<8): #ensure no out of bounds
-                        if(theBoard[self.x+counter][self.y-counter].get_piece()!=None):
-                            if attack:
-                                open_squares.append(theBoard[self.x+counter][self.y-counter])
+                        if(theBoard[self.x+counter][self.y-counter]!='*'):
+                            if(theBoard[self.x+counter][self.y-counter][0]!=c):
+                                open_squares.append((self.x+counter,self.y-counter))
                                 counter=1
-                                break #ARE THESE BREAK STATEMENTS PROBLEMATIC?
-                            else:
-                                if(theBoard[self.x+counter][self.y-counter].get_piece_color()!=self.color):
-                                    open_squares.append(theBoard[self.x+counter][self.y-counter])
-                                    counter=1
-                                    break
-                                else: #square has piece of same color, so break
-                                    counter=1
-                                    break
+                                break
+                            else: #square has piece of same color, so break
+                                counter=1
+                                break
                             
-                        open_squares.append(theBoard[self.x+counter][self.y-counter])
+                        open_squares.append((self.x+counter,self.y-counter))
                         counter+=1
                     else: 
                         counter=1
@@ -212,20 +206,15 @@ class Piece(ABC):
             while True:
                 try:
                     if(self.x-counter>-1 and self.x-counter<8 and self.y-counter>-1 and self.y-counter<8): #ensure no out of bounds
-                        if(theBoard[self.x-counter][self.y-counter].get_piece()!=None):
-                            if attack:
-                                open_squares.append(theBoard[self.x-counter][self.y-counter])
+                        if(theBoard[self.x-counter][self.y-counter]!='*'):
+                            if(theBoard[self.x-counter][self.y-counter][0]()!=c):
+                                open_squares.append((self.x-counter,self.y-counter))
                                 counter=1
-                                break #ARE THESE BREAK STATEMENTS PROBLEMATIC?
-                            else:
-                                if(theBoard[self.x-counter][self.y-counter].get_piece_color()!=self.color):
-                                    open_squares.append(theBoard[self.x-counter][self.y-counter])
-                                    counter=1
-                                    break
-                                else: #square has piece of same color, so break
-                                    counter=1
-                                    break
-                        open_squares.append(theBoard[self.x-counter][self.y-counter])
+                                break
+                            else: #square has piece of same color, so break
+                                counter=1
+                                break
+                        open_squares.append((self.x-counter,self.y-counter))
                         counter+=1
                     else:
                         counter=1
@@ -238,20 +227,15 @@ class Piece(ABC):
             while True:
                 try:
                     if(self.x+counter>-1 and self.x+counter<8 and self.y+counter>-1 and self.y+counter<8): #ensure no out of bounds
-                        if(theBoard[self.x+counter][self.y+counter].get_piece()!=None):
-                            if attack:
-                                open_squares.append(theBoard[self.x+counter][self.y+counter])
+                        if(theBoard[self.x+counter][self.y+counter]!='*'):
+                            if(theBoard[self.x+counter][self.y+counter][0]!=c):
+                                open_squares.append((self.x+counter,self.y+counter))
                                 counter=1
-                                break #ARE THESE BREAK STATEMENTS PROBLEMATIC?
-                            else:
-                                if(theBoard[self.x+counter][self.y+counter].get_piece_color()!=self.color):
-                                    open_squares.append(theBoard[self.x+counter][self.y+counter])
-                                    counter=1
-                                    break
-                                else: #square has piece of same color, so break
-                                    counter=1
-                                    break
-                        open_squares.append(theBoard[self.x+counter][self.y+counter])
+                                break
+                            else: #square has piece of same color, so break
+                                counter=1
+                                break
+                        open_squares.append((self.x+counter,self.y+counter))
                         counter+=1
                     else:
                         counter=1
@@ -263,20 +247,15 @@ class Piece(ABC):
             while True:
                 try:
                     if(self.x-counter>-1 and self.x-counter<8 and self.y+counter>-1 and self.y+counter<8): #ensure no out of bounds
-                        if(theBoard[self.x-counter][self.y+counter].get_piece()!=None):
-                            if attack:
-                                open_squares.append(theBoard[self.x-counter][self.y+counter])
+                        if(theBoard[self.x-counter][self.y+counter]!='*'):
+                            if(theBoard[self.x-counter][self.y+counter][0]!=c):
+                                open_squares.append((self.x-counter,self.y+counter))
                                 counter=1
-                                break #ARE THESE BREAK STATEMENTS PROBLEMATIC?
-                            else:
-                                if(board.board[self.x-counter][self.y+counter].get_piece_color()!=self.color):
-                                    open_squares.append(theBoard[self.x-counter][self.y+counter])
-                                    counter=1
-                                    break
-                                else: #square has piece of same color, so break
-                                    counter=1
-                                    break
-                        open_squares.append(theBoard[self.x-counter][self.y+counter])
+                                break
+                            else: #square has piece of same color, so break
+                                counter=1
+                                break
+                        open_squares.append((self.x-counter,self.y+counter))
                         counter+=1
                     else:
                         counter=1
@@ -290,49 +269,37 @@ class Piece(ABC):
             
         if self.t=='rook' or self.t=='queen':
             for i in range(self.y-1,-1,-1): #how many squares up
-                if(theBoard[self.x][i].get_piece()!=None): #this square holds a piece
-                    if attack:
-                        open_squares.append(theBoard[self.x][i])
-                    else:    
-                        if theBoard[self.x][i].get_piece_color()!=self.color: #if it's the other player's piece
-                            open_squares.append(theBoard[self.x][i])
+                if(theBoard[self.x][i]!='*'): #this square holds a piece
+                    if theBoard[self.x][i][0]!=c: #if it's the other player's piece
+                        open_squares.append((self.x,i))
                     break #piece can't move thru pieces, so break loop if encounters another piece. add the square to open_squares if opponent's piece
                 else:
                     #empty square
-                    open_squares.append(theBoard[self.x][i])
-            for i in range(self.y+1,board.boardLength): #how many squares down
-                if(theBoard[self.x][i].get_piece()!=None): #this square holds a piece
-                    if attack:
-                        open_squares.append(theBoard[self.x][i])
-                    else:
-                        if theBoard[self.x][i].get_piece_color()!=self.color: #if it's the other player's piece
-                            open_squares.append(theBoard[self.x][i])
+                    open_squares.append((self.x,i))
+            for i in range(self.y+1,len(theBoard)): #how many squares down
+                if(theBoard[self.x][i]!='*'): #this square holds a piece
+                    if theBoard[self.x][i][0]!=c: #if it's the other player's piece
+                        open_squares.append((self.x,i))
                     break
                 else:
                     #empty square
-                    open_squares.append(theBoard[self.x][i])
-            for i in range(self.x+1,board.boardWidth): #how many squares right
-                if(board.board[i][self.y].get_piece()!=None): #this square holds a piece
-                    if attack:
-                        open_squares.append(theBoard[i][self.y])
-                    else:
-                        if theBoard[i][self.y].get_piece_color()!=self.color: #if it's the other player's piece
-                            open_squares.append(theBoard[i][self.y])
+                    open_squares.append((self.x,i))
+            for i in range(self.x+1,len(theBoard[0])): #how many squares right
+                if(theBoard[i][self.y]!='*'): #this square holds a piece
+                    if theBoard[i][self.y][0]!=c: #if it's the other player's piece
+                        open_squares.append((i,self.y))
                     break
                 else:
                     #empty square
                     open_squares.append(theBoard[self.y])
             for i in range(self.x-1,-1,-1): #how many squares left
-                if(theBoard[i][self.y].get_piece()!=None): #this square holds a piece
-                    if attack:
-                        open_squares.append(theBoard[self.y])
-                    else:
-                       if theBoard[i][self.y].get_piece_color()!=self.color: #if it's the other player's piece
-                            open_squares.append(theBoard[i][self.y])
+                if(theBoard[i][self.y]!='*'): #this square holds a piece
+                    if theBoard[i][self.y][0]!=c: #if it's the other player's piece
+                         open_squares.append((i,self.y))
                     break
                 else:
                     #empty square
-                    open_squares.append(theBoard[i][self.y])
+                    open_squares.append((i,self.y))
             
             
             #return open_squares #if queen, already also got bishop moves, so can return
@@ -343,71 +310,59 @@ class Piece(ABC):
                 pass
             else:
                 #directly left
-                if not attack and theBoard[self.x-1][self.y].get_piece()==None or theBoard[self.x-1][self.y].get_piece_color()!=self.color:
-                    open_squares.append(theBoard[self.x-1][self.y])
-                elif attack:
-                    open_squares.append(theBoard[self.x-1][self.y])
+                if theBoard[self.x-1][self.y]=='*' or theBoard[self.x-1][self.y][0]!=c:
+                    open_squares.append((self.x-1,self.y))
                 #up left
                 if self.y-1>-1:
-                    if not attack and theBoard[self.x-1][self.y-1].get_piece()==None or theBoard[self.x-1][self.y-1].get_piece_color()!=self.color:
-                        open_squares.append(theBoard[self.x-1][self.y-1])
-                    elif attack:
-                        open_squares.append(theBoard[self.x-1][self.y-1])
+                    if theBoard[self.x-1][self.y-1]=='*' or theBoard[self.x-1][self.y-1][0]!=c:
+                        open_squares.append((self.x-1,self.y-1))
                 #down left
                 if self.y+1<8:
-                    if not attack and theBoard[self.x-1][self.y+1].get_piece()==None or theBoard[self.x-1][self.y+1].get_piece_color()!=self.color:
-                        open_squares.append(theBoard[self.x-1][self.y+1])
-                    elif attack:
-                        open_squares.append(theBoard[self.x-1][self.y+1])
+                    if theBoard[self.x-1][self.y+1]=='*' or theBoard[self.x-1][self.y+1][0]!=c:
+                        open_squares.append((self.x-1,self.y+1))
             #RIGHT
             if self.x+1>7: 
                 pass
             else:
                 #directly right
-                if not attack and theBoard[self.x+1][self.y].get_piece()==None or theBoard[self.x+1][self.y].get_piece_color()!=self.color:
-                    open_squares.append(theBoard[self.x+1][self.y])
-                elif attack:
-                    open_squares.append(theBoard[self.x+1][self.y])
+                if theBoard[self.x+1][self.y]=='*' or theBoard[self.x+1][self.y][0]!=c:
+                    open_squares.append((self.x+1,self.y))
                 #up right
                 if self.y-1>-1:
-                    if not attack and theBoard[self.x+1][self.y-1].get_piece()==None or theBoard[self.x+1][self.y-1].get_piece_color()!=self.color:
-                        open_squares.append(theBoard[self.x+1][self.y-1])
-                    elif attack:
-                        open_squares.append(theBoard[self.x+1][self.y-1])
+                    if theBoard[self.x+1][self.y-1]=='*' or theBoard[self.x+1][self.y-1][0]!=c:
+                        open_squares.append((self.x+1,self.y-1))
                 #down right
                 if self.y+1<8:
-                    if not attack and theBoard[self.x+1][self.y+1].get_piece()==None or theBoard[self.x+1][self.y+1].get_piece_color()!=self.color:
-                        open_squares.append(theBoard[self.x+1][self.y+1])
-                    elif attack:
-                        open_squares.append(theBoard[self.x+1][self.y+1])
+                    if theBoard[self.x+1][self.y+1]=='*' or theBoard[self.x+1][self.y+1][0]!=c:
+                        open_squares.append((self.x+1,self.y+1))
             #DOWN
             if self.y+1>7:
                 pass
             else:
-                if not attack and theBoard[self.x][self.y+1].get_piece()==None or theBoard[self.x][self.y+1].get_piece_color()!=self.color:
-                    open_squares.append(theBoard[self.x][self.y+1])
-                elif attack:
-                    open_squares.append(theBoard[self.x][self.y+1])
+                if theBoard[self.x][self.y+1]=='*' or theBoard[self.x][self.y+1][0]!=c:
+                    open_squares.append((self.x,self.y+1))
             #UP
             if self.y-1<0:
                 pass
             else:
-                if not attack and theBoard[self.x][self.y-1].get_piece()==None or theBoard[self.x][self.y-1].get_piece_color()!=self.color:
-                    open_squares.append(theBoard[self.x][self.y-1])
-                elif attack:
-                    open_squares.append(theBoard[self.x][self.y-1])
-        
+                if theBoard[self.x][self.y-1]=='*' or theBoard[self.x][self.y-1][0]!=c:
+                    open_squares.append((self.x,self.y-1))
             #CASTLING 
             #TODO might need to add try except clause for potential out of bounds
-            if not attack and self.moved==False:
+            #TODO
+            r'''
+            if self.moved==False:
                 #King Side
-                if theBoard[self.x+1][self.y].get_piece()==None and theBoard[self.x+2][self.y].get_piece()==None: #if empty spaces
-                    if theBoard[self.x+3][self.y].get_piece() and theBoard[self.x+3][self.y].get_piece().t=='rook' and theBoard[self.x+3][self.y].get_piece().color==self.color and theBoard[self.x+3][self.y].get_piece().moved==False: #rook of same color that has not moved
+                if theBoard[self.x+1][self.y]=='*' and theBoard[self.x+2][self.y]=='*': #if empty spaces
+                    if theBoard[self.x+3][self.y][1]=='r' and theBoard[self.x+3][self.y][0]==self.color and theBoard[self.x+3][self.y].get_piece().moved==False: #rook of same color that has not moved
                         open_squares.append(theBoard[self.x+2][self.y])
                 #Queen Side
                 if theBoard[self.x-1][self.y].get_piece()==None and theBoard[self.x-2][self.y].get_piece()==None and theBoard[self.x-3][self.y].get_piece()==None: #if empty spaces
                     if theBoard[self.x-4][self.y].get_piece() and theBoard[self.x-4][self.y].get_piece().t=='rook' and theBoard[self.x-4][self.y].get_piece().color==self.color and theBoard[self.x-4][self.y].get_piece().moved==False: #rook of same color that has not moved
                         open_squares.append(theBoard[self.x-2][self.y])
+            '''
+            
+            
         r'''
         if self.color==WHITE and w_k.inCheck: #if white and white (own king) in check
             pass #doesThisStopCheck(color,open_squares)
@@ -416,11 +371,7 @@ class Piece(ABC):
         #doesThisMovePutOwnKingInCheck(open_squares)
         '''
         #open_squares=checkCheckSquares(open_squares,self.color,board)
-        if attack==False:
-            self.squaresCanMoveTo=open_squares
-        elif attack==True:
-            self.squaresAttacking=open_squares
-            return open_squares #not 100% sure why this is here
+        return open_squares
     def get_moves(self,board,attack=False,boardStringCopy=None):
         if boardStringCopy==None:
             theBoard=board.board
@@ -714,7 +665,7 @@ class Piece(ABC):
                                 counter=1
                                 break #ARE THESE BREAK STATEMENTS PROBLEMATIC?
                             else:
-                                if(board.board[self.x-counter][self.y+counter].get_piece_color()!=self.color):
+                                if(theBoard[self.x-counter][self.y+counter].get_piece_color()!=self.color):
                                     open_squares.append(theBoard[self.x-counter][self.y+counter])
                                     counter=1
                                     break
@@ -757,7 +708,7 @@ class Piece(ABC):
                     #empty square
                     open_squares.append(theBoard[self.x][i])
             for i in range(self.x+1,board.boardWidth): #how many squares right
-                if(board.board[i][self.y].get_piece()!=None): #this square holds a piece
+                if(theBoard[i][self.y].get_piece()!=None): #this square holds a piece
                     if attack:
                         open_squares.append(theBoard[i][self.y])
                     else:
@@ -918,9 +869,9 @@ class Knight(Piece):
     def __init__(self,color,square,image):
         self.type='knight'
         if color==WHITE:
-            self.string='Wknight'
+            self.string='Wnight'
         else:
-            self.string='Bknight'
+            self.string='Bnight'
         super().__init__(color,square,self.type,image)
         
 class Bishop(Piece):
