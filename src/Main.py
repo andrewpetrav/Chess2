@@ -251,17 +251,11 @@ def kingInCheck(b,color): #checks to see if move puts/stops if OWN king is in ch
  '''   
 
 def kingInCheck(color,boardStringCopy,king,pieces):
-
     for p in pieces:
         squaresThatAreBeingAttacked=p.get_moves(board,True,boardStringCopy)
-        for (sq.col,sq.row) in squaresThatAreBeingAttacked: #TODO make get_moves compatible with returning this for boardStringCopy
-            if (sq.col,sq.row)==(king.x,king.y):
-                for r in boardStringCopy:
-                    print(r)
-                print(p.t)
-                print()
+        for (col,row) in squaresThatAreBeingAttacked: #TODO make get_moves compatible with returning this for boardStringCopy
+            if (col,row)==(king.x,king.y):
                 return True
-
     return False
 
     r'''
@@ -272,7 +266,10 @@ def kingInCheck(color,boardStringCopy,king,pieces):
 
 def doesThisMovePutTheKingInCheck(color,piece,moves,pieces,king):
     movesLegal=[]
+    #print()
+    #print(moves)
     for move in moves: #iterate through each move that selected piece can make
+        #print(type(move))
         boardStringCopy=copy.deepcopy(boardString)
         boardStringCopy[piece.y][piece.x]='*' #set old square as empty
         boardStringCopy[move.row][move.col]=piece.string #move piece to new square
@@ -397,6 +394,7 @@ def game():
             turn=BLACK
         else:
             turn=WHITE
+
         r'''   visualize boardString
         for row in boardString:
             print(row)

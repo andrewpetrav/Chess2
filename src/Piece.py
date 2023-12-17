@@ -40,48 +40,46 @@ class Piece(ABC):
         #add a check to see if king is in check first before anything else
         #for every move, make sure it doesn't put own king in check
         if self.t=='pawn':
-            if self.color==WHITE and self.y-1>-1: #TODO this check does not work for attack=True?
-                if not attack:
-                    if theBoard[self.x][self.y-1]=='*': #if nobody on square ahead of it
-                        open_squares.append((self.x,self.y-1)) 
-                    try:
-                        if theBoard[self.x-1][self.y-1] != '*' and theBoard[self.x-1][self.y-1][0]!=c: #can take to left?
-                            open_squares.append((self.x-1,self.y-1))
-                    except:
-                        pass
-                    try:
-                        if theBoard[self.x+1][self.y-1] != '*' and theBoard[self.x+1][self.y-1][0]!=c: #can take to right?
-                            open_squares.append((self.x+1,self.y-1))
-                    except:
-                        pass
-                    if self.moved==False: #if first move for pawn
-                        #check if on correct square
-                        if self.color==WHITE and self.y==6 or self.color==BLACK and self.y==1:
-                            try:
-                                if theBoard[self.x][self.y-2]=='*': #nobody two squares in front
-                                    open_squares.append((self.x,self.y-2))
-                            except:
-                                pass
-            if self.color==BLACK and self.y+1<8:
-                if not attack:
-                    if theBoard[self.x][self.y+1]=='*': #if nobody on square ahead of it
-                        open_squares.append((self.x,self.y+1)) 
-                    try:
-                        if theBoard[self.x-1][self.y+1] !='*' and theBoard[self.x-1][self.y+1][0]!=c: #can take to left?
-                            open_squares.append((self.x-1,self.y+1))
-                    except:
-                        pass
-                    try:
-                        if theBoard[self.x+1][self.y+1] !='*' and theBoard[self.x+1][self.y+1][0]!=c: #can take to right?
-                            open_squares.append((self.x+1,self.y+1))
-                    except:
-                        pass
-                    if self.moved==False: #if first move for pawn
+            if self.color==WHITE and self.y-1>-1: 
+                if theBoard[self.x][self.y-1]=='*': #if nobody on square ahead of it
+                    open_squares.append((self.x,self.y-1)) 
+                try:
+                    if theBoard[self.x-1][self.y-1] != '*' and theBoard[self.x-1][self.y-1][0]!=c: #can take to left?
+                        open_squares.append((self.x-1,self.y-1))
+                except:
+                    pass
+                try:
+                    if theBoard[self.x+1][self.y-1] != '*' and theBoard[self.x+1][self.y-1][0]!=c: #can take to right?
+                        open_squares.append((self.x+1,self.y-1))
+                except:
+                    pass
+                if self.moved==False: #if first move for pawn
+                    #check if on correct square
+                    if self.color==WHITE and self.y==6 or self.color==BLACK and self.y==1:
                         try:
-                            if theBoard[self.x][self.y+2]=='*': #nobody two squares in front
-                                open_squares.append((self.x,self.y+2))
+                            if theBoard[self.x][self.y-2]=='*': #nobody two squares in front
+                                open_squares.append((self.x,self.y-2))
                         except:
                             pass
+            if self.color==BLACK and self.y+1<8:
+                if theBoard[self.x][self.y+1]=='*': #if nobody on square ahead of it
+                    open_squares.append((self.x,self.y+1)) 
+                try:
+                    if theBoard[self.x-1][self.y+1] !='*' and theBoard[self.x-1][self.y+1][0]!=c: #can take to left?
+                        open_squares.append((self.x-1,self.y+1))
+                except:
+                    pass
+                try:
+                    if theBoard[self.x+1][self.y+1] !='*' and theBoard[self.x+1][self.y+1][0]!=c: #can take to right?
+                        open_squares.append((self.x+1,self.y+1))
+                except:
+                    pass
+                if self.moved==False: #if first move for pawn
+                    try:
+                        if theBoard[self.x][self.y+2]=='*': #nobody two squares in front
+                            open_squares.append((self.x,self.y+2))
+                    except:
+                        pass
                
             #return open_squares
      
@@ -291,7 +289,7 @@ class Piece(ABC):
                     break
                 else:
                     #empty square
-                    open_squares.append(theBoard[self.y])
+                    open_squares.append((i,self.y))
             for i in range(self.x-1,-1,-1): #how many squares left
                 if(theBoard[i][self.y]!='*'): #this square holds a piece
                     if theBoard[i][self.y][0]!=c: #if it's the other player's piece
@@ -717,11 +715,11 @@ class Piece(ABC):
                     break
                 else:
                     #empty square
-                    open_squares.append(theBoard[self.y])
+                    open_squares.append(theBoard[i][self.y])
             for i in range(self.x-1,-1,-1): #how many squares left
                 if(theBoard[i][self.y].get_piece()!=None): #this square holds a piece
                     if attack:
-                        open_squares.append(theBoard[self.y])
+                        open_squares.append(theBoard[i][self.y])
                     else:
                        if theBoard[i][self.y].get_piece_color()!=self.color: #if it's the other player's piece
                             open_squares.append(theBoard[i][self.y])
