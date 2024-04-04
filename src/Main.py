@@ -431,3 +431,4 @@ if __name__=='__main__':
     #After move, check the new places that EVERY piece can move, is the enemy king hit?
     #Update board properties
     #Switch player
+
