@@ -304,6 +304,7 @@ class Piece(ABC):
         
         elif self.t=='king':
             #LEFT
+ 
             if self.x-1<0: 
                 pass
             else:
@@ -348,6 +349,7 @@ class Piece(ABC):
             #CASTLING 
             #TODO might need to add try except clause for potential out of bounds
             #TODO
+
             r'''
             if self.moved==False:
                 #King Side

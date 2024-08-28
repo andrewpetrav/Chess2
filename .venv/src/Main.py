@@ -270,7 +270,7 @@ def doesThisMovePutTheKingInCheck(color,piece,moves,pieces,king):
         #print(type(move))
         boardStringCopy=copy.deepcopy(boardString)
         boardStringCopy[piece.y][piece.x]='*' #set old square as empty
-        boardStringCopy[move.row][move.col]=piece.string #move piece to new square
+        boardStringCopy[move.col][move.row]=piece.string #move piece to new square
         doesThisMoveResultInCheck=kingInCheck(color, boardStringCopy,king,pieces)
         if doesThisMoveResultInCheck: #if moving this piece to LOCATION results in self-check
             pass #don't add it to legal moves
@@ -344,9 +344,9 @@ def on_press(key):
 def game():
     turn=WHITE
     
-    listener = keyboard.Listener(on_press=on_press)
-    listener.start()  # start to listen on a separate thread
-    listener.join()  # remove if main thread is polling self.keys
+    #listener = keyboard.Listener(on_press=on_press)
+    #listener.start()  # start to listen on a separate thread
+    #listener.join()  # remove if main thread is polling self.keys
 
     while True:
         move_completed=False #if true, give control to other player
