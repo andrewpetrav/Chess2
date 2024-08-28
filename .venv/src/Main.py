@@ -12,10 +12,10 @@ from Piece import *
 from Surface import SURFACE
 from Setup import *
 import pickle
+from pynput import keyboard
 
 
 pygame.init()
-
 
 #GLOBAL VARIABLES HERE
 boardString=[
@@ -28,8 +28,6 @@ boardString=[
         ['*','*','*','*','*','*','*','*'],
         ['*','*','*','*','*','*','*','*']
     ]
-
-
 
 def main():
     #Get board in original state
@@ -329,12 +327,36 @@ def checkForCheck(piece,moves,color,pos):
 
     return moves
 
+def on_press(key):
+
+    if key == keyboard.Key.esc:
+        try:
+            sys.exit()
+            quit()
+        except:
+            print(sys.exc_info()[0])
+    try:
+        k = key.char  # single-char keys
+    except:
+        k = key.name  # other keys
+
+
 def game():
     turn=WHITE
+    
+    listener = keyboard.Listener(on_press=on_press)
+    listener.start()  # start to listen on a separate thread
+    listener.join()  # remove if main thread is polling self.keys
+
     while True:
         move_completed=False #if true, give control to other player
         #king_in_check=Piece.King.kingCheck(turn) #is the king currently in check
         while not move_completed:
+
+            #TODO make work always
+
+            
+
             valid_square_selection=False 
             valid_move_selection=False
             
@@ -409,6 +431,7 @@ if __name__=='__main__':
     main()
     
     
+
 
 
 

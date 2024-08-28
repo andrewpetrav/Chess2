@@ -926,6 +926,7 @@ BLACK=pygame.Color(0,0,0)
 
 #Pieces
 ##WHITE
+r'''
 w_k=King(WHITE,board.board[4][7],wki)
 w_k_l=[w_k]
 w_n=[Knight(WHITE,board.board[1][7],wni)]
@@ -934,8 +935,8 @@ w_q=[Queen(WHITE,board.board[3][7],wqi)]
 w_r=[Rook(WHITE,board.board[0][7],wri)]
 w_p=[Pawn(WHITE,board.board[0][6],wpi)]
 w_pieces=w_q+w_k_l+w_n+w_b+w_r+w_p
+'''
 
-r'''
 w_p=[Pawn(WHITE,board.board[0][6],wpi),Pawn(WHITE,board.board[1][6],wpi),Pawn(WHITE,board.board[2][6],wpi),Pawn(WHITE,board.board[3][6],wpi),
      Pawn(WHITE,board.board[4][6],wpi),Pawn(WHITE,board.board[5][6],wpi),Pawn(WHITE,board.board[6][6],wpi),Pawn(WHITE,board.board[7][6],wpi)]
 w_n=[Knight(WHITE,board.board[1][7],wni),Knight(WHITE,board.board[6][7],wni)]
@@ -945,7 +946,8 @@ w_q=[Queen(WHITE,board.board[3][7],wqi)]
 w_k=King(WHITE,board.board[4][7],wki)
 w_k_l=[w_k]
 w_pieces=w_p+w_n+w_b+w_r+w_q+w_k_l
-'''
+
+r'''
 ##BLACK
 b_q=[Queen(BLACK,board.board[3][0],bqi)]
 b_k=King(BLACK,board.board[4][0],bki)
@@ -956,8 +958,8 @@ b_k_l=[b_k]
 b_p=[Pawn(BLACK,board.board[0][1],bpi)]
 
 b_pieces=b_q+b_k_l+b_n+b_b+b_r+b_p
+'''
 
-r'''
 b_p=[Pawn(BLACK,board.board[0][1],bpi),Pawn(BLACK,board.board[1][1],bpi),Pawn(BLACK,board.board[2][1],bpi),Pawn(BLACK,board.board[3][1],bpi),
      Pawn(BLACK,board.board[4][1],bpi),Pawn(BLACK,board.board[5][1],bpi),Pawn(BLACK,board.board[6][1],bpi),Pawn(BLACK,board.board[7][1],bpi)]
 b_n=[Knight(BLACK,board.board[1][0],bni),Knight(BLACK,board.board[6][0],bni)]
@@ -967,7 +969,7 @@ b_q=[Queen(BLACK,board.board[3][0],bqi)]
 b_k=King(BLACK,board.board[4][0],bki)
 b_k_l=[b_k]
 b_pieces=b_p+b_n+b_b+b_r+b_q+b_k_l
-'''
+
 
 all_pieces=w_pieces+b_pieces #all pieces
 #all_pieces=[Pawn(WHITE,board.board[3][1],wpi),Pawn(BLACK,board.board[3][6],bpi),Pawn(WHITE,board.board[4][1],wpi)]
