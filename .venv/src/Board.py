@@ -7,8 +7,8 @@ square_size=WINDOWHEIGHT/8
 class Square(object):
     def __init__(self,piece,color,image,powerup,row,col,highlighted=False):
         self.size=square_size
-        isAttackedWhite=False #attacked by white
-        isAttackedBlack=False #attacked by black
+        self.isAttackedWhite=False #attacked by white
+        self.isAttackedBlack=False #attacked by black
         #isAttacking=[]
         
         self.piece=piece

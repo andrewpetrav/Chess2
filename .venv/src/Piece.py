@@ -304,7 +304,6 @@ class Piece(ABC):
         
         elif self.t=='king':
             #LEFT
- 
             if self.x-1<0: 
                 pass
             else:
@@ -796,6 +795,31 @@ class Piece(ABC):
             #CASTLING 
             #TODO might need to add try except clause for potential out of bounds
             if not attack and self.moved==False:
+                #WHITE
+                if self.color==WHITE:
+                    #King Side
+                    if theBoard[self.x+1][self.y].get_piece()==None and theBoard[self.x+2][self.y].get_piece()==None:  #if not being attacked
+                        if theBoard[self.x+1][self.y].isAttackedBlack==False and theBoard[self.x+2][self.y].isAttackedBlack==False: #if empty spaces
+                            if theBoard[self.x+3][self.y].get_piece() and theBoard[self.x+3][self.y].get_piece().t=='rook' and theBoard[self.x+3][self.y].get_piece().color==self.color and theBoard[self.x+3][self.y].get_piece().moved==False: #rook of same color that has not moved
+                                open_squares.append(theBoard[self.x+2][self.y])
+                    #Queen Side
+                    if theBoard[self.x-1][self.y].get_piece()==None and theBoard[self.x-2][self.y].get_piece()==None and theBoard[self.x-3][self.y].get_piece()==None: #if empty spaces
+                        if theBoard[self.x-1][self.y].isAttackedBlack==False and theBoard[self.x-2][self.y].isAttackedBlack==False and theBoard[self.x-3][self.y].isAttackedBlack==False: #if not being attacked
+                            if theBoard[self.x-4][self.y].get_piece() and theBoard[self.x-4][self.y].get_piece().t=='rook' and theBoard[self.x-4][self.y].get_piece().color==self.color and theBoard[self.x-4][self.y].get_piece().moved==False: #rook of same color that has not moved
+                                open_squares.append(theBoard[self.x-2][self.y])
+                #BLACK
+                elif self.color==BLACK:
+                    #King Side
+                    if theBoard[self.x+1][self.y].get_piece()==None and theBoard[self.x+2][self.y].get_piece()==None:  #if not being attacked
+                        if theBoard[self.x+1][self.y].isAttackedWhite==False and theBoard[self.x+2][self.y].isAttackedWhite==False: #if empty spaces
+                            if theBoard[self.x+3][self.y].get_piece() and theBoard[self.x+3][self.y].get_piece().t=='rook' and theBoard[self.x+3][self.y].get_piece().color==self.color and theBoard[self.x+3][self.y].get_piece().moved==False: #rook of same color that has not moved
+                                open_squares.append(theBoard[self.x+2][self.y])
+                    #Queen Side
+                    if theBoard[self.x-1][self.y].get_piece()==None and theBoard[self.x-2][self.y].get_piece()==None and theBoard[self.x-3][self.y].get_piece()==None: #if empty spaces
+                        if theBoard[self.x-1][self.y].isAttackedWhite==False and theBoard[self.x-2][self.y].isAttackedWhite==False and theBoard[self.x-3][self.y].isAttackedWhite==False: #if not being attacked
+                            if theBoard[self.x-4][self.y].get_piece() and theBoard[self.x-4][self.y].get_piece().t=='rook' and theBoard[self.x-4][self.y].get_piece().color==self.color and theBoard[self.x-4][self.y].get_piece().moved==False: #rook of same color that has not moved
+                                open_squares.append(theBoard[self.x-2][self.y])
+                r'''
                 #King Side
                 if theBoard[self.x+1][self.y].get_piece()==None and theBoard[self.x+2][self.y].get_piece()==None: #if empty spaces
                     if theBoard[self.x+3][self.y].get_piece() and theBoard[self.x+3][self.y].get_piece().t=='rook' and theBoard[self.x+3][self.y].get_piece().color==self.color and theBoard[self.x+3][self.y].get_piece().moved==False: #rook of same color that has not moved
@@ -804,6 +828,7 @@ class Piece(ABC):
                 if theBoard[self.x-1][self.y].get_piece()==None and theBoard[self.x-2][self.y].get_piece()==None and theBoard[self.x-3][self.y].get_piece()==None: #if empty spaces
                     if theBoard[self.x-4][self.y].get_piece() and theBoard[self.x-4][self.y].get_piece().t=='rook' and theBoard[self.x-4][self.y].get_piece().color==self.color and theBoard[self.x-4][self.y].get_piece().moved==False: #rook of same color that has not moved
                         open_squares.append(theBoard[self.x-2][self.y])
+                '''
         r'''
         if self.color==WHITE and w_k.inCheck: #if white and white (own king) in check
             pass #doesThisStopCheck(color,open_squares)
@@ -815,6 +840,7 @@ class Piece(ABC):
         if attack==False:
             self.squaresCanMoveTo=open_squares
         elif attack==True:
+
             self.squaresAttacking=open_squares
             return open_squares #not 100% sure why this is here
     
@@ -928,17 +954,15 @@ BLACK=pygame.Color(0,0,0)
 
 #Pieces
 ##WHITE
-r'''
-w_k=King(WHITE,board.board[4][7],wki)
-w_k_l=[w_k]
-w_n=[Knight(WHITE,board.board[1][7],wni)]
-w_b=[Bishop(WHITE,board.board[2][7],wbi)]
-w_q=[Queen(WHITE,board.board[3][7],wqi)]
-w_r=[Rook(WHITE,board.board[0][7],wri)]
-w_p=[Pawn(WHITE,board.board[0][6],wpi)]
-w_pieces=w_q+w_k_l+w_n+w_b+w_r+w_p
-'''
+w_k=King(WHITE,board.board[0][7],wki)
+w_q=Queen(WHITE,board.board[3][7],wqi)
+b_q=Queen(BLACK,board.board[3][6],bqi)
+b_k=King(BLACK,board.board[4][4],bki)
 
+w_pieces=[w_k]+[w_q]
+b_pieces=[b_q]+[b_k]
+
+r'''
 w_p=[Pawn(WHITE,board.board[0][6],wpi),Pawn(WHITE,board.board[1][6],wpi),Pawn(WHITE,board.board[2][6],wpi),Pawn(WHITE,board.board[3][6],wpi),
      Pawn(WHITE,board.board[4][6],wpi),Pawn(WHITE,board.board[5][6],wpi),Pawn(WHITE,board.board[6][6],wpi),Pawn(WHITE,board.board[7][6],wpi)]
 w_n=[Knight(WHITE,board.board[1][7],wni),Knight(WHITE,board.board[6][7],wni)]
@@ -948,20 +972,10 @@ w_q=[Queen(WHITE,board.board[3][7],wqi)]
 w_k=King(WHITE,board.board[4][7],wki)
 w_k_l=[w_k]
 w_pieces=w_p+w_n+w_b+w_r+w_q+w_k_l
-
-r'''
-##BLACK
-b_q=[Queen(BLACK,board.board[3][0],bqi)]
-b_k=King(BLACK,board.board[4][0],bki)
-b_n=[Knight(BLACK,board.board[1][0],bni)]
-b_b=[Bishop(BLACK,board.board[2][0],bbi)]
-b_r=[Rook(BLACK,board.board[0][0],bri)]
-b_k_l=[b_k]
-b_p=[Pawn(BLACK,board.board[0][1],bpi)]
-
-b_pieces=b_q+b_k_l+b_n+b_b+b_r+b_p
 '''
 
+#BLACK
+r'''
 b_p=[Pawn(BLACK,board.board[0][1],bpi),Pawn(BLACK,board.board[1][1],bpi),Pawn(BLACK,board.board[2][1],bpi),Pawn(BLACK,board.board[3][1],bpi),
      Pawn(BLACK,board.board[4][1],bpi),Pawn(BLACK,board.board[5][1],bpi),Pawn(BLACK,board.board[6][1],bpi),Pawn(BLACK,board.board[7][1],bpi)]
 b_n=[Knight(BLACK,board.board[1][0],bni),Knight(BLACK,board.board[6][0],bni)]
@@ -971,6 +985,7 @@ b_q=[Queen(BLACK,board.board[3][0],bqi)]
 b_k=King(BLACK,board.board[4][0],bki)
 b_k_l=[b_k]
 b_pieces=b_p+b_n+b_b+b_r+b_q+b_k_l
+'''
 
 
 all_pieces=w_pieces+b_pieces #all pieces

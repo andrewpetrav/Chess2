@@ -251,8 +251,9 @@ def kingInCheck(b,color): #checks to see if move puts/stops if OWN king is in ch
 def kingInCheck(color,boardStringCopy,king,pieces):
     for p in pieces:
         squaresThatAreBeingAttacked=p.get_moves(board,True,boardStringCopy)
-        for (col,row) in squaresThatAreBeingAttacked: #TODO make get_moves compatible with returning this for boardStringCopy
-            if (col,row)==(king.x,king.y):
+
+        for (row,col) in squaresThatAreBeingAttacked: #TODO make get_moves compatible with returning this for boardStringCopy
+            if (row,col)==(king.x,king.y):
                 return True
     return False
 
@@ -266,11 +267,14 @@ def doesThisMovePutTheKingInCheck(color,piece,moves,pieces,king):
     movesLegal=[]
     #print()
     #print(moves)
+    print('------')
     for move in moves: #iterate through each move that selected piece can make
         #print(type(move))
         boardStringCopy=copy.deepcopy(boardString)
         boardStringCopy[piece.y][piece.x]='*' #set old square as empty
         boardStringCopy[move.col][move.row]=piece.string #move piece to new square
+        print(boardStringCopy, move.col, move.row)
+        print()
         doesThisMoveResultInCheck=kingInCheck(color, boardStringCopy,king,pieces)
         if doesThisMoveResultInCheck: #if moving this piece to LOCATION results in self-check
             pass #don't add it to legal moves
@@ -304,6 +308,10 @@ def checkForCheck(piece,moves,color,pos):
     elif color==BLACK:
         pieces=w_pieces
         king=b_k
+    r''''
+    moves=doesThisMovePutTheKingInCheck(color,piece,moves, pieces, king)
+    return moves
+    '''
     
     #TODO: add checks for castling (both ways)
     if piece.t=='king':
@@ -321,11 +329,13 @@ def checkForCheck(piece,moves,color,pos):
                 pass
         moves=moves2
     #if piece not a king
+    
     else:
         #if move happens will board state result in your color king check
         moves=doesThisMovePutTheKingInCheck(color,piece,moves, pieces, king)
 
     return moves
+    
 
 def on_press(key):
 
@@ -352,11 +362,6 @@ def game():
         move_completed=False #if true, give control to other player
         #king_in_check=Piece.King.kingCheck(turn) #is the king currently in check
         while not move_completed:
-
-            #TODO make work always
-
-            
-
             valid_square_selection=False 
             valid_move_selection=False
             
@@ -424,7 +429,7 @@ def game():
         '''
         #get where click
         #if white piece there, highlight possible moves
-            
+       
 
 
 if __name__=='__main__':
