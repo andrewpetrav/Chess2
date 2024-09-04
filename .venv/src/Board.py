@@ -2,7 +2,8 @@ import pygame
 from Surface import *
 #import Piece
 #from Piece import w_pieces,b_pieces
-square_size=WINDOWHEIGHT/8
+NUM_ROWS=4
+square_size=WINDOWHEIGHT/NUM_ROWS
 
 class Square(object):
     def __init__(self,piece,color,image,powerup,row,col,highlighted=False):
@@ -67,7 +68,7 @@ class Square(object):
     
     
 class Board(object):
-    def __init__(self,boardWidth=8,boardLength=8):
+    def __init__(self,boardWidth=NUM_ROWS,boardLength=NUM_ROWS):
         self.boardWidth,self.boardLength=boardWidth,boardLength
         self.board=[[0 for i in range(self.boardWidth)]for j in range(self.boardLength)]
     

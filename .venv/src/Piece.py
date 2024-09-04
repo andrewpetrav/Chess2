@@ -61,7 +61,7 @@ class Piece(ABC):
                                 open_squares.append((self.x,self.y-2))
                         except:
                             pass
-            if self.color==BLACK and self.y+1<8:
+            if self.color==BLACK and self.y+1<NUM_ROWS:
                 if theBoard[self.x][self.y+1]=='*': #if nobody on square ahead of it
                     open_squares.append((self.x,self.y+1)) 
                 try:
@@ -181,7 +181,7 @@ class Piece(ABC):
             #up right
             while True:
                 try:
-                    if(self.x+counter>-1 and self.x+counter<8 and self.y-counter>-1 and self.y-counter<8): #ensure no out of bounds
+                    if(self.x+counter>-1 and self.x+counter<NUM_ROWS and self.y-counter>-1 and self.y-counter<NUM_ROWS): #ensure no out of bounds
                         if(theBoard[self.x+counter][self.y-counter]!='*'):
                             if(theBoard[self.x+counter][self.y-counter][0]!=c):
                                 open_squares.append((self.x+counter,self.y-counter))
@@ -203,7 +203,7 @@ class Piece(ABC):
             #up left
             while True:
                 try:
-                    if(self.x-counter>-1 and self.x-counter<8 and self.y-counter>-1 and self.y-counter<8): #ensure no out of bounds
+                    if(self.x-counter>-1 and self.x-counter<NUM_ROWS and self.y-counter>-1 and self.y-counter<NUM_ROWS): #ensure no out of bounds
                         if(theBoard[self.x-counter][self.y-counter]!='*'):
                             if(theBoard[self.x-counter][self.y-counter][0]()!=c):
                                 open_squares.append((self.x-counter,self.y-counter))
@@ -224,7 +224,7 @@ class Piece(ABC):
             #down right
             while True:
                 try:
-                    if(self.x+counter>-1 and self.x+counter<8 and self.y+counter>-1 and self.y+counter<8): #ensure no out of bounds
+                    if(self.x+counter>-1 and self.x+counter<NUM_ROWS and self.y+counter>-1 and self.y+counter<NUM_ROWS): #ensure no out of bounds
                         if(theBoard[self.x+counter][self.y+counter]!='*'):
                             if(theBoard[self.x+counter][self.y+counter][0]!=c):
                                 open_squares.append((self.x+counter,self.y+counter))
@@ -244,7 +244,7 @@ class Piece(ABC):
             #down left
             while True:
                 try:
-                    if(self.x-counter>-1 and self.x-counter<8 and self.y+counter>-1 and self.y+counter<8): #ensure no out of bounds
+                    if(self.x-counter>-1 and self.x-counter<NUM_ROWS and self.y+counter>-1 and self.y+counter<NUM_ROWS): #ensure no out of bounds
                         if(theBoard[self.x-counter][self.y+counter]!='*'):
                             if(theBoard[self.x-counter][self.y+counter][0]!=c):
                                 open_squares.append((self.x-counter,self.y+counter))
@@ -319,7 +319,7 @@ class Piece(ABC):
                     if theBoard[self.x-1][self.y+1]=='*' or theBoard[self.x-1][self.y+1][0]!=c:
                         open_squares.append((self.x-1,self.y+1))
             #RIGHT
-            if self.x+1>7: 
+            if self.x+1>NUM_ROWS-1: 
                 pass
             else:
                 #directly right
@@ -334,7 +334,7 @@ class Piece(ABC):
                     if theBoard[self.x+1][self.y+1]=='*' or theBoard[self.x+1][self.y+1][0]!=c:
                         open_squares.append((self.x+1,self.y+1))
             #DOWN
-            if self.y+1>7:
+            if self.y+1>NUM_ROWS-1:
                 pass
             else:
                 if theBoard[self.x][self.y+1]=='*' or theBoard[self.x][self.y+1][0]!=c:
@@ -422,7 +422,7 @@ class Piece(ABC):
                     except:
                         pass
                     self.squaresAttacking=open_squares
-            if self.color==BLACK and self.y+1<8:
+            if self.color==BLACK and self.y+1<NUM_ROWS:
                 if not attack:
                     oneInFront=theBoard[self.x][self.y+1]
                     if oneInFront.get_piece()==None: #if nobody on square ahead of it
@@ -579,7 +579,7 @@ class Piece(ABC):
             #up right
             while True:
                 try:
-                    if(self.x+counter>-1 and self.x+counter<8 and self.y-counter>-1 and self.y-counter<8): #ensure no out of bounds
+                    if(self.x+counter>-1 and self.x+counter<NUM_ROWS and self.y-counter>-1 and self.y-counter<NUM_ROWS): #ensure no out of bounds
                         if(theBoard[self.x+counter][self.y-counter].get_piece()!=None):
                             if attack:
                                 open_squares.append(theBoard[self.x+counter][self.y-counter])
@@ -606,7 +606,7 @@ class Piece(ABC):
             #up left
             while True:
                 try:
-                    if(self.x-counter>-1 and self.x-counter<8 and self.y-counter>-1 and self.y-counter<8): #ensure no out of bounds
+                    if(self.x-counter>-1 and self.x-counter<NUM_ROWS and self.y-counter>-1 and self.y-counter<NUM_ROWS): #ensure no out of bounds
                         if(theBoard[self.x-counter][self.y-counter].get_piece()!=None):
                             if attack:
                                 open_squares.append(theBoard[self.x-counter][self.y-counter])
@@ -632,7 +632,7 @@ class Piece(ABC):
             #down right
             while True:
                 try:
-                    if(self.x+counter>-1 and self.x+counter<8 and self.y+counter>-1 and self.y+counter<8): #ensure no out of bounds
+                    if(self.x+counter>-1 and self.x+counter<NUM_ROWS and self.y+counter>-1 and self.y+counter<NUM_ROWS): #ensure no out of bounds
                         if(theBoard[self.x+counter][self.y+counter].get_piece()!=None):
                             if attack:
                                 open_squares.append(theBoard[self.x+counter][self.y+counter])
@@ -657,7 +657,7 @@ class Piece(ABC):
             #down left
             while True:
                 try:
-                    if(self.x-counter>-1 and self.x-counter<8 and self.y+counter>-1 and self.y+counter<8): #ensure no out of bounds
+                    if(self.x-counter>-1 and self.x-counter<NUM_ROWS and self.y+counter>-1 and self.y+counter<NUM_ROWS): #ensure no out of bounds
                         if(theBoard[self.x-counter][self.y+counter].get_piece()!=None):
                             if attack:
                                 open_squares.append(theBoard[self.x-counter][self.y+counter])
@@ -749,13 +749,13 @@ class Piece(ABC):
                     elif attack:
                         open_squares.append(theBoard[self.x-1][self.y-1])
                 #down left
-                if self.y+1<8:
+                if self.y+1<NUM_ROWS:
                     if not attack and theBoard[self.x-1][self.y+1].get_piece()==None or theBoard[self.x-1][self.y+1].get_piece_color()!=self.color:
                         open_squares.append(theBoard[self.x-1][self.y+1])
                     elif attack:
                         open_squares.append(theBoard[self.x-1][self.y+1])
             #RIGHT
-            if self.x+1>7: 
+            if self.x+1>NUM_ROWS-1: 
                 pass
             else:
                 #directly right
@@ -770,13 +770,13 @@ class Piece(ABC):
                     elif attack:
                         open_squares.append(theBoard[self.x+1][self.y-1])
                 #down right
-                if self.y+1<8:
+                if self.y+1<NUM_ROWS:
                     if not attack and theBoard[self.x+1][self.y+1].get_piece()==None or theBoard[self.x+1][self.y+1].get_piece_color()!=self.color:
                         open_squares.append(theBoard[self.x+1][self.y+1])
                     elif attack:
                         open_squares.append(theBoard[self.x+1][self.y+1])
             #DOWN
-            if self.y+1>7:
+            if self.y+1>NUM_ROWS-1:
                 pass
             else:
                 if not attack and theBoard[self.x][self.y+1].get_piece()==None or theBoard[self.x][self.y+1].get_piece_color()!=self.color:
@@ -784,7 +784,7 @@ class Piece(ABC):
                 elif attack:
                     open_squares.append(theBoard[self.x][self.y+1])
             #UP
-            if self.y-1<0:
+            if self.y-1<NUM_ROWS:
                 pass
             else:
                 if not attack and theBoard[self.x][self.y-1].get_piece()==None or theBoard[self.x][self.y-1].get_piece_color()!=self.color:
@@ -794,31 +794,34 @@ class Piece(ABC):
         
             #CASTLING 
             #TODO might need to add try except clause for potential out of bounds
-            if not attack and self.moved==False:
-                #WHITE
-                if self.color==WHITE:
-                    #King Side
-                    if theBoard[self.x+1][self.y].get_piece()==None and theBoard[self.x+2][self.y].get_piece()==None:  #if not being attacked
-                        if theBoard[self.x+1][self.y].isAttackedBlack==False and theBoard[self.x+2][self.y].isAttackedBlack==False: #if empty spaces
-                            if theBoard[self.x+3][self.y].get_piece() and theBoard[self.x+3][self.y].get_piece().t=='rook' and theBoard[self.x+3][self.y].get_piece().color==self.color and theBoard[self.x+3][self.y].get_piece().moved==False: #rook of same color that has not moved
-                                open_squares.append(theBoard[self.x+2][self.y])
-                    #Queen Side
-                    if theBoard[self.x-1][self.y].get_piece()==None and theBoard[self.x-2][self.y].get_piece()==None and theBoard[self.x-3][self.y].get_piece()==None: #if empty spaces
-                        if theBoard[self.x-1][self.y].isAttackedBlack==False and theBoard[self.x-2][self.y].isAttackedBlack==False and theBoard[self.x-3][self.y].isAttackedBlack==False: #if not being attacked
-                            if theBoard[self.x-4][self.y].get_piece() and theBoard[self.x-4][self.y].get_piece().t=='rook' and theBoard[self.x-4][self.y].get_piece().color==self.color and theBoard[self.x-4][self.y].get_piece().moved==False: #rook of same color that has not moved
-                                open_squares.append(theBoard[self.x-2][self.y])
-                #BLACK
-                elif self.color==BLACK:
-                    #King Side
-                    if theBoard[self.x+1][self.y].get_piece()==None and theBoard[self.x+2][self.y].get_piece()==None:  #if not being attacked
-                        if theBoard[self.x+1][self.y].isAttackedWhite==False and theBoard[self.x+2][self.y].isAttackedWhite==False: #if empty spaces
-                            if theBoard[self.x+3][self.y].get_piece() and theBoard[self.x+3][self.y].get_piece().t=='rook' and theBoard[self.x+3][self.y].get_piece().color==self.color and theBoard[self.x+3][self.y].get_piece().moved==False: #rook of same color that has not moved
-                                open_squares.append(theBoard[self.x+2][self.y])
-                    #Queen Side
-                    if theBoard[self.x-1][self.y].get_piece()==None and theBoard[self.x-2][self.y].get_piece()==None and theBoard[self.x-3][self.y].get_piece()==None: #if empty spaces
-                        if theBoard[self.x-1][self.y].isAttackedWhite==False and theBoard[self.x-2][self.y].isAttackedWhite==False and theBoard[self.x-3][self.y].isAttackedWhite==False: #if not being attacked
-                            if theBoard[self.x-4][self.y].get_piece() and theBoard[self.x-4][self.y].get_piece().t=='rook' and theBoard[self.x-4][self.y].get_piece().color==self.color and theBoard[self.x-4][self.y].get_piece().moved==False: #rook of same color that has not moved
-                                open_squares.append(theBoard[self.x-2][self.y])
+            try:
+                if not attack and self.moved==False:
+                    #WHITE
+                    if self.color==WHITE:
+                        #King Side
+                        if theBoard[self.x+1][self.y].get_piece()==None and theBoard[self.x+2][self.y].get_piece()==None:  #if not being attacked
+                            if theBoard[self.x+1][self.y].isAttackedBlack==False and theBoard[self.x+2][self.y].isAttackedBlack==False: #if empty spaces
+                                if theBoard[self.x+3][self.y].get_piece() and theBoard[self.x+3][self.y].get_piece().t=='rook' and theBoard[self.x+3][self.y].get_piece().color==self.color and theBoard[self.x+3][self.y].get_piece().moved==False: #rook of same color that has not moved
+                                    open_squares.append(theBoard[self.x+2][self.y])
+                        #Queen Side
+                        if theBoard[self.x-1][self.y].get_piece()==None and theBoard[self.x-2][self.y].get_piece()==None and theBoard[self.x-3][self.y].get_piece()==None: #if empty spaces
+                            if theBoard[self.x-1][self.y].isAttackedBlack==False and theBoard[self.x-2][self.y].isAttackedBlack==False and theBoard[self.x-3][self.y].isAttackedBlack==False: #if not being attacked
+                                if theBoard[self.x-4][self.y].get_piece() and theBoard[self.x-4][self.y].get_piece().t=='rook' and theBoard[self.x-4][self.y].get_piece().color==self.color and theBoard[self.x-4][self.y].get_piece().moved==False: #rook of same color that has not moved
+                                    open_squares.append(theBoard[self.x-2][self.y])
+                    #BLACK
+                    elif self.color==BLACK:
+                        #King Side
+                        if theBoard[self.x+1][self.y].get_piece()==None and theBoard[self.x+2][self.y].get_piece()==None:  #if not being attacked
+                            if theBoard[self.x+1][self.y].isAttackedWhite==False and theBoard[self.x+2][self.y].isAttackedWhite==False: #if empty spaces
+                                if theBoard[self.x+3][self.y].get_piece() and theBoard[self.x+3][self.y].get_piece().t=='rook' and theBoard[self.x+3][self.y].get_piece().color==self.color and theBoard[self.x+3][self.y].get_piece().moved==False: #rook of same color that has not moved
+                                    open_squares.append(theBoard[self.x+2][self.y])
+                        #Queen Side
+                        if theBoard[self.x-1][self.y].get_piece()==None and theBoard[self.x-2][self.y].get_piece()==None and theBoard[self.x-3][self.y].get_piece()==None: #if empty spaces
+                            if theBoard[self.x-1][self.y].isAttackedWhite==False and theBoard[self.x-2][self.y].isAttackedWhite==False and theBoard[self.x-3][self.y].isAttackedWhite==False: #if not being attacked
+                                if theBoard[self.x-4][self.y].get_piece() and theBoard[self.x-4][self.y].get_piece().t=='rook' and theBoard[self.x-4][self.y].get_piece().color==self.color and theBoard[self.x-4][self.y].get_piece().moved==False: #rook of same color that has not moved
+                                    open_squares.append(theBoard[self.x-2][self.y])
+            except Exception as e:
+                print(e)
                 r'''
                 #King Side
                 if theBoard[self.x+1][self.y].get_piece()==None and theBoard[self.x+2][self.y].get_piece()==None: #if empty spaces
@@ -954,10 +957,10 @@ BLACK=pygame.Color(0,0,0)
 
 #Pieces
 ##WHITE
-w_k=King(WHITE,board.board[0][7],wki)
-w_q=Queen(WHITE,board.board[3][7],wqi)
-b_q=Queen(BLACK,board.board[3][6],bqi)
-b_k=King(BLACK,board.board[4][4],bki)
+w_k=King(WHITE,board.board[0][2],wki)
+w_q=Queen(WHITE,board.board[1][1],wqi)
+b_q=Queen(BLACK,board.board[1][0],bqi)
+b_k=King(BLACK,board.board[3][0],bki)
 
 w_pieces=[w_k]+[w_q]
 b_pieces=[b_q]+[b_k]

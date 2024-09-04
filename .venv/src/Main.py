@@ -249,9 +249,12 @@ def kingInCheck(b,color): #checks to see if move puts/stops if OWN king is in ch
  '''   
 
 def kingInCheck(color,boardStringCopy,king,pieces):
+    print()
+    print()
+    print()
     for p in pieces:
         squaresThatAreBeingAttacked=p.get_moves(board,True,boardStringCopy)
-
+        print(squaresThatAreBeingAttacked)
         for (row,col) in squaresThatAreBeingAttacked: #TODO make get_moves compatible with returning this for boardStringCopy
             if (row,col)==(king.x,king.y):
                 return True
@@ -267,14 +270,11 @@ def doesThisMovePutTheKingInCheck(color,piece,moves,pieces,king):
     movesLegal=[]
     #print()
     #print(moves)
-    print('------')
     for move in moves: #iterate through each move that selected piece can make
         #print(type(move))
         boardStringCopy=copy.deepcopy(boardString)
         boardStringCopy[piece.y][piece.x]='*' #set old square as empty
         boardStringCopy[move.col][move.row]=piece.string #move piece to new square
-        print(boardStringCopy, move.col, move.row)
-        print()
         doesThisMoveResultInCheck=kingInCheck(color, boardStringCopy,king,pieces)
         if doesThisMoveResultInCheck: #if moving this piece to LOCATION results in self-check
             pass #don't add it to legal moves
