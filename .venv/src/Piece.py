@@ -4,7 +4,7 @@ from Setup import *
 from Board import *
 
 class Piece(ABC):
-    def __init__(self,color,square,t,image,moved=False):
+    def __init__(self,color,square,t,image,tag,moved=False):
         self.x=square.col
         self.y=square.row
         self.color=color
@@ -12,7 +12,7 @@ class Piece(ABC):
         self.t=t #type
         self.image=image
         self.moved=moved
-        
+        self.tag=tag
         self.squaresCanMoveTo=[] #what squares this piece can move to
         self.squaresAttacking=[] #what squares is this piece attacking
         self.piecesAttacking=[] #what pieces is this piece attacking (friendly included)
@@ -376,6 +376,8 @@ class Piece(ABC):
             theBoard=board.board
         else:
             theBoard=boardStringCopy
+            if boardStringCopy[self.y][self.x]!=self.tag: #if piece taken in this universe...
+                return []
             #if just need (row, col) of each square can move
             return self.get_moves_string(theBoard)
         #if attack =TRUE then return every square that the piece controls, regardless of if it can actually move there or not
@@ -886,53 +888,53 @@ class Piece(ABC):
         self.piecesAttacking=temp
     '''
 class Pawn(Piece):
-    def __init__(self,color,square,image):
+    def __init__(self,color,square,image,tag):
         self.type='pawn'
         if color==WHITE:
             self.string='Wpawn'
         else:
             self.string='Bpawn'
-        super().__init__(color,square,self.type,image)
+        super().__init__(color,square,self.type,image,tag)
         
 class Knight(Piece):
-    def __init__(self,color,square,image):
+    def __init__(self,color,square,image,tag):
         self.type='knight'
         if color==WHITE:
             self.string='Wnight'
         else:
             self.string='Bnight'
-        super().__init__(color,square,self.type,image)
+        super().__init__(color,square,self.type,image,tag)
         
 class Bishop(Piece):
-    def __init__(self,color,square,image):
+    def __init__(self,color,square,image,tag):
         self.type='bishop'
         if color==WHITE:
             self.string='Wbishop'
         else:
             self.string='Bbishop'
-        super().__init__(color,square,self.type,image)
+        super().__init__(color,square,self.type,image,tag)
         
 class Rook(Piece):
-    def __init__(self,color,square,image):
+    def __init__(self,color,square,image,tag):
         self.type='rook'
         if color==WHITE:
             self.string='Wrook'
         else:
             self.string='Brook'
         self.moved=False
-        super().__init__(color,square,self.type,image)
+        super().__init__(color,square,self.type,image,tag)
         
 class Queen(Piece):
-    def __init__(self,color,square,image):
+    def __init__(self,color,square,image,tag):
         self.type='queen'
         if color==WHITE:
             self.string='Wqueen'
         else:
             self.string='Bqueen'
-        super().__init__(color,square,self.type,image)
+        super().__init__(color,square,self.type,image,tag)
         
 class King(Piece):
-    def __init__(self,color,square,image, inCheck=False):
+    def __init__(self,color,square,image,tag,inCheck=False):
         self.type='king'
         if color==WHITE:
             self.string='Wking'
@@ -940,7 +942,7 @@ class King(Piece):
             self.string='Bking'
         self.inCheck=inCheck
         self.moved=False
-        super().__init__(color,square,self.type,image)
+        super().__init__(color,square,self.type,image,tag)
 
     
         
@@ -957,10 +959,10 @@ BLACK=pygame.Color(0,0,0)
 
 #Pieces
 ##WHITE
-w_k=King(WHITE,board.board[0][2],wki)
-w_q=Queen(WHITE,board.board[1][1],wqi)
-b_q=Queen(BLACK,board.board[1][0],bqi)
-b_k=King(BLACK,board.board[3][0],bki)
+w_k=King(WHITE,board.board[0][2],wki,'Wking')
+w_q=Queen(WHITE,board.board[1][1],wqi,'Wqueen')
+b_q=Queen(BLACK,board.board[1][0],bqi,'Bqueen')
+b_k=King(BLACK,board.board[3][0],bki,'Bking')
 
 w_pieces=[w_k]+[w_q]
 b_pieces=[b_q]+[b_k]
