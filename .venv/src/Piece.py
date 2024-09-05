@@ -845,9 +845,10 @@ class Piece(ABC):
         '''
         #open_squares=checkCheckSquares(open_squares,self.color,board)
         if attack==False:
+            #self.squaresCanMoveTo=None
             self.squaresCanMoveTo=open_squares
         elif attack==True:
-
+            #self.squaresAttacking=None
             self.squaresAttacking=open_squares
             return open_squares #not 100% sure why this is here
     

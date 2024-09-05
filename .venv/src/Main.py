@@ -77,11 +77,13 @@ def move_piece(sq,moves,pos,b,checkCheck=False):
                     #SHORT
                     if col-sq.col>0:
                         if not checkCheck: #if not checking for check, update normally
+
                             boardString[row][5]=boardString[row][7]
                             boardString[row][6]=boardString[row][4]
                             boardString[row][7]='*'
                             boardString[row][4]='*'
-                        
+
+
                             sq.piece.set_pos(6,row) #update what position king will be on
                             b.board[7][row].piece.set_pos(5,row) #update what position rook will be on
                             b.board[7][row].piece.set_moved() #set rook moved
@@ -95,11 +97,13 @@ def move_piece(sq,moves,pos,b,checkCheck=False):
                     #LONG
                     else:
                         if not checkCheck: #if not checking for check, update normally
+
                             boardString[row][3]=boardString[row][0]
                             boardString[row][2]=boardString[row][4]
                             boardString[row][0]='*'
                             boardString[row][4]='*'
-                        
+
+
                             sq.piece.set_pos(2,row) #update what position king will be on
                             b.board[0][row].piece.set_pos(3,row) #update what position rook will be on
                             b.board[0][row].piece.set_moved() #set rook moved
@@ -116,14 +120,13 @@ def move_piece(sq,moves,pos,b,checkCheck=False):
                 '''
                 
                 #PROMOTION
-                if sq.piece.type=='pawn' and (row==0 or row==7):
+                if sq.piece.type=='pawn' and (row==0 or row==NUM_ROWS-1):
                     if not checkCheck: #if not checking for check, update normally
-                        if (row==0 and sq.piece.color==WHITE) or (row==7 and sq.piece.color==BLACK): 
+                        if (row==0 and sq.piece.color==WHITE) or (row==NUM_ROWS-1 and sq.piece.color==BLACK): 
                             returnVal=promotionScreen(sq.piece.color,col,row)
                             if returnVal==None:
                                 return False
                             else:
-                                boardString[row][col]=returnVal.string
                                 boardString[sq.piece.y][sq.piece.x]='*'
 
                                 all_pieces.remove(b.board[col][row].piece)
@@ -247,12 +250,12 @@ def kingInCheck(b,color): #checks to see if move puts/stops if OWN king is in ch
             return True
     return False
  '''   
-
 def kingInCheck(color,boardStringCopy,king,pieces,step0=False):
     if step0:
         for p in pieces:
             for m in p.squaresAttacking:
                 if (m.row,m.col)==(king.row,king.col):
+                    print(p.tag, m.row,m.col)
                     return True
         return False
     else:
@@ -326,6 +329,7 @@ def checkForCheck(piece,moves,color,pos,pieces,king):
     return moves
     '''
     
+
     #TODO: add checks for castling (both ways)
     if piece.t=='king':
         moves2=[]
@@ -381,7 +385,7 @@ def game():
             piece.get_moves(board)
             piece.get_moves(board,attack=True)
         #Step 0.5: Check if own king is in check
-        if kingInCheck(turn,boardString,king,pieces):
+        if kingInCheck(turn,boardString,king,pieces,True):
             print(turn,' KING IS IN CHECK')
         while not move_completed:
             valid_square_selection=False 
