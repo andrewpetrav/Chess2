@@ -249,13 +249,28 @@ def kingInCheck(b,color): #checks to see if move puts/stops if OWN king is in ch
  '''   
 
 def kingInCheck(color,boardStringCopy,king,pieces):
-
     for p in pieces:
-        squaresThatAreBeingAttacked=p.get_moves(board,True,boardStringCopy)
-        for (row,col) in squaresThatAreBeingAttacked: #TODO make get_moves compatible with returning this for boardStringCopy
-            if (row,col)==(king.y,king.x):
+        for m in p.squaresAttacking:
+            if (m.row,m.col)==(king.row,king.col):
                 return True
     return False
+    r'''
+    for p in pieces:
+        squaresThatAreBeingAttacked=p.get_moves(board,True,boardStringCopy)
+
+        for s in squaresThatAreBeingAttacked: #TODO make get_moves compatible with returning this for boardStringCopy
+            if iDontUnderstand:
+                a=s[0]
+                b=s[1]
+            else:
+                a=s[1]
+                b=s[0]
+            if (a,b)==(king.y,king.x):
+                for m in p.squaresCanMoveTo:
+                    print(m.row,m.col,'---->',king.y,king.x)
+                return True
+    return False
+    '''
 
     r'''
         for sq in squaresThatAreBeingAttacked:
@@ -267,21 +282,12 @@ def doesThisMovePutTheKingInCheck(color,piece,moves,pieces,king):
     movesLegal=[]
     #print()
     #print(moves)
-    print()
-    print()
-    print(piece.type, king.color)
-    print()
-    print()
     for move in moves: #iterate through each move that selected piece can make
         #print(type(move))
         boardStringCopy=copy.deepcopy(boardString)
         boardStringCopy[piece.y][piece.x]='*' #set old square as empty
         boardStringCopy[move.row][move.col]=piece.string #move piece to new square
-        print(piece.type,'->',move.col,move.row)
-        print(boardStringCopy)
         doesThisMoveResultInCheck=kingInCheck(color, boardStringCopy,king,pieces)
-        print(doesThisMoveResultInCheck)
-        print()
         if doesThisMoveResultInCheck: #if moving this piece to LOCATION results in self-check
             pass #don't add it to legal moves
         else: #otherwise
@@ -359,6 +365,8 @@ def on_press(key):
 
 def game():
     turn=WHITE
+    king=w_k
+    pieces=b_pieces
     
     #listener = keyboard.Listener(on_press=on_press)
     #listener.start()  # start to listen on a separate thread
@@ -367,14 +375,17 @@ def game():
     while True:
         move_completed=False #if true, give control to other player
         #king_in_check=Piece.King.kingCheck(turn) #is the king currently in check
+        #Step 0: Get move of every piece on board
+        for piece in all_pieces:
+            piece.get_moves(board)
+            piece.get_moves(board,attack=True)
+        #Step 0.5: Check if own king is in check
+        if kingInCheck(turn,boardString,king,pieces):
+            print(turn,' KING IS IN CHECK')
         while not move_completed:
             valid_square_selection=False 
             valid_move_selection=False
             
-            #Step 0: Get move of every piece on board
-            for piece in all_pieces:
-                piece.get_moves(board)
-                piece.get_moves(board,attack=True)
             #Step 1: Loop until valid square selected to move
             while not valid_square_selection:
                 for event in pygame.event.get():
@@ -425,8 +436,12 @@ def game():
         #switch turns
         if turn==WHITE:
             turn=BLACK
+            king=b_k
+            pieces=w_pieces
         else:
             turn=WHITE
+            king=w_k
+            pieces=b_pieces
 
         r'''   visualize boardString
         for row in boardString:

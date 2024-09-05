@@ -7,6 +7,8 @@ class Piece(ABC):
     def __init__(self,color,square,t,image,tag,moved=False):
         self.x=square.col
         self.y=square.row
+        self.row=self.y
+        self.col=self.x
         self.color=color
         #self.square=square
         self.t=t #type
