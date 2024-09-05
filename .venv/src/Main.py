@@ -248,12 +248,19 @@ def kingInCheck(b,color): #checks to see if move puts/stops if OWN king is in ch
     return False
  '''   
 
-def kingInCheck(color,boardStringCopy,king,pieces):
-    for p in pieces:
-        for m in p.squaresAttacking:
-            if (m.row,m.col)==(king.row,king.col):
-                return True
-    return False
+def kingInCheck(color,boardStringCopy,king,pieces,step0=False):
+    if step0:
+        for p in pieces:
+            for m in p.squaresAttacking:
+                if (m.row,m.col)==(king.row,king.col):
+                    return True
+        return False
+    else:
+        for p in pieces:
+            for m in p.get_moves(board,False,boardStringCopy):
+                if m==(king.col,king.row):
+                    return True
+        return False
     r'''
     for p in pieces:
         squaresThatAreBeingAttacked=p.get_moves(board,True,boardStringCopy)
@@ -312,14 +319,8 @@ def doesThisMovePutTheKingInCheck(color,piece,moves,pieces,king):
         
     #print(pieces)
 
-def checkForCheck(piece,moves,color,pos):
+def checkForCheck(piece,moves,color,pos,pieces,king):
     #returns moves the would not result in self-check
-    if color==WHITE:
-        pieces=b_pieces
-        king=w_k
-    elif color==BLACK:
-        pieces=w_pieces
-        king=b_k
     r''''
     moves=doesThisMovePutTheKingInCheck(color,piece,moves, pieces, king)
     return moves
@@ -397,7 +398,7 @@ def game():
                             break
             #Step 2: Get moves of piece and highlight
             moves=sq.piece.squaresCanMoveTo#get_moves(board) #get moves of piece at selected square
-            moves=checkForCheck(sq.piece,moves,turn,pos)
+            moves=checkForCheck(sq.piece,moves,turn,pos,pieces,king)
             sq.set_selected()
         
             if moves: #highlight
