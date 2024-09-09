@@ -28,7 +28,45 @@ boardString=[
         ['*','*','*','*','*','*','*','*'],
         ['*','*','*','*','*','*','*','*']
     ]
+#Pieces
+##WHITE
+w_k=King(WHITE,board.board[0][2],wki,'Wking')
+w_q=Queen(WHITE,board.board[1][1],wqi,'Wqueen')
+w_p=Pawn(WHITE,board.board[1][2],wpi,'Wpawn')
+b_q=Queen(BLACK,board.board[1][0],bqi,'Bqueen')
+b_k=King(BLACK,board.board[3][0],bki,'Bking')
 
+w_pieces=[w_k]+[w_q]+[w_p]
+b_pieces=[b_q]+[b_k]
+
+r'''
+w_p=[Pawn(WHITE,board.board[0][6],wpi),Pawn(WHITE,board.board[1][6],wpi),Pawn(WHITE,board.board[2][6],wpi),Pawn(WHITE,board.board[3][6],wpi),
+     Pawn(WHITE,board.board[4][6],wpi),Pawn(WHITE,board.board[5][6],wpi),Pawn(WHITE,board.board[6][6],wpi),Pawn(WHITE,board.board[7][6],wpi)]
+w_n=[Knight(WHITE,board.board[1][7],wni),Knight(WHITE,board.board[6][7],wni)]
+w_b=[Bishop(WHITE,board.board[2][7],wbi),Bishop(WHITE,board.board[5][7],wbi)]
+w_r=[Rook(WHITE,board.board[0][7],wri),Rook(WHITE,board.board[7][7],wri)]
+w_q=[Queen(WHITE,board.board[3][7],wqi)]
+w_k=King(WHITE,board.board[4][7],wki)
+w_k_l=[w_k]
+w_pieces=w_p+w_n+w_b+w_r+w_q+w_k_l
+'''
+
+#BLACK
+r'''
+b_p=[Pawn(BLACK,board.board[0][1],bpi),Pawn(BLACK,board.board[1][1],bpi),Pawn(BLACK,board.board[2][1],bpi),Pawn(BLACK,board.board[3][1],bpi),
+     Pawn(BLACK,board.board[4][1],bpi),Pawn(BLACK,board.board[5][1],bpi),Pawn(BLACK,board.board[6][1],bpi),Pawn(BLACK,board.board[7][1],bpi)]
+b_n=[Knight(BLACK,board.board[1][0],bni),Knight(BLACK,board.board[6][0],bni)]
+b_b=[Bishop(BLACK,board.board[2][0],bbi),Bishop(BLACK,board.board[5][0],bbi)]
+b_r=[Rook(BLACK,board.board[0][0],bri),Rook(BLACK,board.board[7][0],bri)]
+b_q=[Queen(BLACK,board.board[3][0],bqi)]
+b_k=King(BLACK,board.board[4][0],bki)
+b_k_l=[b_k]
+b_pieces=b_p+b_n+b_b+b_r+b_q+b_k_l
+'''
+
+all_pieces=w_pieces+b_pieces #all pieces
+#all_pieces=[Pawn(WHITE,board.board[3][1],wpi),Pawn(BLACK,board.board[3][6],bpi),Pawn(WHITE,board.board[4][1],wpi)]
+    
 def main():
     #Get board in original state
     ##game_type('traditional') #for now, all games will be traditional
@@ -59,58 +97,56 @@ def select_square(turn,pos):
             return None
         
 
-def move_piece(sq,moves,pos,b,checkCheck=False):
+def move_piece(sq,moves,pos,b,returnPieceTaken=False):
+    global w_pieces
+    global b_pieces
+    global all_pieces
+    global boardString
     #pos is where you are moving the piece to 
     moved=False
     while not moved:
         col=int(pos[0]/square_size)
         row=int(pos[1]/square_size)
+        current_piece=b.board[col][row].piece
         #=int(pos[0]/square_size)
         try:
-            if b.board[col][row] in moves or checkCheck:
+            if b.board[col][row] in moves:
                 #Special moves such as promotion, castling, en passant, that involve changing more than one piece (not counting captures) or image of piece (promotion)
-                
                 
                 #CASTLING
                 if sq.piece.type =='king' and abs(col-sq.col)>1:
                     sq.piece.set_moved() #set king moved
                     #SHORT
                     if col-sq.col>0:
-                        if not checkCheck: #if not checking for check, update normally
-
-                            boardString[row][5]=boardString[row][7]
-                            boardString[row][6]=boardString[row][4]
-                            boardString[row][7]='*'
-                            boardString[row][4]='*'
+                        boardString[row][5]=boardString[row][7]
+                        boardString[row][6]=boardString[row][4]
+                        boardString[row][7]='*'
+                        boardString[row][4]='*'
 
 
-                            sq.piece.set_pos(6,row) #update what position king will be on
-                            b.board[7][row].piece.set_pos(5,row) #update what position rook will be on
-                            b.board[7][row].piece.set_moved() #set rook moved
-                            b.board[5][row].set_piece(board.board[7][row].piece)
-                            b.board[7][row].set_piece(None)
-                            b.board[6][row].set_piece(sq.piece)
-                            sq.set_piece(None)
-                        elif checkCheck: #if just checking if position results in check
-                            pass
+                        sq.piece.set_pos(6,row) #update what position king will be on
+                        b.board[7][row].piece.set_pos(5,row) #update what position rook will be on
+                        b.board[7][row].piece.set_moved() #set rook moved
+                        b.board[5][row].set_piece(board.board[7][row].piece)
+                        b.board[7][row].set_piece(None)
+                        b.board[6][row].set_piece(sq.piece)
+                        sq.set_piece(None)
 
                     #LONG
                     else:
-                        if not checkCheck: #if not checking for check, update normally
-
-                            boardString[row][3]=boardString[row][0]
-                            boardString[row][2]=boardString[row][4]
-                            boardString[row][0]='*'
-                            boardString[row][4]='*'
+                        boardString[row][3]=boardString[row][0]
+                        boardString[row][2]=boardString[row][4]
+                        boardString[row][0]='*'
+                        boardString[row][4]='*'
 
 
-                            sq.piece.set_pos(2,row) #update what position king will be on
-                            b.board[0][row].piece.set_pos(3,row) #update what position rook will be on
-                            b.board[0][row].piece.set_moved() #set rook moved
-                            b.board[3][row].set_piece(board.board[0][row].piece)
-                            b.board[0][row].set_piece(None)
-                            b.board[2][row].set_piece(sq.piece)
-                            sq.set_piece(None)
+                        sq.piece.set_pos(2,row) #update what position king will be on
+                        b.board[0][row].piece.set_pos(3,row) #update what position rook will be on
+                        b.board[0][row].piece.set_moved() #set rook moved
+                        b.board[3][row].set_piece(board.board[0][row].piece)
+                        b.board[0][row].set_piece(None)
+                        b.board[2][row].set_piece(sq.piece)
+                        sq.set_piece(None)
                     return True
                 #EN PASSANT
                 r'''
@@ -121,47 +157,46 @@ def move_piece(sq,moves,pos,b,checkCheck=False):
                 
                 #PROMOTION
                 if sq.piece.type=='pawn' and (row==0 or row==NUM_ROWS-1):
-                    if not checkCheck: #if not checking for check, update normally
-                        if (row==0 and sq.piece.color==WHITE) or (row==NUM_ROWS-1 and sq.piece.color==BLACK): 
-                            returnVal=promotionScreen(sq.piece.color,col,row)
-                            if returnVal==None:
-                                return False
-                            else:
-                                boardString[sq.piece.y][sq.piece.x]='*'
+                    if (row==0 and sq.piece.color==WHITE) or (row==NUM_ROWS-1 and sq.piece.color==BLACK): 
+                        returnVal=promotionScreen(sq.piece.color,col,row)
+                        if returnVal==None:
+                            return False
+                        else:
+                            boardString[sq.piece.y][sq.piece.x]='*'
 
-                                all_pieces.remove(b.board[col][row].piece)
-                                if sq.piece.color==WHITE:
-                                    b_pieces.remove(b.board[col][row].piece)
-                                elif sq.piece.color==BLACK:
-                                    w_pieces.remove(b.board[col][row].piece)
-                                b.board[col][row].set_piece(returnVal)
-                                sq.set_piece(None)
-                            return True
+                            all_pieces.remove(b.board[col][row].piece)
+                            if sq.piece.color==WHITE:
+                                b_pieces.remove(b.board[col][row].piece)
+                            elif sq.piece.color==BLACK:
+                                w_pieces.remove(b.board[col][row].piece)
+                            b.board[col][row].set_piece(returnVal)
+                            sq.set_piece(None)
+                        return True
                     
                 #NOT SPECIAL
                 else:
                     #CAPTURING
-                    
-                    if not checkCheck: #if not checking for check, update normally
-                        #updated Moved attribute on piece
-                        boardString[row][col]=boardString[sq.piece.y][sq.piece.x]
-                        boardString[sq.piece.y][sq.piece.x]='*'
-                    
-                    
-                        sq.piece.set_moved()
-                        sq.piece.set_pos(col,row) #update what position it'll be on
-                        board.board[col][row].set_piece(sq.piece)
-                        sq.set_piece(None)
+                    if current_piece is not None:
+                        if current_piece.color==WHITE:
+                            w_pieces.remove(current_piece)
+                        elif current_piece.color==BLACK:
+                            b_pieces.remove(current_piece)
+                            
+                    boardString[row][col]=boardString[sq.piece.y][sq.piece.x]
+                    boardString[sq.piece.y][sq.piece.x]='*'
+                    sq.piece.set_moved()
+                    sq.piece.set_pos(col,row) #update what position it'll be on
+                    board.board[col][row].set_piece(sq.piece)
+                    sq.set_piece(None)
+
 
                 return True
             else:
                 return False
         except Exception as e:   
-            print(e)
             return False
-    if checkCheck:
-        return b.board
     return True
+
 
 def promotionScreen(color,col,row):
     #INPUT: color of piece
@@ -210,6 +245,7 @@ def promotionScreen(color,col,row):
                     return None
 
 def get_all_moves(): #calculates every possible move 
+    global all_pieces
     all_moves={} #piece: all the moves it can make
     #should each square hold the data about who is attacking it? or just
     #what color
@@ -255,7 +291,7 @@ def kingInCheck(color,boardStringCopy,king,pieces,step0=False):
         for p in pieces:
             for m in p.squaresAttacking:
                 if (m.row,m.col)==(king.row,king.col):
-                    print(p.tag, m.row,m.col)
+                    #print(p.tag, m.col,m.row)
                     return True
         return False
     else:
@@ -361,14 +397,17 @@ def on_press(key):
             sys.exit()
             quit()
         except:
-            print(sys.exc_info()[0])
+            pass
+            #print(sys.exc_info()[0])
     try:
         k = key.char  # single-char keys
     except:
         k = key.name  # other keys
 
-
 def game():
+    global w_pieces
+    global b_pieces
+    global all_pieces
     turn=WHITE
     king=w_k
     pieces=b_pieces
@@ -384,9 +423,15 @@ def game():
         for piece in all_pieces:
             piece.get_moves(board)
             piece.get_moves(board,attack=True)
+            print(piece.tag,piece.col,piece.row)
+        print()
         #Step 0.5: Check if own king is in check
         if kingInCheck(turn,boardString,king,pieces,True):
-            print(turn,' KING IS IN CHECK')
+            if turn==pygame.Color(255,255,255):
+                a='WHITE'
+            else:
+                a='BLACK'
+            print(a,' KING IS IN CHECK')
         while not move_completed:
             valid_square_selection=False 
             valid_move_selection=False
@@ -415,7 +460,6 @@ def game():
             
             #sq.piece.get_attacking_squares(board)
             #sq.piece.get_attacking_pieces(board)
-            
             #Step 3: Loop until valid square selected to move to - if invalid square selected, back to Step 1
             while not valid_move_selection and not loop_completed:
                 for event in pygame.event.get():
@@ -436,7 +480,6 @@ def game():
             
             #move_piece(sq,moves)
             #move completed
-            
         #Step 4: Switch turns
         #switch turns
         if turn==WHITE:
@@ -447,6 +490,8 @@ def game():
             turn=WHITE
             king=w_k
             pieces=b_pieces
+        #Step 5: Update Pieces
+        all_pieces=w_pieces+b_pieces
 
         r'''   visualize boardString
         for row in boardString:
