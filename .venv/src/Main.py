@@ -186,8 +186,9 @@ def move_piece(sq,moves,pos,b,returnPieceTaken=False):
                     boardString[sq.piece.y][sq.piece.x]='*'
                     sq.piece.set_moved()
                     sq.piece.set_pos(col,row) #update what position it'll be on
-                    board.board[col][row].set_piece(sq.piece)
+                    b.board[col][row].set_piece(sq.piece)
                     sq.set_piece(None)
+                    
 
 
                 return True
@@ -290,7 +291,7 @@ def kingInCheck(color,boardStringCopy,king,pieces,step0=False):
     if step0:
         for p in pieces:
             for m in p.squaresAttacking:
-                if (m.row,m.col)==(king.row,king.col):
+                if tuple([m.col,m.row])==(king.get_pos()):
                     #print(p.tag, m.col,m.row)
                     return True
         return False
@@ -423,8 +424,7 @@ def game():
         for piece in all_pieces:
             piece.get_moves(board)
             piece.get_moves(board,attack=True)
-            print(piece.tag,piece.col,piece.row)
-        print()
+
         #Step 0.5: Check if own king is in check
         if kingInCheck(turn,boardString,king,pieces,True):
             if turn==pygame.Color(255,255,255):
