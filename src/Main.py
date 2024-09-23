@@ -14,7 +14,6 @@ from Setup import *
 import pickle
 from pynput import keyboard
 
-
 pygame.init()
 
 #GLOBAL VARIABLES HERE
