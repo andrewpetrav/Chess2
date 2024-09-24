@@ -26,10 +26,12 @@ class Piece(ABC):
     def set_pos(self,col,row):
         self.x=col
         self.y=row
+    def get_pos(self):
+        return(self.x,self.y)
     def get_attacked_by_pieces(self,piece):
         #passes piece that is moving 
         pass
-    def get_moves_string(self,board):
+    def get_moves_string(self,board,attack=False):
         #returns list of open squares in [(row, col), (row, col), ...] form
         open_squares=[]
         theBoard=board
@@ -38,53 +40,78 @@ class Piece(ABC):
             c='W'
         elif self.color==BLACK:
             c='B'
-            
+        
         #add a check to see if king is in check first before anything else
         #for every move, make sure it doesn't put own king in check
         if self.t=='pawn':
             if self.color==WHITE and self.y-1>-1: 
-                if theBoard[self.x][self.y-1]=='*': #if nobody on square ahead of it
-                    open_squares.append((self.x,self.y-1)) 
-                try:
-                    if theBoard[self.x-1][self.y-1] != '*' and theBoard[self.x-1][self.y-1][0]!=c: #can take to left?
-                        open_squares.append((self.x-1,self.y-1))
-                except:
-                    pass
-                try:
-                    if theBoard[self.x+1][self.y-1] != '*' and theBoard[self.x+1][self.y-1][0]!=c: #can take to right?
-                        open_squares.append((self.x+1,self.y-1))
-                except:
-                    pass
-                if self.moved==False: #if first move for pawn
-                    #check if on correct square
-                    if self.color==WHITE and self.y==6 or self.color==BLACK and self.y==1:
-                        try:
-                            if theBoard[self.x][self.y-2]=='*': #nobody two squares in front
-                                open_squares.append((self.x,self.y-2))
-                        except:
-                            pass
-            if self.color==BLACK and self.y+1<NUM_ROWS:
-                if theBoard[self.x][self.y+1]=='*': #if nobody on square ahead of it
-                    open_squares.append((self.x,self.y+1)) 
-                try:
-                    if theBoard[self.x-1][self.y+1] !='*' and theBoard[self.x-1][self.y+1][0]!=c: #can take to left?
-                        open_squares.append((self.x-1,self.y+1))
-                except:
-                    pass
-                try:
-                    if theBoard[self.x+1][self.y+1] !='*' and theBoard[self.x+1][self.y+1][0]!=c: #can take to right?
-                        open_squares.append((self.x+1,self.y+1))
-                except:
-                    pass
-                if self.moved==False: #if first move for pawn
+                if not attack:
+                    if theBoard[self.x][self.y-1]=='*': #if nobody on square ahead of it
+                        open_squares.append((self.x,self.y-1)) 
                     try:
-                        if theBoard[self.x][self.y+2]=='*': #nobody two squares in front
-                            open_squares.append((self.x,self.y+2))
+                        if theBoard[self.x-1][self.y-1] != '*' and theBoard[self.x-1][self.y-1][0]!=c: #can take to left?
+                            open_squares.append((self.x-1,self.y-1))
                     except:
                         pass
-               
-            #return open_squares
-     
+                    try:
+                        if theBoard[self.x+1][self.y-1] != '*' and theBoard[self.x+1][self.y-1][0]!=c: #can take to right?
+                            open_squares.append((self.x+1,self.y-1))
+                    except:
+                        pass
+                    if self.moved==False: #if first move for pawn
+                        #check if on correct square
+                        if self.color==WHITE and self.y==6 or self.color==BLACK and self.y==1:
+                            try:
+                                if theBoard[self.x][self.y-2]=='*': #nobody two squares in front
+                                    open_squares.append((self.x,self.y-2))
+                            except:
+                                pass
+                elif attack:
+                    try:
+                        #attacking left?
+                        if theBoard[self.x-1][self.y-1].size: #does it exist
+                            open_squares.append((self.x-1)(self.y-1))
+                    except:
+                        pass
+                    try:
+                        #attacking right?
+                        if theBoard[self.x+1][self.y-1].size: #does it exist
+                            open_squares.append((self.x+1)(self.y-1))
+                    except:
+                        pass
+            if self.color==BLACK and self.y+1<NUM_ROWS:
+                if not attack:
+                    if theBoard[self.x][self.y+1]=='*': #if nobody on square ahead of it
+                        open_squares.append((self.x,self.y+1)) 
+                    try:
+                        if theBoard[self.x-1][self.y+1] !='*' and theBoard[self.x-1][self.y+1][0]!=c: #can take to left?
+                            open_squares.append((self.x-1,self.y+1))
+                    except:
+                        pass
+                    try:
+                        if theBoard[self.x+1][self.y+1] !='*' and theBoard[self.x+1][self.y+1][0]!=c: #can take to right?
+                            open_squares.append((self.x+1,self.y+1))
+                    except:
+                        pass
+                    if self.moved==False: #if first move for pawn
+                        try:
+                            if theBoard[self.x][self.y+2]=='*': #nobody two squares in front
+                                open_squares.append((self.x,self.y+2))
+                        except:
+                            pass
+                elif attack:
+                    try:
+                        #attacking left?
+                        if theBoard[self.x-1][self.y+1].size: #does it exist
+                            open_squares.append((self.x-1)(self.y-1))
+                    except:
+                        pass
+                    try:
+                        #attacking right?
+                        if theBoard[self.x+1][self.y+1].size: #does it exist
+                            open_squares.append((self.x+1)(self.y-1))
+                    except:
+                        pass     
         elif self.t=='knight':
             #open_squares=[]
             a,b,c,d,e,f,g,h=None,None,None,None,None,None,None,None
@@ -151,47 +178,66 @@ class Piece(ABC):
                 pass
 
             if a:
-                if not ac or ac!=c:
+                if attack:
+                    open_squares.append((self.x-1,self.y+2))
+                elif not ac or ac!=c:
                     open_squares.append((self.x-1,self.y+2))
             if b:
-                if not bc or bc!=c:
+                if attack:
+                    open_squares.append((self.x+1,self.y+2)) 
+                elif not bc or bc!=c:
                     open_squares.append((self.x+1,self.y+2))      
             if c:
-                if not cc or cc!=c:
+                if attack:
+                    open_squares.append((self.x+2,self.y+1))  
+                elif not cc or cc!=c:
                     open_squares.append((self.x+2,self.y+1))  
             if d:
-                if not dc or dc!=c:
+                if attack:
+                    open_squares.append((self.x+2,self.y-1))  
+                elif not dc or dc!=c:
                     open_squares.append((self.x+2,self.y-1))       
             if e:
-                if not ec or ec!=c:
+                if attack:
+                    open_squares.append((self.x+1,self.y-2))   
+                elif not ec or ec!=c:
                     open_squares.append((self.x+1,self.y-2))             
             if f:
-                if not fc or fc!=c:
+                if attack:
+                    open_squares.append((self.x-1,self.y-2))   
+                elif not fc or fc!=c:
                     open_squares.append((self.x-1,self.y-2))                     
             if g:
-                if not gc or gc!=c:
+                if attack:
+                    open_squares.append((self.x-2,self.y-1))      
+                elif not gc or gc!=c:
                     open_squares.append((self.x-2,self.y-1))                    
             if h:
-                if not hc or hc!=c:
+                if attack:
+                    open_squares.append((self.x-2,self.y+1))   
+                elif not hc or hc!=c:
                     open_squares.append((self.x-2,self.y+1))            
               
             #return open_squares
-        
         if self.t=='bishop' or self.t=='queen':
-            
             counter=1 #how many times thru loop (start at 1)
             #up right
             while True:
                 try:
                     if(self.x+counter>-1 and self.x+counter<NUM_ROWS and self.y-counter>-1 and self.y-counter<NUM_ROWS): #ensure no out of bounds
                         if(theBoard[self.x+counter][self.y-counter]!='*'):
-                            if(theBoard[self.x+counter][self.y-counter][0]!=c):
+                            if attack:
                                 open_squares.append((self.x+counter,self.y-counter))
                                 counter=1
-                                break
-                            else: #square has piece of same color, so break
-                                counter=1
-                                break
+                                break #ARE THESE BREAK STATEMENTS PROBLEMATIC?
+                            else:
+                                if(theBoard[self.x+counter][self.y-counter][0]!=c):
+                                    open_squares.append((self.x+counter,self.y-counter))
+                                    counter=1
+                                    break
+                                else: #square has piece of same color, so break
+                                    counter=1
+                                    break
                             
                         open_squares.append((self.x+counter,self.y-counter))
                         counter+=1
@@ -207,13 +253,18 @@ class Piece(ABC):
                 try:
                     if(self.x-counter>-1 and self.x-counter<NUM_ROWS and self.y-counter>-1 and self.y-counter<NUM_ROWS): #ensure no out of bounds
                         if(theBoard[self.x-counter][self.y-counter]!='*'):
-                            if(theBoard[self.x-counter][self.y-counter][0]()!=c):
+                            if attack:
                                 open_squares.append((self.x-counter,self.y-counter))
                                 counter=1
                                 break
-                            else: #square has piece of same color, so break
-                                counter=1
-                                break
+                            else:
+                                if(theBoard[self.x-counter][self.y-counter][0]()!=c):
+                                    open_squares.append((self.x-counter,self.y-counter))
+                                    counter=1
+                                    break
+                                else: #square has piece of same color, so break
+                                    counter=1
+                                    break
                         open_squares.append((self.x-counter,self.y-counter))
                         counter+=1
                     else:
@@ -228,13 +279,18 @@ class Piece(ABC):
                 try:
                     if(self.x+counter>-1 and self.x+counter<NUM_ROWS and self.y+counter>-1 and self.y+counter<NUM_ROWS): #ensure no out of bounds
                         if(theBoard[self.x+counter][self.y+counter]!='*'):
-                            if(theBoard[self.x+counter][self.y+counter][0]!=c):
+                            if attack:
                                 open_squares.append((self.x+counter,self.y+counter))
                                 counter=1
                                 break
-                            else: #square has piece of same color, so break
-                                counter=1
-                                break
+                            else:
+                                if(theBoard[self.x+counter][self.y+counter][0]!=c):
+                                    open_squares.append((self.x+counter,self.y+counter))
+                                    counter=1
+                                    break
+                                else: #square has piece of same color, so break
+                                    counter=1
+                                    break
                         open_squares.append((self.x+counter,self.y+counter))
                         counter+=1
                     else:
@@ -248,13 +304,18 @@ class Piece(ABC):
                 try:
                     if(self.x-counter>-1 and self.x-counter<NUM_ROWS and self.y+counter>-1 and self.y+counter<NUM_ROWS): #ensure no out of bounds
                         if(theBoard[self.x-counter][self.y+counter]!='*'):
-                            if(theBoard[self.x-counter][self.y+counter][0]!=c):
-                                open_squares.append((self.x-counter,self.y+counter))
+                            if attack:
+                                open_squares.append(self.x-counter,self.y+counter)
                                 counter=1
                                 break
-                            else: #square has piece of same color, so break
-                                counter=1
-                                break
+                            else:
+                                if(theBoard[self.x-counter][self.y+counter][0]!=c):
+                                    open_squares.append((self.x-counter,self.y+counter))
+                                    counter=1
+                                    break
+                                else: #square has piece of same color, so break
+                                    counter=1
+                                    break
                         open_squares.append((self.x-counter,self.y+counter))
                         counter+=1
                     else:
@@ -266,11 +327,12 @@ class Piece(ABC):
 
             #if self.t=='bishop': # this is here because the queen needs both bishop and rook movess
                 #return open_squares
-            
         if self.t=='rook' or self.t=='queen':
             for i in range(self.y-1,-1,-1): #how many squares up
                 if(theBoard[self.x][i]!='*'): #this square holds a piece
-                    if theBoard[self.x][i][0]!=c: #if it's the other player's piece
+                    if attack:
+                        open_squares.append((self.x,i))
+                    elif theBoard[self.x][i][0]!=c: #if it's the other player's piece
                         open_squares.append((self.x,i))
                     break #piece can't move thru pieces, so break loop if encounters another piece. add the square to open_squares if opponent's piece
                 else:
@@ -278,7 +340,9 @@ class Piece(ABC):
                     open_squares.append((self.x,i))
             for i in range(self.y+1,len(theBoard)): #how many squares down
                 if(theBoard[self.x][i]!='*'): #this square holds a piece
-                    if theBoard[self.x][i][0]!=c: #if it's the other player's piece
+                    if attack:
+                        open_squares.append((self.x,i))
+                    elif theBoard[self.x][i][0]!=c: #if it's the other player's piece
                         open_squares.append((self.x,i))
                     break
                 else:
@@ -286,7 +350,9 @@ class Piece(ABC):
                     open_squares.append((self.x,i))
             for i in range(self.x+1,len(theBoard[0])): #how many squares right
                 if(theBoard[i][self.y]!='*'): #this square holds a piece
-                    if theBoard[i][self.y][0]!=c: #if it's the other player's piece
+                    if attack:
+                        open_squares.append(i,self.y)
+                    elif theBoard[i][self.y][0]!=c: #if it's the other player's piece
                         open_squares.append((i,self.y))
                     break
                 else:
@@ -294,7 +360,9 @@ class Piece(ABC):
                     open_squares.append((i,self.y))
             for i in range(self.x-1,-1,-1): #how many squares left
                 if(theBoard[i][self.y]!='*'): #this square holds a piece
-                    if theBoard[i][self.y][0]!=c: #if it's the other player's piece
+                    if attack:
+                        open_squares.append((i,self.y))
+                    elif theBoard[i][self.y][0]!=c: #if it's the other player's piece
                          open_squares.append((i,self.y))
                     break
                 else:
@@ -381,7 +449,7 @@ class Piece(ABC):
             if boardStringCopy[self.y][self.x]!=self.tag: #if piece taken in this universe...
                 return []
             #if just need (row, col) of each square can move
-            return self.get_moves_string(theBoard)
+            return self.get_moves_string(theBoard,attack)
         #if attack =TRUE then return every square that the piece controls, regardless of if it can actually move there or not
         open_squares=[]
         #add a check to see if king is in check first before anything else
@@ -425,7 +493,6 @@ class Piece(ABC):
                             open_squares.append(theBoard[self.x+1][self.y-1])
                     except:
                         pass
-                    self.squaresAttacking=open_squares
             if self.color==BLACK and self.y+1<NUM_ROWS:
                 if not attack:
                     oneInFront=theBoard[self.x][self.y+1]
@@ -461,7 +528,6 @@ class Piece(ABC):
                     except:
                         pass
             #return open_squares
-     
         elif self.t=='knight':
             #open_squares=[]
             a,b,c,d,e,f,g,h=None,None,None,None,None,None,None,None
@@ -576,9 +642,7 @@ class Piece(ABC):
             
               
             #return open_squares
-        
         if self.t=='bishop' or self.t=='queen':
-            
             counter=1 #how many times thru loop (start at 1)
             #up right
             while True:
@@ -685,8 +749,7 @@ class Piece(ABC):
                     break
 
             #if self.t=='bishop': # this is here because the queen needs both bishop and rook movess
-                #return open_squares
-            
+                #return open_squares   
         if self.t=='rook' or self.t=='queen':
             for i in range(self.y-1,-1,-1): #how many squares up
                 if(theBoard[self.x][i].get_piece()!=None): #this square holds a piece
@@ -825,7 +888,8 @@ class Piece(ABC):
                                 if theBoard[self.x-4][self.y].get_piece() and theBoard[self.x-4][self.y].get_piece().t=='rook' and theBoard[self.x-4][self.y].get_piece().color==self.color and theBoard[self.x-4][self.y].get_piece().moved==False: #rook of same color that has not moved
                                     open_squares.append(theBoard[self.x-2][self.y])
             except Exception as e:
-                print(e)
+                pass
+                #print(e)
                 r'''
                 #King Side
                 if theBoard[self.x+1][self.y].get_piece()==None and theBoard[self.x+2][self.y].get_piece()==None: #if empty spaces
@@ -960,45 +1024,7 @@ BLACK=pygame.Color(0,0,0)
 
 
 
-#Pieces
-##WHITE
-w_k=King(WHITE,board.board[0][2],wki,'Wking')
-w_q=Queen(WHITE,board.board[1][1],wqi,'Wqueen')
-b_q=Queen(BLACK,board.board[1][0],bqi,'Bqueen')
-b_k=King(BLACK,board.board[3][0],bki,'Bking')
 
-w_pieces=[w_k]+[w_q]
-b_pieces=[b_q]+[b_k]
-
-r'''
-w_p=[Pawn(WHITE,board.board[0][6],wpi),Pawn(WHITE,board.board[1][6],wpi),Pawn(WHITE,board.board[2][6],wpi),Pawn(WHITE,board.board[3][6],wpi),
-     Pawn(WHITE,board.board[4][6],wpi),Pawn(WHITE,board.board[5][6],wpi),Pawn(WHITE,board.board[6][6],wpi),Pawn(WHITE,board.board[7][6],wpi)]
-w_n=[Knight(WHITE,board.board[1][7],wni),Knight(WHITE,board.board[6][7],wni)]
-w_b=[Bishop(WHITE,board.board[2][7],wbi),Bishop(WHITE,board.board[5][7],wbi)]
-w_r=[Rook(WHITE,board.board[0][7],wri),Rook(WHITE,board.board[7][7],wri)]
-w_q=[Queen(WHITE,board.board[3][7],wqi)]
-w_k=King(WHITE,board.board[4][7],wki)
-w_k_l=[w_k]
-w_pieces=w_p+w_n+w_b+w_r+w_q+w_k_l
-'''
-
-#BLACK
-r'''
-b_p=[Pawn(BLACK,board.board[0][1],bpi),Pawn(BLACK,board.board[1][1],bpi),Pawn(BLACK,board.board[2][1],bpi),Pawn(BLACK,board.board[3][1],bpi),
-     Pawn(BLACK,board.board[4][1],bpi),Pawn(BLACK,board.board[5][1],bpi),Pawn(BLACK,board.board[6][1],bpi),Pawn(BLACK,board.board[7][1],bpi)]
-b_n=[Knight(BLACK,board.board[1][0],bni),Knight(BLACK,board.board[6][0],bni)]
-b_b=[Bishop(BLACK,board.board[2][0],bbi),Bishop(BLACK,board.board[5][0],bbi)]
-b_r=[Rook(BLACK,board.board[0][0],bri),Rook(BLACK,board.board[7][0],bri)]
-b_q=[Queen(BLACK,board.board[3][0],bqi)]
-b_k=King(BLACK,board.board[4][0],bki)
-b_k_l=[b_k]
-b_pieces=b_p+b_n+b_b+b_r+b_q+b_k_l
-'''
-
-
-all_pieces=w_pieces+b_pieces #all pieces
-#all_pieces=[Pawn(WHITE,board.board[3][1],wpi),Pawn(BLACK,board.board[3][6],bpi),Pawn(WHITE,board.board[4][1],wpi)]
-    
 
 
 r'''
