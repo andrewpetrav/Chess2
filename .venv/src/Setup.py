@@ -10,19 +10,20 @@ RED=pygame.Color(255,0,0)
 #Piece images
 #White pieces
 
-wpi=pygame.image.load('.venv\src\Pieces\White\w_p.png').convert_alpha()
-wni=pygame.image.load('.venv\src\Pieces\White\w_n.png').convert_alpha()
-wbi=pygame.image.load('.venv\src\Pieces\White\w_b.png').convert_alpha()
-wri=pygame.image.load('.venv\src\Pieces\White\w_r.png').convert_alpha()
-wqi=pygame.image.load('.venv\src\Pieces\White\w_q.png').convert_alpha()
-wki=pygame.image.load('.venv\src\Pieces\White\w_k.png').convert_alpha()
+##TODO if macbook?
+wpi=pygame.image.load('.venv/src/Pieces/White/w_p.png').convert_alpha()
+wni=pygame.image.load('.venv/src/Pieces/White/w_n.png').convert_alpha()
+wbi=pygame.image.load('.venv/src/Pieces/White/w_b.png').convert_alpha()
+wri=pygame.image.load('.venv/src/Pieces/White/w_r.png').convert_alpha()
+wqi=pygame.image.load('.venv/src/Pieces/White/w_q.png').convert_alpha()
+wki=pygame.image.load('.venv/src/Pieces/White/w_k.png').convert_alpha()
 #Black pieces
-bpi=pygame.image.load('.venv\src\Pieces\Black/b_p.png').convert_alpha()
-bni=pygame.image.load('.venv\src\Pieces\Black/b_n.png').convert_alpha()
-bbi=pygame.image.load('.venv\src\Pieces\Black/b_b.png').convert_alpha()
-bri=pygame.image.load('.venv\src\Pieces\Black/b_r.png').convert_alpha()
-bqi=pygame.image.load('.venv\src\Pieces\Black/b_q.png').convert_alpha()
-bki=pygame.image.load('.venv\src\Pieces\Black/b_k.png').convert_alpha()
+bpi=pygame.image.load('.venv/src/Pieces/Black/b_p.png').convert_alpha()
+bni=pygame.image.load('.venv/src/Pieces/Black/b_n.png').convert_alpha()
+bbi=pygame.image.load('.venv/src/Pieces/Black/b_b.png').convert_alpha()
+bri=pygame.image.load('.venv/src/Pieces/Black/b_r.png').convert_alpha()
+bqi=pygame.image.load('.venv/src/Pieces/Black/b_q.png').convert_alpha()
+bki=pygame.image.load('.venv/src/Pieces/Black/b_k.png').convert_alpha()
 #Re-scale images
 wpi=pygame.transform.scale(wpi,(square_size,square_size))
 wni=pygame.transform.scale(wni,(square_size,square_size))
