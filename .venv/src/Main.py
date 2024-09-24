@@ -253,77 +253,20 @@ def get_all_moves(): #calculates every possible move
     for piece in all_pieces:
         all_moves[piece]=piece.get_moves(board)
 
-r'''
-def checkWhereCanMovePiece(piece,boardString,moves,color): #see if piece can be moved without resulting in check, returns squares it can move to
-    print(piece.t)
-    print('Row: ',piece.y,' Col: ', piece.x)
-    for m in moves:
-        print(m.row,m.col)
-
-    print()
-'''
-
-r'''
-def kingInCheck(b,color): #checks to see if move puts/stops if OWN king is in check
-    squaresBeingAttacked=[]
-    if color==WHITE:
-        king=w_k
-        for piece in b_pieces:
-            moves=piece.get_moves(b)
-            if moves is not None:
-                for m in moves:
-                    squaresBeingAttacked.append(m)
-    elif color==BLACK:
-        king=b_k
-        for piece in w_pieces:
-            moves=piece.get_moves(b)
-            try:
-                for m in moves:
-                    squaresBeingAttacked.append(m)
-            except TypeError:
-                pass
-    for sq in squaresBeingAttacked:
-        if sq.x==king.x and sq.y==king.y:
-            return True
-    return False
- '''   
 def kingInCheck(color,boardStringCopy,king,pieces,step0=False):
     if step0:
         for p in pieces:
             for m in p.squaresAttacking:
                 if tuple([m.col,m.row])==(king.get_pos()):
-                    #print(p.tag, m.col,m.row)
                     return True
         return False
     else:
         for p in pieces:
             for m in p.get_moves(board,False,boardStringCopy):
-                if m==(king.col,king.row):
+                print(m,king.get_pos())
+                if m==king.get_pos():
                     return True
         return False
-    r'''
-    for p in pieces:
-        squaresThatAreBeingAttacked=p.get_moves(board,True,boardStringCopy)
-
-        for s in squaresThatAreBeingAttacked: #TODO make get_moves compatible with returning this for boardStringCopy
-            if iDontUnderstand:
-                a=s[0]
-                b=s[1]
-            else:
-                a=s[1]
-                b=s[0]
-            if (a,b)==(king.y,king.x):
-                for m in p.squaresCanMoveTo:
-                    print(m.row,m.col,'---->',king.y,king.x)
-                return True
-    return False
-    '''
-
-    r'''
-        for sq in squaresThatAreBeingAttacked:
-            if (sq.row,sq.col)==(king.x,king.y):
-                print((piece.t, piece.y,piece.x, sq.row, sq.col),' is attacking the king')
-        '''
 
 def doesThisMovePutTheKingInCheck(color,piece,moves,pieces,king):
     movesLegal=[]
@@ -339,22 +282,9 @@ def doesThisMovePutTheKingInCheck(color,piece,moves,pieces,king):
             pass #don't add it to legal moves
         else: #otherwise
             movesLegal.append(move)  #add to legal moves
-    
-        r'''
-        attackingMoves=[]
-        for piece in pieces:
-            print(piece.color,piece.type)
-            doesThisMoveResultInCheck=kingInCheck(color,boardStringCopy)
-            #print(doesThisMoveResultInCheck)
-            m=piece.squaresCanMoveTo
-        '''
-    return movesLegal
-            #squaresPieceCanMoveTo=checkWhereCanMovePiece(piece,boardStringCopy,m,color)
 
-            #print()
-            #attackingMoves.append(piece.get_moves(board))
-        #print(attackingMoves)
-            
+    return movesLegal
+
         
         
     #print(pieces)
@@ -382,8 +312,8 @@ def checkForCheck(piece,moves,color,pos,pieces,king):
             else:
                 pass
         moves=moves2
+
     #if piece not a king
-    
     else:
         #if move happens will board state result in your color king check
         moves=doesThisMovePutTheKingInCheck(color,piece,moves, pieces, king)
@@ -399,7 +329,7 @@ def on_press(key):
             quit()
         except:
             pass
-            #print(sys.exc_info()[0])
+            r'''print(sys.exc_info()[0])'''
     try:
         k = key.char  # single-char keys
     except:
@@ -412,11 +342,12 @@ def game():
     turn=WHITE
     king=w_k
     pieces=b_pieces
-    
-    #listener = keyboard.Listener(on_press=on_press)
-    #listener.start()  # start to listen on a separate thread
-    #listener.join()  # remove if main thread is polling self.keys
 
+    r'''
+    listener = keyboard.Listener(on_press=on_press)
+    listener.start()  # start to listen on a separate thread
+    listener.join()  # remove if main thread is polling self.keys
+    '''
     while True:
         move_completed=False #if true, give control to other player
         #king_in_check=Piece.King.kingCheck(turn) #is the king currently in check
