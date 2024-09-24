@@ -262,8 +262,7 @@ def kingInCheck(color,boardStringCopy,king,pieces,step0=False):
         return False
     else:
         for p in pieces:
-            for m in p.get_moves(board,False,boardStringCopy):
-                print(m,king.get_pos())
+            for m in p.get_moves(board,True,boardStringCopy):
                 if m==king.get_pos():
                     return True
         return False
@@ -275,8 +274,8 @@ def doesThisMovePutTheKingInCheck(color,piece,moves,pieces,king):
     for move in moves: #iterate through each move that selected piece can make
         #print(type(move))
         boardStringCopy=copy.deepcopy(boardString)
-        boardStringCopy[piece.y][piece.x]='*' #set old square as empty
-        boardStringCopy[move.row][move.col]=piece.string #move piece to new square
+        boardStringCopy[piece.x][piece.y]='*' #set old square as empty
+        boardStringCopy[move.col][move.row]=piece.string #move piece to new square #THIS USED TO BE ROW THEN COL, BUT BROKE PIECES BLOCKING CHECK
         doesThisMoveResultInCheck=kingInCheck(color, boardStringCopy,king,pieces)
         if doesThisMoveResultInCheck: #if moving this piece to LOCATION results in self-check
             pass #don't add it to legal moves
@@ -291,12 +290,11 @@ def doesThisMovePutTheKingInCheck(color,piece,moves,pieces,king):
 
 def checkForCheck(piece,moves,color,pos,pieces,king):
     #returns moves the would not result in self-check
-    r''''
+    r'''
     moves=doesThisMovePutTheKingInCheck(color,piece,moves, pieces, king)
     return moves
     '''
     
-
     #TODO: add checks for castling (both ways)
     if piece.t=='king':
         moves2=[]

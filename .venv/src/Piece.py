@@ -351,7 +351,7 @@ class Piece(ABC):
             for i in range(self.x+1,len(theBoard[0])): #how many squares right
                 if(theBoard[i][self.y]!='*'): #this square holds a piece
                     if attack:
-                        open_squares.append(i,self.y)
+                        open_squares.append((i,self.y))
                     elif theBoard[i][self.y][0]!=c: #if it's the other player's piece
                         open_squares.append((i,self.y))
                     break
