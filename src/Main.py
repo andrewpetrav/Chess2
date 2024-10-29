@@ -271,8 +271,13 @@ def doesThisMovePutTheKingInCheck(color,piece,moves,pieces,king):
     for move in moves: #iterate through each move that selected piece can make
         #print(type(move))
         boardStringCopy=copy.deepcopy(boardString)
+        #print((piece.y,piece.x),(move.col,move.row))
+        print(boardStringCopy[1][0])
+        print(boardStringCopy[0][1])
+        print(piece.t)
+        print(piece.y,piece.x)
         boardStringCopy[piece.y][piece.x]='*' #set old square as empty
-        boardStringCopy[move.col][move.row]=piece.string #move piece to new square #THIS USED TO BE ROW THEN COL, BUT BROKE PIECES BLOCKING CHECK
+        boardStringCopy[move.row][move.col]=piece.string #move piece to new square #THIS USED TO BE ROW THEN COL, BUT BROKE PIECES BLOCKING CHECK
         doesThisMoveResultInCheck=kingInCheck(color, boardStringCopy,king,pieces)
         if doesThisMoveResultInCheck: #if moving this piece to LOCATION results in self-check
             pass #don't add it to legal moves
