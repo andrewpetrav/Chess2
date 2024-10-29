@@ -40,7 +40,6 @@ class Piece(ABC):
             c='W'
         elif self.color==BLACK:
             c='B'
-        
         #add a check to see if king is in check first before anything else
         #for every move, make sure it doesn't put own king in check
         if self.t=='pawn':

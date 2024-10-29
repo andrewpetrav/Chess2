@@ -198,7 +198,6 @@ def move_piece(sq,moves,pos,b,returnPieceTaken=False):
             return False
     return True
 
-
 def promotionScreen(color,col,row):
     #INPUT: color of piece
     #ACTION: Display screen of possible promotions, including a cancel button
@@ -269,12 +268,10 @@ def kingInCheck(color,boardStringCopy,king,pieces,step0=False):
 
 def doesThisMovePutTheKingInCheck(color,piece,moves,pieces,king):
     movesLegal=[]
-    #print()
-    #print(moves)
     for move in moves: #iterate through each move that selected piece can make
         #print(type(move))
         boardStringCopy=copy.deepcopy(boardString)
-        boardStringCopy[piece.x][piece.y]='*' #set old square as empty
+        boardStringCopy[piece.y][piece.x]='*' #set old square as empty
         boardStringCopy[move.col][move.row]=piece.string #move piece to new square #THIS USED TO BE ROW THEN COL, BUT BROKE PIECES BLOCKING CHECK
         doesThisMoveResultInCheck=kingInCheck(color, boardStringCopy,king,pieces)
         if doesThisMoveResultInCheck: #if moving this piece to LOCATION results in self-check
@@ -318,7 +315,6 @@ def checkForCheck(piece,moves,color,pos,pieces,king):
 
     return moves
     
-
 def on_press(key):
 
     if key == keyboard.Key.esc:
