@@ -34,7 +34,9 @@ class Piece(ABC):
     def get_moves_string(self,board,attack=False):
         #returns list of open squares in [(row, col), (row, col), ...] form
         open_squares=[]
-        theBoard=board
+        #print(board)
+        theBoard = [list(row) for row in zip(*board)]
+        #print(theBoard)
         c='W' #color
         if self.color==WHITE:
             c='W'
@@ -439,6 +441,7 @@ class Piece(ABC):
         #doesThisMovePutOwnKingInCheck(open_squares)
         '''
         #open_squares=checkCheckSquares(open_squares,self.color,board)
+
         return open_squares
     def get_moves(self,board,attack=False,boardStringCopy=None):
         if boardStringCopy==None:
