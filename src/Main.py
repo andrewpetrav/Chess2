@@ -292,7 +292,6 @@ def checkForCheck(piece,moves,color,pos,pieces,king):
     moves=doesThisMovePutTheKingInCheck(color,piece,moves, pieces, king)
     return moves
     '''
-    print()
     #TODO: add checks for castling (both ways)
     if piece.t=='king':
         moves2=[]
@@ -301,7 +300,6 @@ def checkForCheck(piece,moves,color,pos,pieces,king):
             if p.squaresAttacking !=[]:
                 for sA in p.squaresAttacking:
                     if sA not in illegalSquares:
-                        print(sA)
                         illegalSquares.append(sA)
         for move in moves:
             if move not in illegalSquares:
@@ -348,14 +346,9 @@ def game():
         move_completed=False #if true, give control to other player
         #king_in_check=Piece.King.kingCheck(turn) #is the king currently in check
         #Step 0: Get move of every piece on board
-        print('-----')
         for piece in all_pieces:
             piece.get_moves(board)
             piece.get_moves(board,attack=True)
-            print(piece.color,piece.t)
-            for m in piece.squaresAttacking:
-                print(m.row,m.col)
-            print()
 
         #Step 0.5: Check if own king is in check
         if kingInCheck(turn,boardString,king,pieces,True):
