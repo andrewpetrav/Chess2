@@ -252,21 +252,35 @@ def get_all_moves(): #calculates every possible move
     for piece in all_pieces:
         all_moves[piece]=piece.get_moves(board)
 
-def kingInCheck(color,boardStringCopy,king,pieces,step0=False):
+def kingInCheck(color,boardStringCopy,king,pieces,step0=False,pieceIsKing=False,kingMove=None):
+    if kingMove is not None:
+        print('king is at: ',kingMove.col,kingMove.row)
+    if pieceIsKing:
+        kingPos=kingMove
+        print(kingMove.col,kingMove.row)
+    else:
+        kingPos=king.get_pos()
+    print('kingPos: ',kingPos)
     if step0:
         for p in pieces:
             for m in p.squaresAttacking:
-                if tuple([m.col,m.row])==(king.get_pos()):
+                if tuple([m.col,m.row])==kingPos:
                     return True
         return False
     else:
         for p in pieces:
             for m in p.get_moves(board,True,boardStringCopy):
-                if m==king.get_pos():
+                r'''
+                for b in boardStringCopy:
+                    print(b)
+                print(p.t,m[0],m[1])
+                '''
+                if m==kingPos:
+                    #print('YES')
                     return True
         return False
 
-def doesThisMovePutTheKingInCheck(color,piece,moves,pieces,king):
+def doesThisMovePutTheKingInCheck(color,piece,moves,pieces,king,pieceIsKing=False):
     movesLegal=[]
     for move in moves: #iterate through each move that selected piece can make
         #print(type(move))
@@ -274,7 +288,7 @@ def doesThisMovePutTheKingInCheck(color,piece,moves,pieces,king):
         #print((piece.y,piece.x),(move.col,move.row))
         boardStringCopy[piece.y][piece.x]='*' #set old square as empty
         boardStringCopy[move.row][move.col]=piece.string #move piece to new square #THIS USED TO BE ROW THEN COL, BUT BROKE PIECES BLOCKING CHECK
-        doesThisMoveResultInCheck=kingInCheck(color, boardStringCopy,king,pieces)
+        doesThisMoveResultInCheck=kingInCheck(color, boardStringCopy,king,pieces,step0=False,pieceIsKing=pieceIsKing,kingMove=move)
         if doesThisMoveResultInCheck: #if moving this piece to LOCATION results in self-check
             pass #don't add it to legal moves
         else: #otherwise
@@ -308,7 +322,9 @@ def checkForCheck(piece,moves,color,pos,pieces,king):
             else:
                 pass
         moves=moves2
-
+    #if piece is a king, so when do king.get_pos() later, returns temporary position
+    if piece.t=='king':
+        moves=doesThisMovePutTheKingInCheck(color,piece,moves, pieces, king,True)
     #if piece not a king
     else:
         #if move happens will board state result in your color king check
