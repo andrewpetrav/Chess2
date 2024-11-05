@@ -253,14 +253,17 @@ def get_all_moves(): #calculates every possible move
         all_moves[piece]=piece.get_moves(board)
 
 def kingInCheck(color,boardStringCopy,king,pieces,step0=False,pieceIsKing=False,kingMove=None):
+    r'''
     if kingMove is not None:
         print('king is at: ',kingMove.col,kingMove.row)
+        kingMove=tuple([kingMove.col,kingMove.row])
+    '''
     if pieceIsKing:
-        kingPos=kingMove
-        print(kingMove.col,kingMove.row)
+        kingPos=tuple([kingMove.col,kingMove.row])
+        print('if: ',kingPos)
     else:
         kingPos=king.get_pos()
-    print('kingPos: ',kingPos)
+        print('else: ',king.get_pos)
     if step0:
         for p in pieces:
             for m in p.squaresAttacking:
