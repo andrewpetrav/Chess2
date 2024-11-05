@@ -293,7 +293,8 @@ def checkForCheck(piece,moves,color,pos,pieces,king):
     return moves
     '''
     #TODO: add checks for castling (both ways)
-    if piece.t=='king':
+    fap='myBoner'
+    if fap != 'myBoner':#if piece.t=='king':
         moves2=[]
         illegalSquares=[] #holds squares being attacked by other side
         for p in pieces:

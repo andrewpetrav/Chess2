@@ -101,6 +101,12 @@ class Board(object):
                 if space.get_piece():
                     SURFACE.blit(space.get_piece_image(), (space.xpos, space.ypos))
 
+    def flicker(self):
+        if self.color==WHITE:
+            self.color=BLACK
+        elif self.color==BLACK:
+            self.color=WHITE
+            
     def setup(self,pieces):
         for piece in pieces:
             self.board[piece.x][piece.y].set_piece(piece)
