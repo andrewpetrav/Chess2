@@ -277,8 +277,6 @@ def kingInCheck(color,boardStringCopy,king,pieces,step0=False,pieceIsKing=False,
                     print(b)
                 print(p.t,m[0],m[1])
                 '''
-                if p.t=='pawn':
-                    print(m)
                 if m==kingPos:
                     return True
         return False
@@ -330,7 +328,6 @@ def checkForCheck(piece,moves,color,pos,pieces,king):
         moves=doesThisMovePutTheKingInCheck(color,piece,moves, pieces, king,True)
     #if piece not a king
     else:
-        print('not a king')
         #if move happens will board state result in your color king check
         moves=doesThisMovePutTheKingInCheck(color,piece,moves, pieces, king)
 
@@ -370,9 +367,9 @@ def game():
         for piece in all_pieces:
             piece.get_moves(board)
             piece.get_moves(board,attack=True)
-            print(piece.color,piece.t)
-            for m in piece.squaresAttacking:
-                print(m.col,m.row)
+            #print(piece.color,piece.t)
+            #for m in piece.squaresAttacking:
+                #print(m.col,m.row)
 
         
         #Step 0.5: Check if own king is in check

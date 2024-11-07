@@ -70,14 +70,14 @@ class Piece(ABC):
                 elif attack:
                     try:
                         #attacking left?
-                        if theBoard[self.x-1][self.y-1].size: #does it exist
-                            open_squares.append((self.x-1)(self.y-1))
+                        if self.x-1>=0 and self.y-1>=0:#if theBoard[self.x-1][self.y-1].size: #does it exist
+                            open_squares.append((self.x-1,self.y-1))
                     except:
                         pass
                     try:
                         #attacking right?
-                        if theBoard[self.x+1][self.y-1].size: #does it exist
-                            open_squares.append((self.x+1)(self.y-1))
+                        if self.x+1<NUM_ROWS and self.y-1>=0: #if theBoard[self.x+1][self.y-1].size: #does it exist
+                            open_squares.append((self.x+1,self.y-1))
                     except:
                         pass
             if self.color==BLACK and self.y+1<NUM_ROWS:
