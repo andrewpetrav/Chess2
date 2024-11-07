@@ -267,7 +267,6 @@ def kingInCheck(color,boardStringCopy,king,pieces,step0=False,pieceIsKing=False,
         for p in pieces:
             for m in p.squaresAttacking:
                 if tuple([m.col,m.row])==kingPos:
-                    print(m.col,m.row,p.t,p.color)
                     return True
         return False
     else:
@@ -395,8 +394,6 @@ def game():
                         sq=select_square(turn,pos)
                         if sq: #if valid square
                             valid_square_selection=True
-                            print(kingInCheck(turn,boardString,king,pieces,True,False,sq))
-                            print(kingInCheck(turn,boardString,king,pieces,True,True,sq))
                             break
             #Step 2: Get moves of piece and highlight
             moves=sq.piece.squaresCanMoveTo#get_moves(board) #get moves of piece at selected square
