@@ -260,14 +260,14 @@ def kingInCheck(color,boardStringCopy,king,pieces,step0=False,pieceIsKing=False,
     '''
     if pieceIsKing:
         kingPos=tuple([kingMove.col,kingMove.row])
-        print('if: ',kingPos)
     else:
         kingPos=king.get_pos()
-        print('else: ',king.get_pos)
+        kingPos=tuple([kingPos[0],kingPos[1]])
     if step0:
         for p in pieces:
             for m in p.squaresAttacking:
                 if tuple([m.col,m.row])==kingPos:
+                    print(m.col,m.row,p.t,p.color)
                     return True
         return False
     else:
@@ -278,8 +278,9 @@ def kingInCheck(color,boardStringCopy,king,pieces,step0=False,pieceIsKing=False,
                     print(b)
                 print(p.t,m[0],m[1])
                 '''
+                if p.t=='pawn':
+                    print(m)
                 if m==kingPos:
-                    #print('YES')
                     return True
         return False
 
@@ -330,6 +331,7 @@ def checkForCheck(piece,moves,color,pos,pieces,king):
         moves=doesThisMovePutTheKingInCheck(color,piece,moves, pieces, king,True)
     #if piece not a king
     else:
+        print('not a king')
         #if move happens will board state result in your color king check
         moves=doesThisMovePutTheKingInCheck(color,piece,moves, pieces, king)
 
@@ -369,9 +371,13 @@ def game():
         for piece in all_pieces:
             piece.get_moves(board)
             piece.get_moves(board,attack=True)
+            print(piece.color,piece.t)
+            for m in piece.squaresAttacking:
+                print(m.col,m.row)
 
+        
         #Step 0.5: Check if own king is in check
-        if kingInCheck(turn,boardString,king,pieces,True):
+        if kingInCheck(turn,boardString,king,pieces,True,False,None):
             if turn==pygame.Color(255,255,255):
                 a='WHITE'
             else:
@@ -389,6 +395,8 @@ def game():
                         sq=select_square(turn,pos)
                         if sq: #if valid square
                             valid_square_selection=True
+                            print(kingInCheck(turn,boardString,king,pieces,True,False,sq))
+                            print(kingInCheck(turn,boardString,king,pieces,True,True,sq))
                             break
             #Step 2: Get moves of piece and highlight
             moves=sq.piece.squaresCanMoveTo#get_moves(board) #get moves of piece at selected square
