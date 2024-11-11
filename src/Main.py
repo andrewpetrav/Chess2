@@ -377,8 +377,10 @@ def game():
         if kingInCheck(turn,boardString,king,pieces,True,False,None):
             if turn==pygame.Color(255,255,255):
                 a='WHITE'
-            else:
+                pcs=w_pieces
+            elif turn==pygame.Color(0,0,0):
                 a='BLACK'
+                pcs=b_pieces
             print(a,' KING IS IN CHECK')
 
             #Step 0.75: Check if in checkmate
