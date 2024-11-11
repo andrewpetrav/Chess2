@@ -307,6 +307,7 @@ def checkForCheck(piece,moves,color,pos,pieces,king):
     return moves
     '''
     #TODO: add checks for castling (both ways)
+    r'''
     fap='myBoner'
     if fap != 'myBoner':#if piece.t=='king':
         moves2=[]
@@ -322,6 +323,7 @@ def checkForCheck(piece,moves,color,pos,pieces,king):
             else:
                 pass
         moves=moves2
+    '''
     #if piece is a king, so when do king.get_pos() later, returns temporary position
     if piece.t=='king':
         moves=doesThisMovePutTheKingInCheck(color,piece,moves, pieces, king,True)
@@ -378,6 +380,9 @@ def game():
             else:
                 a='BLACK'
             print(a,' KING IS IN CHECK')
+
+            #Step 0.75: Check if in checkmate
+            
         while not move_completed:
             valid_square_selection=False 
             valid_move_selection=False
