@@ -384,6 +384,10 @@ def game():
             print(a,' KING IS IN CHECK')
 
             #Step 0.75: Check if in checkmate
+            for p in pcs:
+                moves=p.squaresCanMoveTo
+                moves=checkForCheck(p,moves,turn,pos,pcs,king) #does this work for shit?
+
             
         while not move_completed:
             valid_square_selection=False 
