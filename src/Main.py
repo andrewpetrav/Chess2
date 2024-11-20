@@ -29,13 +29,13 @@ boardString=[
     ]
 #Pieces
 ##WHITE
-w_k=King(WHITE,board.board[0][2],wki,'Wking')
+w_k=King(WHITE,board.board[1][3],wki,'Wking')
 w_q=Queen(WHITE,board.board[0][1],wqi,'Wqueen')
-w_p=Pawn(WHITE,board.board[1][2],wpi,'Wpawn')
+#w_p=Pawn(WHITE,board.board[1][2],wpi,'Wpawn')
 b_q=Queen(BLACK,board.board[0][0],bqi,'Bqueen')
-b_k=King(BLACK,board.board[3][0],bki,'Bking')
+b_k=King(BLACK,board.board[3][3],bki,'Bking')
 
-w_pieces=[w_k]+[w_q]+[w_p]
+w_pieces=[w_k]+[w_q]#+[w_p]
 b_pieces=[b_q]+[b_k]
 
 r'''
@@ -387,6 +387,8 @@ def game():
             for p in pcs:
                 moves=p.squaresCanMoveTo
                 moves=checkForCheck(p,moves,turn,pos,pcs,king) #does this work for shit?
+                print(moves)
+            print()
 
             
         while not move_completed:
