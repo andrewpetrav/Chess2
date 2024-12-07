@@ -386,8 +386,10 @@ def game():
             #Step 0.75: Check if in checkmate
             for p in pcs:
                 moves=p.squaresCanMoveTo
+                print(p.color, p.t)
+                print('BEFORE: ',moves)
                 moves=checkForCheck(p,moves,turn,pos,pcs,king) #does this work for shit?
-                print(moves)
+                print('AFTER: ',moves)
             print()
 
             
