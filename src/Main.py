@@ -188,8 +188,6 @@ def move_piece(sq,moves,pos,b,returnPieceTaken=False):
                     b.board[col][row].set_piece(sq.piece)
                     sq.set_piece(None)
                     
-
-
                 return True
             else:
                 return False
