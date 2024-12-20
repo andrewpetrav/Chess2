@@ -250,11 +250,6 @@ def get_all_moves(): #calculates every possible move
         all_moves[piece]=piece.get_moves(board)
 
 def kingInCheck(color,boardStringCopy,king,pieces,step0=False,pieceIsKing=False,kingMove=None):
-    r'''
-    if kingMove is not None:
-        print('king is at: ',kingMove.col,kingMove.row)
-        kingMove=tuple([kingMove.col,kingMove.row])
-    '''
     if pieceIsKing:
         kingPos=tuple([kingMove.col,kingMove.row])
     else:
@@ -269,11 +264,6 @@ def kingInCheck(color,boardStringCopy,king,pieces,step0=False,pieceIsKing=False,
     else:
         for p in pieces:
             for m in p.get_moves(board,True,boardStringCopy):
-                r'''
-                for b in boardStringCopy:
-                    print(b)
-                print(p.t,m[0],m[1])
-                '''
                 if m==kingPos:
                     return True
         return False
@@ -298,7 +288,7 @@ def doesThisMovePutTheKingInCheck(color,piece,moves,pieces,king,pieceIsKing=Fals
         
     #print(pieces)
 
-def checkForCheck(piece,moves,color,pos,pieces,king):
+def checkForCheck(piece,moves,color,pos,pieces,king,thisShouldBeDeleted=False):
     #returns moves the would not result in self-check
     r'''
     moves=doesThisMovePutTheKingInCheck(color,piece,moves, pieces, king)
@@ -322,6 +312,8 @@ def checkForCheck(piece,moves,color,pos,pieces,king):
                 pass
         moves=moves2
     '''
+    if thisShouldBeDeleted:
+        print(piece.t)
     #if piece is a king, so when do king.get_pos() later, returns temporary position
     if piece.t=='king':
         moves=doesThisMovePutTheKingInCheck(color,piece,moves, pieces, king,True)
@@ -379,16 +371,12 @@ def game():
             elif turn==pygame.Color(0,0,0):
                 a='BLACK'
                 pcs=b_pieces
-            print(a,' KING IS IN CHECK')
 
             #Step 0.75: Check if in checkmate
             for p in pcs:
                 moves=p.squaresCanMoveTo
-                print(p.color, p.t)
-                print('BEFORE: ',moves)
-                moves=checkForCheck(p,moves,turn,pos,pcs,king) #does this work for shit?
-                print('AFTER: ',moves)
-            print()
+                moves=checkForCheck(p,moves,turn,pos,pcs,king,thisShouldBeDeleted=True) #does this work for shit?
+
 
             
         while not move_completed:
