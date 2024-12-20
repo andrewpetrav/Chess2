@@ -288,30 +288,7 @@ def doesThisMovePutTheKingInCheck(color,piece,moves,pieces,king,pieceIsKing=Fals
         
     #print(pieces)
 
-def checkForCheck(piece,moves,color,pos,pieces,king,thisShouldBeDeleted=False):
-    #returns moves the would not result in self-check
-    r'''
-    moves=doesThisMovePutTheKingInCheck(color,piece,moves, pieces, king)
-    return moves
-    '''
-    #TODO: add checks for castling (both ways)
-    r'''
-    fap='myBoner'
-    if fap != 'myBoner':#if piece.t=='king':
-        moves2=[]
-        illegalSquares=[] #holds squares being attacked by other side
-        for p in pieces:
-            if p.squaresAttacking !=[]:
-                for sA in p.squaresAttacking:
-                    if sA not in illegalSquares:
-                        illegalSquares.append(sA)
-        for move in moves:
-            if move not in illegalSquares:
-                moves2.append(move)
-            else:
-                pass
-        moves=moves2
-    '''
+def checkForCheck(piece,moves,color,pieces,king):
     #if piece is a king, so when do king.get_pos() later, returns temporary position
     if piece.t=='king':
         moves=doesThisMovePutTheKingInCheck(color,piece,moves, pieces, king,True)
@@ -343,6 +320,8 @@ def game():
     turn=WHITE
     king=w_k
     pieces=b_pieces
+    pcsSame=w_pieces
+    pcsDiff=b_pieces
 
     r'''
     listener = keyboard.Listener(on_press=on_press)
@@ -350,6 +329,7 @@ def game():
     listener.join()  # remove if main thread is polling self.keys
     '''
     while True:
+        
         move_completed=False #if true, give control to other player
         #king_in_check=Piece.King.kingCheck(turn) #is the king currently in check
         #Step 0: Get move of every piece on board
@@ -362,34 +342,29 @@ def game():
 
         #Step 0.5: Check if own king is in check
         if kingInCheck(turn,boardString,king,pieces,True,False,None):
-            if turn==pygame.Color(255,255,255):
-                a='WHITE'
-                pcsSame=w_pieces
-                pcsDiff=b_pieces
-            elif turn==pygame.Color(0,0,0):
-                a='BLACK'
-                pcsSame=b_pieces
-                pcsDiff=w_pieces
-
             #Step 0.75: Check if in checkmate
             anyMoves=False
             for p in pcsSame:
                 moves=p.squaresCanMoveTo
-                moves=checkForCheck(p,moves,turn,pos,pcsDiff,king) #does this work for shit?
+                moves=checkForCheck(p,moves,turn,pcsDiff,king) #does this work for shit?
                 if moves: #if any piece can move and stop check
                     anyMoves=True #it is not checkmate
                     break
             if not anyMoves:
                 print("CHECKMATE")
-        r'''
+
         #step 0.875: Check if stalemate
         else: #if king not in check, prereq to stalemate
-            for p in pieces:
-                print(p)
-                if p.squaresCanMoveTo: #if any piece has a move they can make, not a stalemate
+            stalemate=True
+            for p in pcsSame:
+                moves=p.squaresCanMoveTo
+                moves=checkForCheck(p,moves,turn,pcsDiff,king)
+                if moves: #if any piece has a move they can make, not a stalemate
+                    stalemate=False
                     break
-            print("STALEMATE")
-        '''
+            if stalemate:
+                print("STALEMATE")
+            
         while not move_completed:
             valid_square_selection=False 
             valid_move_selection=False
@@ -405,7 +380,7 @@ def game():
                             break
             #Step 2: Get moves of piece and highlight
             moves=sq.piece.squaresCanMoveTo#get_moves(board) #get moves of piece at selected square
-            moves=checkForCheck(sq.piece,moves,turn,pos,pieces,king)
+            moves=checkForCheck(sq.piece,moves,turn,pieces,king)
             sq.set_selected()
         
             if moves: #highlight
@@ -444,10 +419,15 @@ def game():
             turn=BLACK
             king=b_k
             pieces=w_pieces
+            pcsSame=b_pieces
+            pcsDiff=w_pieces
         else:
             turn=WHITE
             king=w_k
             pieces=b_pieces
+            pcsSame=w_pieces
+            pcsDiff=b_pieces
+       
         #Step 5: Update Pieces
         all_pieces=w_pieces+b_pieces
 
