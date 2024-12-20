@@ -312,8 +312,6 @@ def checkForCheck(piece,moves,color,pos,pieces,king,thisShouldBeDeleted=False):
                 pass
         moves=moves2
     '''
-    if thisShouldBeDeleted:
-        print(piece.t)
     #if piece is a king, so when do king.get_pos() later, returns temporary position
     if piece.t=='king':
         moves=doesThisMovePutTheKingInCheck(color,piece,moves, pieces, king,True)
@@ -362,23 +360,36 @@ def game():
             #for m in piece.squaresAttacking:
                 #print(m.col,m.row)
 
-        
         #Step 0.5: Check if own king is in check
         if kingInCheck(turn,boardString,king,pieces,True,False,None):
             if turn==pygame.Color(255,255,255):
                 a='WHITE'
-                pcs=w_pieces
+                pcsSame=w_pieces
+                pcsDiff=b_pieces
             elif turn==pygame.Color(0,0,0):
                 a='BLACK'
-                pcs=b_pieces
+                pcsSame=b_pieces
+                pcsDiff=w_pieces
 
             #Step 0.75: Check if in checkmate
-            for p in pcs:
+            anyMoves=False
+            for p in pcsSame:
                 moves=p.squaresCanMoveTo
-                moves=checkForCheck(p,moves,turn,pos,pcs,king,thisShouldBeDeleted=True) #does this work for shit?
-
-
-            
+                moves=checkForCheck(p,moves,turn,pos,pcsDiff,king) #does this work for shit?
+                if moves: #if any piece can move and stop check
+                    anyMoves=True #it is not checkmate
+                    break
+            if not anyMoves:
+                print("CHECKMATE")
+        r'''
+        #step 0.875: Check if stalemate
+        else: #if king not in check, prereq to stalemate
+            for p in pieces:
+                print(p)
+                if p.squaresCanMoveTo: #if any piece has a move they can make, not a stalemate
+                    break
+            print("STALEMATE")
+        '''
         while not move_completed:
             valid_square_selection=False 
             valid_move_selection=False
