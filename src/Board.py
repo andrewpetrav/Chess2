@@ -2,8 +2,8 @@ import pygame
 from Surface import *
 #import Piece
 #from Piece import w_pieces,b_pieces
-NUM_ROWS=4
-NUM_COLS=4
+NUM_ROWS=8
+NUM_COLS=8
 square_size=WINDOWHEIGHT/NUM_ROWS
 
 class Square(object):
