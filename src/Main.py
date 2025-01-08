@@ -151,11 +151,10 @@ def move_piece(sq,moves,pos,b,returnPieceTaken=False):
                         sq.set_piece(None)
                     return True
                 #EN PASSANT
-                r'''
-                if ((col-1>=0 and b.board[col-1][row].piece.type=='pawn' and b.board[col-1][row].piece.lastMovedPiece==True) or 
-                (col+1<=7 and b.board[col+1][row].piece.type=='pawn' and b.board[col+1][row].piece.lastMovedPiece==True)):
+                if ((col-1>=0 and b.board[col-1][row].piece.type=='pawn' and b.board[col-1][row].piece.enPassantable==True) or 
+                (col+1<=7 and b.board[col+1][row].piece.type=='pawn' and b.board[col+1][row].piece.enPassantable==True)):
                     pass
-                '''
+            
                 
                 #PROMOTION
                 if sq.piece.type=='pawn' and (row==0 or row==NUM_ROWS-1):

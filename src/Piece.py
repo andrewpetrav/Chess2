@@ -44,7 +44,7 @@ class Piece(ABC):
             c='B'
         #add a check to see if king is in check first before anything else
         #for every move, make sure it doesn't put own king in check
-        if self.t=='pawn':
+        if self.t=='pawn': #TODO Enpassant
             if self.color==WHITE and self.y-1>-1: 
                 if not attack:
                     if theBoard[self.x][self.y-1]=='*': #if nobody on square ahead of it
@@ -59,6 +59,8 @@ class Piece(ABC):
                             open_squares.append((self.x+1,self.y-1))
                     except:
                         pass
+
+
                     if self.moved==False: #if first move for pawn
                         #check if on correct square
                         if self.color==WHITE and self.y==6 or self.color==BLACK and self.y==1:
@@ -372,8 +374,7 @@ class Piece(ABC):
             
             
             #return open_squares #if queen, already also got bishop moves, so can return
-        
-        elif self.t=='king':
+        elif self.t=='king': #TODO castling
             #LEFT
             if self.x-1<0: 
                 pass
@@ -431,18 +432,8 @@ class Piece(ABC):
                     if theBoard[self.x-4][self.y].get_piece() and theBoard[self.x-4][self.y].get_piece().t=='rook' and theBoard[self.x-4][self.y].get_piece().color==self.color and theBoard[self.x-4][self.y].get_piece().moved==False: #rook of same color that has not moved
                         open_squares.append(theBoard[self.x-2][self.y])
             '''
-            
-            
-        r'''
-        if self.color==WHITE and w_k.inCheck: #if white and white (own king) in check
-            pass #doesThisStopCheck(color,open_squares)
-        elif self.color==BLACK and b_k.inCheck:
-            pass #doesThisStopCheck(color, open_squares)
-        #doesThisMovePutOwnKingInCheck(open_squares)
-        '''
-        #open_squares=checkCheckSquares(open_squares,self.color,board)
-
         return open_squares
+    
     def get_moves(self,board,attack=False,boardStringCopy=None):
         if boardStringCopy==None:
             theBoard=board.board
@@ -474,6 +465,27 @@ class Piece(ABC):
                             open_squares.append(theBoard[self.x+1][self.y-1])
                     except:
                         pass
+                    
+                    #EN PASSANT
+                    ###RIGHT PASANT
+                    try:
+                        pieceTryingToPassant=theBoard[self.x+1][self.y].get_piece()
+                        if pieceTryingToPassant.type=='pawn':
+                            if pieceTryingToPassant.enPassantable:
+                                if pieceTryingToPassant.get_piece_color()!=self.color:
+                                    open_squares.append(theBoard[self.x+1][self.y+1])
+                    except:
+                        pass
+                    ###LEFT PASSANT
+                    try:
+                        pieceTryingToPassant=theBoard[self.x-1][self.y].get_piece()
+                        if pieceTryingToPassant.type=='pawn':
+                            if pieceTryingToPassant.enPassantable:
+                                if pieceTryingToPassant.get_piece_color()!=self.color:
+                                    open_squares.append(theBoard[self.x-1][self.y+1])
+                    except:
+                        pass
+
                     if self.moved==False: #if first move for pawn
                         #check if on correct square
                         if (self.color==WHITE and self.y==6) or (self.color==BLACK and self.y==1):
@@ -510,6 +522,28 @@ class Piece(ABC):
                             open_squares.append(theBoard[self.x+1][self.y+1])
                     except:
                         pass
+
+                    #EN PASSANT
+                    ###RIGHT PASANT
+                    try:
+                        pieceTryingToPassant=theBoard[self.x+1][self.y].get_piece()
+                        if pieceTryingToPassant.type=='pawn':
+                            if pieceTryingToPassant.enPassantable:
+                                if pieceTryingToPassant.get_piece_color()!=self.color:
+                                    open_squares.append(theBoard[self.x+1][self.y-1])
+                    except:
+                        pass
+                    ###LEFT PASSANT
+                    try:
+                        pieceTryingToPassant=theBoard[self.x-1][self.y].get_piece()
+                        if pieceTryingToPassant.type=='pawn':
+                            if pieceTryingToPassant.enPassantable:
+                                if pieceTryingToPassant.get_piece_color()!=self.color:
+                                    open_squares.append(theBoard[self.x-1][self.y-1])
+                    except:
+                        pass
+
+
                     if self.moved==False: #if first move for pawn
                         try:
                             if theBoard[self.x][self.y+2].get_piece()==None: #nobody two squares in front
@@ -969,6 +1003,7 @@ class Pawn(Piece):
             self.string='Wpawn'
         else:
             self.string='Bpawn'
+        self.enPassantable=False
         super().__init__(color,square,self.type,image,tag)
         
 class Knight(Piece):
