@@ -11,6 +11,7 @@ import Piece
 from Piece import *
 from Surface import SURFACE
 from Setup import *
+from Menus import *
 import pickle
 from pynput import keyboard
 
@@ -316,6 +317,9 @@ def on_press(key):
     except:
         k = key.name  # other keys
 
+def stalemate():
+    print('Stalemate')
+
 def game():
     global w_pieces
     global b_pieces
@@ -332,7 +336,6 @@ def game():
     listener.join()  # remove if main thread is polling self.keys
     '''
     while True:
-        
         move_completed=False #if true, give control to other player
         #king_in_check=Piece.King.kingCheck(turn) #is the king currently in check
         #Step 0: Get move of every piece on board
@@ -356,17 +359,36 @@ def game():
             if not anyMoves:
                 print("CHECKMATE")
 
-        #step 0.875: Check if stalemate
+        #step 0.875: Check if stalemate TODO: add repition, 50 moves, dead positions
         else: #if king not in check, prereq to stalemate
-            stalemate=True
+            keepChecking=False
+            stalemate=False
+            #Cannot move without check?
             for p in pcsSame:
                 moves=p.squaresCanMoveTo
                 moves=checkForCheck(p,moves,turn,pcsDiff,king)
                 if moves: #if any piece has a move they can make, not a stalemate
                     stalemate=False
+                    keepChecking=True #only keep checking if stalemate is NOT found
                     break
+            #In a dead position?
+            if keepChecking:
+                #King v ...
+                if len(pcsSame)==1 and pcsSame[0].type=='king':
+                    
+                    #King
+                    #King + Bishop
+                    #King + Knight
+                #King + ... v King
+                    #Bishop
+                    #Knight
+                #King + Light Square Bishop v King + Dark Square Bishop
+                #King + Dark Square Bishop v King + Light Square Bishop
+
+
+
             if stalemate:
-                print("STALEMATE")
+                stalemate()
             
         while not move_completed:
             valid_square_selection=False 
