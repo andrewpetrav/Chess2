@@ -362,7 +362,7 @@ def game():
         #step 0.875: Check if stalemate TODO: add repition, 50 moves, dead positions
         else: #if king not in check, prereq to stalemate
             keepChecking=False
-            stalemate=False
+            stalemate=True
             #Cannot move without check?
             for p in pcsSame:
                 moves=p.squaresCanMoveTo
@@ -375,9 +375,11 @@ def game():
             if keepChecking:
                 #King v ...
                 if len(pcsSame)==1 and pcsSame[0].type=='king':
-                    
                     #King
+                    if len(pcsDiff)==1 and pcsDiff[0].type=='king':
+                        keepChecking=False
                     #King + Bishop
+                    
                     #King + Knight
                 #King + ... v King
                     #Bishop
