@@ -69,11 +69,13 @@ b_k=King(BLACK,board.board[4][0],bki,'Bking')
 b_k_l=[b_k]
 b_pieces=b_p+b_n+b_b+b_r+b_q+b_k_l
 
-
-
 #Empire Setup
 theWhites=Empire(WHITE)
 theBlacks=Empire(BLACK)
+for piece in w_pieces:
+    theWhites.add_piece(piece)
+for piece in b_pieces:
+    theBlacks.add_piece(piece)
 theWhites.set_opp(theBlacks)
 theBlacks.set_opp(theWhites)
 
