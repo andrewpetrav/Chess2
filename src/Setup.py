@@ -1,5 +1,6 @@
 import pygame
 from Board import *
+from Pieces import *
 
 #Font
 font = pygame.font.SysFont(None, 80)

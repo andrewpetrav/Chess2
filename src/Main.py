@@ -12,6 +12,7 @@ from Piece import *
 from Surface import SURFACE
 from Setup import *
 from Menus import *
+from Empire import *
 import pickle
 from pynput import keyboard
 
@@ -41,6 +42,7 @@ w_pieces=[w_k]+[w_q]#+[w_p]
 b_pieces=[b_q]+[b_k]
 '''
 
+
 w_p=[Pawn(WHITE,board.board[0][6],wpi,'Wpawn'),Pawn(WHITE,board.board[1][6],wpi,'Wpawn'),Pawn(WHITE,board.board[2][6],wpi,'Wpawn'),
      Pawn(WHITE,board.board[3][6],wpi,'Wpawn'),Pawn(WHITE,board.board[4][6],wpi,'Wpawn'),Pawn(WHITE,board.board[5][6],wpi,'Wpawn'),
      Pawn(WHITE,board.board[6][6],wpi,'Wpawn'),Pawn(WHITE,board.board[7][6],wpi,'Wpawn')]
@@ -51,6 +53,7 @@ w_q=[Queen(WHITE,board.board[3][7],wqi,'Wqueen')]
 w_k=King(WHITE,board.board[4][7],wki,'Wking')
 w_k_l=[w_k]
 w_pieces=w_p+w_n+w_b+w_r+w_q+w_k_l
+
 
 
 #BLACK
@@ -67,9 +70,17 @@ b_k_l=[b_k]
 b_pieces=b_p+b_n+b_b+b_r+b_q+b_k_l
 
 
+
+#Empire Setup
+theWhites=Empire(WHITE)
+theBlacks=Empire(BLACK)
+theWhites.set_opp(theBlacks)
+theBlacks.set_opp(theWhites)
+
 all_pieces=w_pieces+b_pieces #all pieces
 #all_pieces=[Pawn(WHITE,board.board[3][1],wpi),Pawn(BLACK,board.board[3][6],bpi),Pawn(WHITE,board.board[4][1],wpi)]
     
+
 def main():
     #Get board in original state
     ##game_type('traditional') #for now, all games will be traditional
