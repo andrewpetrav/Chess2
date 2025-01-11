@@ -1,6 +1,7 @@
 from abc import ABC
 import pygame
 from Piece import *
+from Main import *
 
 class Empire(ABC):
     def __init__(self,color):
@@ -21,9 +22,9 @@ class Empire(ABC):
         keepChecking=False
         stalemate=True
         #Cannot move without check?
-        for p in pcsSame:
+        for p in otherEmpire.pieces:
             moves=p.squaresCanMoveTo
-            moves=checkForCheck(p,moves,turn,pcsDiff,king)
+            moves=checkForCheck(p,moves,turn,otherEmpire.pieces,self.king) #TODO: define self.king
             if moves: #if any piece has a move they can make, not a stalemate
                 stalemate=False
                 keepChecking=True #only keep checking if stalemate is NOT found
