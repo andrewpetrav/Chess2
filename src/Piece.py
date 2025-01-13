@@ -10,7 +10,7 @@ class Piece(ABC):
         self.row=self.y
         self.col=self.x
         self.color=color
-        #self.square=square
+        self.square=square
         self.t=t #type
         self.image=image
         self.moved=moved
