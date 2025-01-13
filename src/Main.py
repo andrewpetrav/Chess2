@@ -78,6 +78,8 @@ for piece in b_pieces:
     theBlacks.add_piece(piece)
 theWhites.set_opp(theBlacks)
 theBlacks.set_opp(theWhites)
+theWhites.set_king(w_k)
+theBlacks.set_king(b_k)
 
 all_pieces=w_pieces+b_pieces #all pieces
 #all_pieces=[Pawn(WHITE,board.board[3][1],wpi),Pawn(BLACK,board.board[3][6],bpi),Pawn(WHITE,board.board[4][1],wpi)]

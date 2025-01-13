@@ -10,6 +10,7 @@ class Empire(ABC):
         self.wins=0
         self.losses=0
         self.opp=None
+        self.king=None
     def add_piece(self,piece):
         self.pieces.append(piece)
     def remove_piece(self,piece):
@@ -18,6 +19,8 @@ class Empire(ABC):
         return len(self.pieces)
     def set_opp(self,otherEmpire):
         self.opp=otherEmpire
+    def set_king(self,king):
+        self.king=king
     def checkStalemate(self,otherEmpire):
         keepChecking=False
         stalemate=True
