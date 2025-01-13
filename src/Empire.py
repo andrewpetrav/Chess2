@@ -1,9 +1,8 @@
 from abc import ABC
 import pygame
 from Piece import *
-from Main import *
 
-class Empire(ABC):
+class Empire(object):
     def __init__(self,color):
         self.color=color
         self.pieces=[]
@@ -21,6 +20,7 @@ class Empire(ABC):
         self.opp=otherEmpire
     def set_king(self,king):
         self.king=king
+    r'''
     def checkStalemate(self,otherEmpire):
         keepChecking=False
         stalemate=True
@@ -35,9 +35,9 @@ class Empire(ABC):
         #In a dead position?
         if keepChecking:
             #King v ...
-            if len(pcsSame)==1 and pcsSame[0].type=='king':
+            if self.get_num_pieces==1:
                 #King
-                if len(pcsDiff)==1 and pcsDiff[0].type=='king':
+                if otherEmpire.get_num_pieces==1:
                     keepChecking=False
                 #King + Bishop
                 
@@ -52,3 +52,4 @@ class Empire(ABC):
 
         if stalemate:
             stalemate()
+        '''

@@ -12,6 +12,7 @@ from Piece import *
 from Surface import SURFACE
 from Setup import *
 from Menus import *
+import Empire
 from Empire import *
 import pickle
 from pynput import keyboard
