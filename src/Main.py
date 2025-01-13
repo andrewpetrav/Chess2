@@ -342,6 +342,8 @@ def game():
     global all_pieces
     turn=WHITE
     king=w_k
+    empire=theWhites
+    otherEmpire=theBlacks
     pieces=b_pieces
     pcsSame=w_pieces
     pcsDiff=b_pieces
@@ -389,22 +391,8 @@ def game():
                     break
             #In a dead position?
             if keepChecking:
-                #King v ...
-                if len(pcsSame)==1 and pcsSame[0].type=='king':
-                    #King
-                    if len(pcsDiff)==1 and pcsDiff[0].type=='king':
-                        keepChecking=False
-                    #King + Bishop
-                    
-                    #King + Knight
-                #King + ... v King
-                    #Bishop
-                    #Knight
-                #King + Light Square Bishop v King + Dark Square Bishop
-                #King + Dark Square Bishop v King + Light Square Bishop
-
-
-
+                if empire.checkStalemate() and otherEmpire.checkStalemte():
+                    stalemate=True
             if stalemate:
                 stalemate()
             
@@ -460,12 +448,16 @@ def game():
         #switch turns
         if turn==WHITE:
             turn=BLACK
+            empire=theBlacks
+            otherEmpire=theWhites
             king=b_k
             pieces=w_pieces
             pcsSame=b_pieces
             pcsDiff=w_pieces
         else:
             turn=WHITE
+            empire=theWhites
+            otherEmpire=theBlacks
             king=w_k
             pieces=b_pieces
             pcsSame=w_pieces
