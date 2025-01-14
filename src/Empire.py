@@ -60,15 +60,27 @@ class Empire(object):
         self.king=king
     def checkStalemate(self,otherEmpire):
         #King v ...
-        if self.get_num_pieces==1:
+        if self.get_num_pieces()==1:
             #King
-            if otherEmpire.get_num_pieces==1:
+            if otherEmpire.get_num_pieces()==1:
                 return True
-            #King + Bishop
-            
-            #King + Knight
+            #King + ...
+            if otherEmpire.get_num_pieces()==2:
+                #Bishop
+                if otherEmpire.lightBishopCount==1 or otherEmpire.darkBishopCount==1:
+                    return True
+                #Knight
+                elif otherEmpire.knightCount==1:
+                    return True
         #King + ... v King
-            #Bishop
-            #Knight
-        #King + Light Square Bishop v King + Dark Square Bishop
-        #King + Dark Square Bishop v King + Light Square Bishop
+        if self.get_num_pieces()==2 and otherEmpire.get_num_pieces()==1:
+            #Bishop, #Knight
+            if self.lightBishopCount==1 or self.darkBishopCount==1 or self.knightCount==1:
+                return True
+        if self.get_num_pieces()==2 and otherEmpire.get_num_pieces()==2:
+            #King + Light Square Bishop v King + Light Square Bishop
+            if self.lightBishopCount==1 and otherEmpire.lightBishopCount==1:
+                return True
+            #King + Dark Square Bishop v King + Dark Square Bishop
+            if self.darkBishopCount==1 and otherEmpire.darkBishopCount==1:
+                return True
