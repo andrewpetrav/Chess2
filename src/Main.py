@@ -303,9 +303,6 @@ def doesThisMovePutTheKingInCheck(color,piece,moves,pieces,king,pieceIsKing=Fals
             movesLegal.append(move)  #add to legal moves
 
     return movesLegal
-
-        
-        
     #print(pieces)
 
 def checkForCheck(piece,moves,color,pieces,king):
@@ -335,6 +332,9 @@ def on_press(key):
 
 def stalemate():
     print('Stalemate')
+
+def checkmate():
+    print('Checkmate')
 
 def game():
     global w_pieces
@@ -375,9 +375,12 @@ def game():
                     anyMoves=True #it is not checkmate
                     break
             if not anyMoves:
-                print("CHECKMATE")
-
-        #step 0.875: Check if stalemate TODO: add repition, 50 moves, dead positions
+                checkmate()
+   
+        #Check if move results in check
+        #for p in pieces:
+        #    checkForCheck
+        #Step 0.875: Check if stalemate TODO: add repition, 50 moves, dead positions
         else: #if king not in check, prereq to stalemate
             keepChecking=False
             stalemate=True
@@ -391,11 +394,10 @@ def game():
                     break
             #In a dead position?
             if keepChecking:
-                if empire.checkStalemate(otherEmpire):
-                    stalemate=True
+                stalemate=empire.checkStalemate(otherEmpire)
             if stalemate:
                 stalemate()
-            
+
         while not move_completed:
             valid_square_selection=False 
             valid_move_selection=False
@@ -411,7 +413,7 @@ def game():
                             break
             #Step 2: Get moves of piece and highlight
             moves=sq.piece.squaresCanMoveTo#get_moves(board) #get moves of piece at selected square
-            moves=checkForCheck(sq.piece,moves,turn,pieces,king)
+            moves=checkForCheck(sq.piece,moves,turn,pcsDiff,king)
             sq.set_selected()
         
             if moves: #highlight
@@ -454,7 +456,7 @@ def game():
             pieces=w_pieces
             pcsSame=b_pieces
             pcsDiff=w_pieces
-        else:
+        elif turn==BLACK:
             turn=WHITE
             empire=theWhites
             otherEmpire=theBlacks
