@@ -288,6 +288,7 @@ def kingInCheck(color,boardStringCopy,king,pieces,step0=False,pieceIsKing=False,
                     return True
         return False
 
+
 def doesThisMovePutTheKingInCheck(color,piece,moves,pieces,king,pieceIsKing=False):
     movesLegal=[]
     for move in moves: #iterate through each move that selected piece can make
@@ -342,7 +343,7 @@ def game():
     global all_pieces
     turn=WHITE
     king=w_k
-    empire=theWhites
+    empire=theWhites 
     otherEmpire=theBlacks
     pieces=b_pieces
     pcsSame=w_pieces
