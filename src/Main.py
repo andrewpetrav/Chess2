@@ -32,18 +32,19 @@ boardString=[
     ]
 #Pieces
 ##WHITE
-r'''
+
 w_k=King(WHITE,board.board[1][3],wki,'Wking')
-w_q=Queen(WHITE,board.board[0][1],wqi,'Wqueen')
-#w_p=Pawn(WHITE,board.board[1][2],wpi,'Wpawn')
-b_q=Queen(BLACK,board.board[0][0],bqi,'Bqueen')
+w_q=Queen(WHITE,board.board[0][0],wqi,'Wqueen')
+w_p=Pawn(WHITE,board.board[2][2],wpi,'Wpawn')
+b_p=Pawn(BLACK,board.board[1][1],bpi,'Bpawn')
+b_q=Queen(BLACK,board.board[4][0],bqi,'Bqueen')
 b_k=King(BLACK,board.board[3][3],bki,'Bking')
 
-w_pieces=[w_k]+[w_q]#+[w_p]
-b_pieces=[b_q]+[b_k]
-'''
+w_pieces=[w_k]+[w_q]+[w_p]
+b_pieces=[b_q]+[b_k]+[b_p]
 
 
+r'''
 w_p=[Pawn(WHITE,board.board[0][6],wpi,'Wpawn'),Pawn(WHITE,board.board[1][6],wpi,'Wpawn'),Pawn(WHITE,board.board[2][6],wpi,'Wpawn'),
      Pawn(WHITE,board.board[3][6],wpi,'Wpawn'),Pawn(WHITE,board.board[4][6],wpi,'Wpawn'),Pawn(WHITE,board.board[5][6],wpi,'Wpawn'),
      Pawn(WHITE,board.board[6][6],wpi,'Wpawn'),Pawn(WHITE,board.board[7][6],wpi,'Wpawn')]
@@ -69,6 +70,7 @@ b_q=[Queen(BLACK,board.board[3][0],bqi,'Bqueen')]
 b_k=King(BLACK,board.board[4][0],bki,'Bking')
 b_k_l=[b_k]
 b_pieces=b_p+b_n+b_b+b_r+b_q+b_k_l
+'''
 
 #Empire Setup
 theWhites=Empire(WHITE)
@@ -142,7 +144,6 @@ def move_piece(sq,moves,pos,b,returnPieceTaken=False):
                         boardString[row][7]='*'
                         boardString[row][4]='*'
 
-
                         sq.piece.set_pos(6,row) #update what position king will be on
                         b.board[7][row].piece.set_pos(5,row) #update what position rook will be on
                         b.board[7][row].piece.set_moved() #set rook moved
@@ -157,7 +158,6 @@ def move_piece(sq,moves,pos,b,returnPieceTaken=False):
                         boardString[row][2]=boardString[row][4]
                         boardString[row][0]='*'
                         boardString[row][4]='*'
-
 
                         sq.piece.set_pos(2,row) #update what position king will be on
                         b.board[0][row].piece.set_pos(3,row) #update what position rook will be on
@@ -269,6 +269,29 @@ def get_all_moves(): #calculates every possible move
     for piece in all_pieces:
         all_moves[piece]=piece.get_moves(board)
 
+def kingInCheckForStepTwo(color,boardStringCopy,king,pieces,step0=False,pieceIsKing=False,kingMove=None):
+    if pieceIsKing:
+        kingPos=tuple([kingMove.col,kingMove.row])
+    else:
+        kingPos=king.get_pos()
+        kingPos=tuple([kingPos[0],kingPos[1]])
+    if step0:
+        for p in pieces:
+            for m in p.squaresAttacking:
+                if tuple([m.col,m.row])==kingPos:
+                    return True
+        return False
+    else:
+        for b in boardStringCopy:
+            print(b)
+        for p in pieces:
+            for m in p.get_moves(board,True,boardStringCopy):
+                print(p.tag,m,' kingPos=',kingPos)
+                if m==kingPos:
+                    return True
+        return False
+
+
 def kingInCheck(color,boardStringCopy,king,pieces,step0=False,pieceIsKing=False,kingMove=None):
     if pieceIsKing:
         kingPos=tuple([kingMove.col,kingMove.row])
@@ -287,7 +310,23 @@ def kingInCheck(color,boardStringCopy,king,pieces,step0=False,pieceIsKing=False,
                 if m==kingPos:
                     return True
         return False
+ 
+def doesThisMovePutTheKingInCheckForStepTwo(color,piece,moves,pieces,king,pieceIsKing=False):
+    movesLegal=[]
+    for move in moves: #iterate through each move that selected piece can make
+        #print(type(move))
+        boardStringCopy=copy.deepcopy(boardString)
+        #print((piece.y,piece.x),(move.col,move.row))
+        boardStringCopy[piece.y][piece.x]='*' #set old square as empty
+        boardStringCopy[move.row][move.col]=piece.string #move piece to new square #THIS USED TO BE ROW THEN COL, BUT BROKE PIECES BLOCKING CHECK
+        doesThisMoveResultInCheck=kingInCheckForStepTwo(color, boardStringCopy,king,pieces,step0=False,pieceIsKing=pieceIsKing,kingMove=move)
+        if doesThisMoveResultInCheck: #if moving this piece to LOCATION results in self-check
+            pass #don't add it to legal moves
+        else: #otherwise
+            movesLegal.append(move)  #add to legal moves
 
+    return movesLegal
+    #print(pieces)
 
 def doesThisMovePutTheKingInCheck(color,piece,moves,pieces,king,pieceIsKing=False):
     movesLegal=[]
@@ -305,6 +344,17 @@ def doesThisMovePutTheKingInCheck(color,piece,moves,pieces,king,pieceIsKing=Fals
 
     return movesLegal
     #print(pieces)
+
+def checkForCheckForStepTwo(piece,moves,color,pieces,king):
+    #if piece is a king, so when do king.get_pos() later, returns temporary position
+    if piece.t=='king':
+        moves=doesThisMovePutTheKingInCheckForStepTwo(color,piece,moves, pieces, king,True)
+    #if piece not a king
+    else:
+        #if move happens will board state result in your color king check
+        moves=doesThisMovePutTheKingInCheckForStepTwo(color,piece,moves, pieces, king)
+
+    return moves
 
 def checkForCheck(piece,moves,color,pieces,king):
     #if piece is a king, so when do king.get_pos() later, returns temporary position
@@ -364,7 +414,6 @@ def game():
             #print(piece.color,piece.t)
             #for m in piece.squaresAttacking:
                 #print(m.col,m.row)
-
         #Step 0.5: Check if own king is in check
         if kingInCheck(turn,boardString,king,pieces,True,False,None):
             #Step 0.75: Check if in checkmate
@@ -414,7 +463,7 @@ def game():
                             break
             #Step 2: Get moves of piece and highlight
             moves=sq.piece.squaresCanMoveTo#get_moves(board) #get moves of piece at selected square
-            moves=checkForCheck(sq.piece,moves,turn,pcsDiff,king)
+            moves=checkForCheckForStepTwo(sq.piece,moves,turn,pcsDiff,king)
             sq.set_selected()
         
             if moves: #highlight

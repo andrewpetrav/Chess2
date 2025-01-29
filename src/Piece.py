@@ -37,7 +37,7 @@ class Piece(ABC):
         #print(board)
         theBoard = [list(row) for row in zip(*board)]
         #print(theBoard)
-        c='W' #color
+        c=None #color
         if self.color==WHITE:
             c='W'
         elif self.color==BLACK:
@@ -45,6 +45,7 @@ class Piece(ABC):
         #add a check to see if king is in check first before anything else
         #for every move, make sure it doesn't put own king in check
         if self.t=='pawn': #TODO Enpassant
+            #####PROBLEM IS SOMEWHERE HERE
             if self.color==WHITE and self.y-1>-1: 
                 if not attack:
                     if theBoard[self.x][self.y-1]=='*': #if nobody on square ahead of it
@@ -53,6 +54,7 @@ class Piece(ABC):
                         if theBoard[self.x-1][self.y-1] != '*' and theBoard[self.x-1][self.y-1][0]!=c: #can take to left?
                             open_squares.append((self.x-1,self.y-1))
                     except:
+
                         pass
                     try:
                         if theBoard[self.x+1][self.y-1] != '*' and theBoard[self.x+1][self.y-1][0]!=c: #can take to right?
@@ -458,12 +460,12 @@ class Piece(ABC):
                     try:
                         if theBoard[self.x-1][self.y-1].get_piece() != None and theBoard[self.x-1][self.y-1].get_piece_color()!=self.color: #can take to left?
                             open_squares.append(theBoard[self.x-1][self.y-1])
-                    except:
+                    except Exception as e:
                         pass
                     try:
                         if theBoard[self.x+1][self.y-1].get_piece() != None and theBoard[self.x+1][self.y-1].get_piece_color()!=self.color: #can take to right?
                             open_squares.append(theBoard[self.x+1][self.y-1])
-                    except:
+                    except Exception as e:
                         pass
                     
                     #EN PASSANT
@@ -474,7 +476,7 @@ class Piece(ABC):
                             if pieceTryingToPassant.enPassantable:
                                 if pieceTryingToPassant.get_piece_color()!=self.color:
                                     open_squares.append(theBoard[self.x+1][self.y+1])
-                    except:
+                    except Exception as e:
                         pass
                     ###LEFT PASSANT
                     try:
@@ -483,7 +485,7 @@ class Piece(ABC):
                             if pieceTryingToPassant.enPassantable:
                                 if pieceTryingToPassant.get_piece_color()!=self.color:
                                     open_squares.append(theBoard[self.x-1][self.y+1])
-                    except:
+                    except Exception as e:
                         pass
 
                     if self.moved==False: #if first move for pawn
@@ -492,20 +494,20 @@ class Piece(ABC):
                             try:
                                 if theBoard[self.x][self.y-2].get_piece()==None: #nobody two squares in front
                                     open_squares.append(theBoard[self.x][self.y-2])
-                            except:
+                            except Exception as e:
                                 pass
                 elif attack: #getting what moves it is attacking
                     try:
                         #attacking left?
                         if theBoard[self.x-1][self.y-1].size: #does it exist
                             open_squares.append(theBoard[self.x-1][self.y-1])
-                    except:
+                    except Exception as e:
                         pass
                     try:
                         #attacking right?
                         if theBoard[self.x+1][self.y-1].size: #does it exist
                             open_squares.append(theBoard[self.x+1][self.y-1])
-                    except:
+                    except Exception as e:
                         pass
             if self.color==BLACK and self.y+1<NUM_ROWS:
                 if not attack:
@@ -515,12 +517,12 @@ class Piece(ABC):
                     try:
                         if theBoard[self.x-1][self.y+1].get_piece() != None and theBoard[self.x-1][self.y+1].get_piece_color()!=self.color: #can take to left?
                             open_squares.append(theBoard[self.x-1][self.y+1])
-                    except:
+                    except Exception as e:
                         pass
                     try:
                         if theBoard[self.x+1][self.y+1].get_piece() != None and theBoard[self.x+1][self.y+1].get_piece_color()!=self.color: #can take to right?
                             open_squares.append(theBoard[self.x+1][self.y+1])
-                    except:
+                    except Exception as e:
                         pass
 
                     #EN PASSANT
@@ -531,7 +533,7 @@ class Piece(ABC):
                             if pieceTryingToPassant.enPassantable:
                                 if pieceTryingToPassant.get_piece_color()!=self.color:
                                     open_squares.append(theBoard[self.x+1][self.y-1])
-                    except:
+                    except Exception as e:
                         pass
                     ###LEFT PASSANT
                     try:
@@ -540,7 +542,7 @@ class Piece(ABC):
                             if pieceTryingToPassant.enPassantable:
                                 if pieceTryingToPassant.get_piece_color()!=self.color:
                                     open_squares.append(theBoard[self.x-1][self.y-1])
-                    except:
+                    except Exception as e:
                         pass
 
 
@@ -548,25 +550,25 @@ class Piece(ABC):
                         try:
                             if theBoard[self.x][self.y+2].get_piece()==None: #nobody two squares in front
                                 open_squares.append(theBoard[self.x][self.y+2])
-                        except:
+                        except Exception as e:
                             pass
                 elif attack: #getting what moves it is attacking
                     try:
                         #attacking left?
                         if theBoard[self.x-1][self.y+1].size: #does it exist
                             open_squares.append(theBoard[self.x-1][self.y+1])
-                    except:
+                    except Exception as e:
                         pass
                     try:
                         #attacking right?
                         if theBoard[self.x+1][self.y-1].size: #does it exist
                             open_squares.append(theBoard[self.x+1][self.y+1])
-                    except:
+                    except Exception as e:
                         pass
             #return open_squares
         elif self.t=='knight':
             #open_squares=[]
-            a,b,c,d,e,f,g,h=None,None,None,None,None,None,None,None
+            a,b,c,d,ee,f,g,h=None,None,None,None,None,None,None,None
             ac,bc,cc,dc,ec,fc,gc,hc=None,None,None,None,None,None,None,None
             #left 1 up 2
             try:
@@ -574,19 +576,19 @@ class Piece(ABC):
                     a/0
                 a=theBoard[self.x-1][self.y+2]
                 ac=a.get_piece_color()
-            except:
+            except Exception as e:
                 pass
             #right 1 up 2
             try:
                 b=theBoard[self.x+1][self.y+2]
                 bc=b.get_piece_color()
-            except:
+            except Exception as e:
                 pass
             #right 2 up 1
             try:
                 c=theBoard[self.x+2][self.y+1]
                 cc=c.get_piece_color()
-            except:
+            except Exception as e:
                 pass
             #right 2 down 1
             try:
@@ -594,15 +596,15 @@ class Piece(ABC):
                     a/0
                 d=theBoard[self.x+2][self.y-1]
                 dc=d.get_piece_color()
-            except:
+            except Exception as e:
                 pass
             #right 1 down 2
             try:
                 if self.y-2<0:
                     a/0
-                e=theBoard[self.x+1][self.y-2]
-                ec=e.get_piece_color()
-            except:
+                ee=theBoard[self.x+1][self.y-2]
+                ec=ee.get_piece_color()
+            except Exception as e:
                 pass
             #left 1 down 2
             try:
@@ -610,7 +612,7 @@ class Piece(ABC):
                     a/0
                 f=theBoard[self.x-1][self.y-2]
                 fc=f.get_piece_color()
-            except:
+            except Exception as e:
                 pass
             #left 2 down 1
             try:
@@ -618,7 +620,7 @@ class Piece(ABC):
                     a/0
                 g=theBoard[self.x-2][self.y-1]
                 gc=g.get_piece_color()
-            except:
+            except Exception as e:
                 pass
             #left 2 up 1
             try:
@@ -626,7 +628,7 @@ class Piece(ABC):
                     a/0
                 h=theBoard[self.x-2][self.y+1]
                 hc=h.get_piece_color()
-            except:
+            except Exception as e:
                 pass
 
             if a:
@@ -652,11 +654,11 @@ class Piece(ABC):
                 elif not dc or dc!=self.color:
                     open_squares.append(d)
                     
-            if e:
+            if ee:
                 if attack:
-                    open_squares.append(e)
+                    open_squares.append(ee)
                 elif not ec or ec!=self.color:
-                    open_squares.append(e)
+                    open_squares.append(ee)
                     
             if f:
                 if attack:
