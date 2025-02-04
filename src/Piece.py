@@ -34,9 +34,7 @@ class Piece(ABC):
     def get_moves_string(self,board,attack=False):
         #returns list of open squares in [(row, col), (row, col), ...] form
         open_squares=[]
-        #print(board)
         theBoard = [list(row) for row in zip(*board)]
-        #print(theBoard)
         c=None #color
         if self.color==WHITE:
             c='W'
@@ -45,7 +43,7 @@ class Piece(ABC):
         #add a check to see if king is in check first before anything else
         #for every move, make sure it doesn't put own king in check
         if self.t=='pawn': #TODO Enpassant
-            #####PROBLEM IS SOMEWHERE HERE
+            #####PROBLEM IS SOMEWHERE HERE, lets look for it
             if self.color==WHITE and self.y-1>-1: 
                 if not attack:
                     if theBoard[self.x][self.y-1]=='*': #if nobody on square ahead of it
