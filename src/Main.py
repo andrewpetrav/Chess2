@@ -331,7 +331,6 @@ def doesThisMovePutTheKingInCheckForStepTwo(color,piece,moves,pieces,king,pieceI
 def doesThisMovePutTheKingInCheck(color,piece,moves,pieces,king,pieceIsKing=False):
     movesLegal=[]
     for move in moves: #iterate through each move that selected piece can make
-        #print(type(move))
         boardStringCopy=copy.deepcopy(boardString)
         #print((piece.y,piece.x),(move.col,move.row))
         boardStringCopy[piece.y][piece.x]='*' #set old square as empty
@@ -353,7 +352,6 @@ def checkForCheckForStepTwo(piece,moves,color,pieces,king):
     else:
         #if move happens will board state result in your color king check
         moves=doesThisMovePutTheKingInCheckForStepTwo(color,piece,moves, pieces, king)
-
     return moves
 
 def checkForCheck(piece,moves,color,pieces,king):
