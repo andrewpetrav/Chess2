@@ -26,6 +26,7 @@ bri=pygame.image.load('media/b_r.png').convert_alpha()
 bqi=pygame.image.load('media/b_q.png').convert_alpha()
 bki=pygame.image.load('media/b_k.png').convert_alpha()
 #Re-scale images
+square_size=int(square_size)
 wpi=pygame.transform.scale(wpi,(square_size,square_size))
 wni=pygame.transform.scale(wni,(square_size,square_size))
 wbi=pygame.transform.scale(wbi,(square_size,square_size))
